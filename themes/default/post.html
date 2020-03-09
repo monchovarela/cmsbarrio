@@ -1,0 +1,63 @@
+<?php include THEME_INC.'head.inc.html';?>
+<?php include THEME_INC.'header.inc.html';?>
+<!-- container -->
+<main class="container">
+    <!-- row -->
+    <section class="row">
+        <!-- col -->
+        <div class="col-xl-8">
+            <?php Barrio::runAction('theme_before');?>
+            <?php Barrio::runAction('breadcrumb');?>
+            <section class="posts">
+                <?php echo $page['content'];?>
+            </section>
+            <?php Barrio::runAction('navFolder');?>
+            <?php Barrio::runAction('theme_after');?>
+        </div><!-- / col -->
+        <!-- col -->
+        <div class="col-xl-4">
+            <!-- card -->
+            <div class="card">
+              <img 
+                class="card-img-top" 
+                src="<?php echo Barrio::urlBase().'/'.$config['blog']['image'];?>" alt="Card image cap"/>
+
+              <div class="card-body">
+                <h5 class="card-title">
+                    <?php echo $config['blog']['title'];?>
+                </h5>
+                <p class="card-text">
+                    <?php echo $config['blog']['description'];?>
+                </p>
+              </div>
+            </div><!-- / card -->
+            <!-- card -->
+            <div class="card mt-2">
+              <div class="card-body">
+                <h5 class="card-title">
+                    <?php echo $config['blog']['search_title'];?>
+                </h5>
+                <form id="buscar" method="post" class="card-text">
+                    <label class="sr-only" for="texto">
+                        <?php echo $config['blog']['search_title'];?>
+                    </label>
+                    <input type="search" name="buscar" id="texto" class="form-control" placeholder="<?php echo $config['blog']['search_btn'];?>">
+                </form>
+              </div>
+            </div><!-- / card -->
+            <!-- card -->
+            <div class="card mt-2">
+              <div class="card-body">
+                <h5 class="card-title">
+                    <?php echo $config['blog']['recent_posts'];?>
+                </h5>
+                <div class="card-text">
+                    <?php Barrio::runAction('lastPosts',['blog',2]);?>
+                </div>
+              </div>
+            </div><!-- / card -->
+        </div><!-- / col -->
+    </section><!-- / row -->
+</main><!-- / container -->
+<?php include THEME_INC.'prefooter.inc.html';?>
+<?php include THEME_INC.'footer.inc.html';?>

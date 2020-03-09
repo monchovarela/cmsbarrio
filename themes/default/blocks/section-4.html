@@ -1,0 +1,25 @@
+<?php
+	$title = 'NUESTROS SERVICIOS';
+	$subtitle = 'SUBTÍTULO DE SECCIÓN';
+?>
+
+<!-- section -->
+<section id="services" class="bg-light pt-5 pb-3" data-aos="fade-up">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+			<!-- col -->
+			<div class="col-xl-12 text-center">
+				<h5 class="lead"><?php echo $subtitle;?></h5>
+				<h2><?php echo $title;?></h2>
+			</div><!-- /col -->
+		</div><!-- /row -->
+		<div class="row mt-3">
+			<?php echo Barrio::runAction('pagination',['servicios', 4,false]); ?>
+		</div><!-- /row -->
+	</div><!-- /container -->
+</section><!-- /section -->
+
+
+

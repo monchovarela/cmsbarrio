@@ -1,0 +1,105 @@
+body, html { position: relative; height: 100% }
+body { overflow-x: hidden }
+img { max-width: 100% }
+.hide { display: none }
+.show { display: block }
+.menu-burger { width: 30px; height: 26px; border: none; position: relative; cursor: pointer; transition: background-position 0.2s 0.45s ease }
+.menu-burger:after, .menu-burger:before { height: 20%; width: 0; position: absolute; content: ''; transform: rotate(0); top: 40%; transition: transform 0.3s ease, width 0.3s 0.2s ease }
+.menu-burger:after, .menu-burger:before { right: 0 }
+.menu-burger.is-active { background-position: 30px 0; transition-delay: 0s }
+.menu-burger.is-active:after, .menu-burger.is-active:before { width: 100%; transition: width 0.3s 0.2s ease, transform 0.3s 0.4s ease }
+.menu-burger.is-active:before { transform: rotate(-45deg) }
+.menu-burger.is-active:after { transform: rotate(45deg) }
+.navbar-dark .menu-burger { background: linear-gradient(to bottom, #ffffff 50%, transparent 50%); background-size: 100% 40%; background-repeat-x: no-repeat; background-position: 0 0 }
+.navbar-dark .menu-burger.is-active { background-position: 30px 0; transition-delay: 0s }
+.navbar-dark .menu-burger:after, .navbar-dark .menu-burger:before { background-color: #ffffff; border-color: transparent }
+.navbar-light .menu-burger { background: linear-gradient(to bottom, #b1b1b1 50%, transparent 50%); background-size: 100% 40%; background-repeat-x: no-repeat; background-position: 0 0 }
+.navbar-light .menu-burger.is-active { background-position: 30px 0; transition-delay: 0s }
+.navbar-light .menu-burger:after, .navbar-light .menu-burger:before { background-color: #e3387c; border-color: transparent }
+.navbar ul.dropdown-menu.show { background: #1a1a1ac9; padding: 0.5em 1em }
+.nav-item { margin-right: 0.5rem }
+.top { position: relative; background: url(../img/grid-loading.gif) #d2d2d2; background-position: center center; background-repeat: no-repeat; min-height: 20em; border-radius: 4px 4px 0 0 }
+.top img { position: absolute; top: 0; left: 0; height: 100%; width: 100%; border-radius: 4px 4px 0 0; display: block }
+.accordion>.accordion-title>a:after, .toggle>.toggle-title>a:after { content: ' \002B'; font-weight: bold }
+.accordion>.accordion-title>a.active:after, .toggle>.toggle-title>a.active:after { content: ' \002D'; font-weight: bold }
+.header { position: relative; background-color: #000000; background-size: cover; background-position: center center; background-repeat: no-repeat }
+.header:after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; margin: auto; background-color: rgba(0, 0, 0, 0.64); z-index: 1 }
+.header a, .header button, .header h1, .header img, .header p { position: relative; z-index: 200; font-weight: bold; color: inherit }
+.toTop { position: fixed; bottom: 2em; right: 1em; display: none; width: 52px; height: 52px; transform: translateY(0%); text-decoration: none; border-bottom: none !important; animation: gotoUp 1s infinite ease-in-out; z-index: 999999 }
+#goHome { position: absolute; bottom: 5em; left: 0; width: 100%; text-decoration: none }
+@media (max-width:700px) {
+	#goHome { bottom: 1em }
+}
+@keyframes gotoUp {
+	50% { transform: translateY(20%) }
+}
+.toFirst { display: block; width: 50px; height: 50px; margin: auto; margin-top: 3em; transform: translateY(0%); animation: gotoDown 1s infinite ease; border-bottom: none !important }
+@keyframes gotoDown {
+	50% { transform: translateY(20%) }
+}
+.prefooter { background: #111; color: #888; font-size: 14px }
+.prefooter a { color: #bbb }
+.prefooter h5 { color: white }
+.footer { position: relative; text-align: center; padding: 21px 0; background: #222; border-top: 1px solid #333; font-weight: 500; color: #777; font-size: 13px }
+.footer p { margin: 0; padding: 0 }
+.footer a { color: white }
+.posts { flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-content: flex-start }
+.post { width: calc(100% - 1em); margin: auto; float: left }
+.post img { max-height: 100% }
+@media(min-width:600px) {
+	.post { width: calc(100%/2 - 1em); margin: 0.5em }
+	.post img { max-height: 20em }
+}
+.alert p { margin: 0; padding: 0 }
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 { color: inherit }
+main  .octicon { display: inline-block; fill: currentColor; vertical-align: text-bottom }
+main  .anchor { float: left; line-height: 1; margin-left: -20px; padding-right: 4px }
+main  .anchor:focus { outline: none }
+main  details { display: block }
+main  summary { display: list-item }
+main  a { background-color: initial }
+main  a:active, main  a:hover { outline-width: 0 }
+main  strong,main b { font-weight: inherit; font-weight: bolder;color:black; }
+main  img { border-style: none }
+main  code, main  kbd, main  pre { font-family: monospace, monospace; font-size: 1em }
+main  table { border-spacing: 0; border-collapse: collapse }
+main  td, main  th { padding: 0 }
+main  details summary { cursor: pointer }
+main  kbd { display: inline-block; padding: 3px 5px; font: 11px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace; line-height: 10px; color: #444d56; vertical-align: middle; background-color: #fafbfc; border: 1px solid #d1d5da; border-radius: 3px; box-shadow: inset 0 -1px 0 #d1d5da }
+main  blockquote { margin: 0 }
+main  ol, main  ul { padding-left: 0; margin-top: 0; margin-bottom: 0 }
+main  ol ol, main  ul ol { list-style-type: lower-roman }
+main  ol ol ol, main  ol ul ol, main  ul ol ol, main  ul ul ol { list-style-type: lower-alpha }
+main  dd { margin-left: 0 }
+main  code, main  pre { font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace; font-size: 12px }
+main  pre { margin-top: 0; margin-bottom: 0 }
+main  kbd { display: inline-block; padding: 3px 5px; font: 11px SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace; line-height: 10px; color: #444d56; vertical-align: middle; background-color: #fafbfc; border: 1px solid #d1d5da; border-radius: 3px; box-shadow: inset 0 -1px 0 #d1d5da }
+main:after { clear: both }
+main  a:not([href]) { color: inherit; text-decoration: none }
+main  blockquote, main  details, main  dl, main  ol, main  p, main  pre, main  table, main  ul { margin-top: 0; margin-bottom: 16px }
+main  blockquote { padding: 0 1em; color: #6a737d; border-left: .25em solid #dfe2e5 }
+main  blockquote>:first-child { margin-top: 0 }
+main  blockquote>:last-child { margin-bottom: 0 }
+main  ol, main  ul { padding-left: 2em }
+main  ol ol, main  ol ul, main  ul ol, main  ul ul { margin-top: 0; margin-bottom: 0 }
+main  li { word-wrap: break-all }
+main  li>p { margin-top: 16px }
+main  li+li { margin-top: .25em }
+main  dl { padding: 0 }
+main  dl dt { padding: 0; margin-top: 16px; font-size: 1em; font-style: italic; font-weight: 600 }
+main  dl dd { padding: 0 16px; margin-bottom: 16px }
+main  table { display: block; width: 100%; overflow: auto; border: 1px solid #ffffff }
+main  table th { font-weight: 600; background-color: #343a40; color: white }
+main  table td, main  table th { padding: 6px 13px }
+main  table tr { background-color: #ffffff }
+main  table tr:nth-child(2n) { background-color: #f3f3f3 }
+main  img { max-width: 100%; box-sizing: initial; background-color: #fff }
+main  img[align=right] { padding-left: 20px }
+main  img[align=left] { padding-right: 20px }
+main  code { padding: .2em .4em; margin: 0; font-size: 85%; background-color: rgba(27, 31, 35, .05); border-radius: 3px }
+main  pre { word-wrap: normal }
+main  pre>code { padding: 0; margin: 0; font-size: 100%; word-break: normal; white-space: pre; background: transparent; border: 0 }
+main  .highlight { margin-bottom: 16px }
+main  .highlight pre { margin-bottom: 0; word-break: normal }
+main  .highlight pre, main  pre { padding: 16px; overflow: auto; font-size: 85%; line-height: 1.45; background-color: #f6f8fa; border-radius: 3px }
+main  pre code { display: inline; max-width: auto; padding: 0; margin: 0; overflow: visible; line-height: inherit; word-wrap: normal; background-color: initial; border: 0 }

@@ -1,0 +1,47 @@
+<?php if(Barrio::urlCurrent() == '') { ?>
+<!-- header -->
+<header <?php Barrio::runAction('background', array('page' => $page,'full' => true));?> >
+
+    <?php Barrio::runAction('navbar',[Barrio::$config[ 'home_menu' ],'dark','transparent',false]); ?>
+    <!-- container -->
+    <div class="container h-75">
+        <!-- row -->
+        <div class="row h-100 mt-5 align-items-center">
+            <!-- col -->
+            <div class="col-xl-6 mr-auto ml-auto text-center">
+                <h1 class="display-3"><?php echo $page['title'];?></h1>
+                <p class="lead"><?php echo $page['description'];?></p>
+                <a href="#first" class="toFirst">
+                    <img src="<?php echo Barrio::urlBase().'/themes/default/assets/img/mouse-light.png';?>"/>
+                </a>
+            </div><!-- / col -->
+        </div><!-- / row -->
+    </div><!-- / container -->
+</header><!-- / header -->
+
+<?php }else{ ?>
+
+<!-- header -->
+<header <?php Barrio::runAction('background',array('page' => $page,'full' => false));?> >
+
+    <?php Barrio::runAction('navbar',[Barrio::$config[ 'other_menu' ],'dark','transparent',false]); ?>
+    <!-- section -->
+    <section class="jumbotron bg-transparent text-center">
+        <!-- row -->
+        <div class="row">
+            <!-- col -->
+            <div class="col-xl-6 m-auto">
+                <h1 class="display-4 mt-4" data-aos="zoom-in"><?php echo $page['title'];?></h1>
+                <p class="lead" data-aos="zoom-in" data-aos-delay="100"><?php echo $page['description'];?></p>
+                <a href="#first" class="toFirst">
+                    <img src="<?php echo Barrio::urlBase().'/themes/default/assets/img/mouse-light.png';?>"/>
+                </a>
+            </div><!-- / col -->
+        </div><!-- / row -->
+    </section><!-- / section -->
+</header><!-- / header -->
+
+<?php } ?>
+
+
+<div id="first"></div>
