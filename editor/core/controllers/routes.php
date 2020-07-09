@@ -20,7 +20,7 @@ $R->Route(
         include CONTROLLERS.'/shortcodes.php';
         $e = new Editor();
         $_POST = json_decode(file_get_contents('php://input'), true);
-        if(Url::post('code')){
+        if (Url::post('code')) {
             $content = base64_decode(Url::post('code'));
             echo $e->parseContent($content);
         }

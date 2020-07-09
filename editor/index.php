@@ -1,6 +1,8 @@
 <?php
 // required version
-if (version_compare(PHP_VERSION, "5.3.0", "<"))  exit("Panel requires PHP 5.3.0 or greater.");
+if (version_compare(PHP_VERSION, "5.3.0", "<")) {
+    exit("Panel requires PHP 5.3.0 or greater.");
+}
 
 // Root directory
 define('ROOT', rtrim(dirname(__FILE__), '\\/'));

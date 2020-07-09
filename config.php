@@ -10,7 +10,7 @@
         // display
         'display' => 'standalone',
         // shortname
-        'short_name' => 'Moncho',
+        'short_name' => 'BarrioCMS',
         // language
         'lang' => 'es',
         // charset
@@ -19,12 +19,12 @@
         'timezone' => 'Europe/Brussels',
         // default theme
         'theme' => 'default',
-        // title 
-        'title' => 'CMS Barrio',
+        // title
+        'title' => 'Barrio CMS',
         // description
-        'description' => 'Desarrollo web & Músico',
+        'description' => 'El CMS que se adapta a cualquier proyecto',
         // keywords
-        'keywords' => 'desarrollo,web,musico',
+        'keywords' => 'desarrollo,web,cms',
         // author
         'author' => 'Moncho Varela',
         // email
@@ -47,32 +47,15 @@
             'search_btn' => 'Buscar',
             // recent posts
             'recent_posts' => 'Articulos recientes',
-            // last posts 
+            // last posts
             'last_posts' => 3
         ),
         // navigation
-        'home_menu' => array(
-            '/'             => 'Inicio',
-            '#features'     => 'Que hacemos',
-            '#services'     => 'Servicios',
-            '/blog'         => 'Blog',
-            '/documentacion'=> 'Documentacion',
-            '/contacto'     => 'Contacto'
-        ),
-        'other_menu' => array(
+        'menu' => array(
             '/'             => 'Inicio',
             '/blog'         => 'Blog',
-            '/editor'       => 'Editor',
-            'Documentacion'=> array(
-                '/documentacion'                        => 'Inicio',
-                '/documentacion/archivos'               => 'Archivos',
-                '/documentacion/extensiones'            => 'Extensiones',
-                '/documentacion/plantillas'             => 'Temas',
-                '/documentacion/que-es-markdown'        => 'Markdown',
-                '/documentacion/shortcodes'             => 'Shortcodes',
-                '/documentacion/shortcodes-plantilla'   => 'Demo'
-            ),
-            '/contacto'     => 'Contacto'
+            '/editor'       => 'Pruébalo',
+            '/documentacion'=> 'Docs'
         ),
         // search
         'search' =>  array(
@@ -86,11 +69,8 @@
         'notaccess' => '!No tienes accesso aquí¡',
 
         // social
-        'facebook' => 'https://facebook.com/nakome',
-        'instagram' => 'https://instagram.com/monchovarela',
-        'twitter' => 'https://twitter.com/nakome',
-        'youtube' => 'https://youtube.com/nakome'
-
-        // you can add more here...
+        'facebook' => 'https://facebook.com',
+        'instagram' => 'https://instagram.com',
+        'twitter' => 'https://twitter.com',
 
     );

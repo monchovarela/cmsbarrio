@@ -1,17 +1,17 @@
 <?php  defined('BARRIO') or die('Sin accesso a este script.');
 
 
-class Api 
+class Api
 {
 
     /**
      *  Render json
-     *  
+     *
      *  @param array $data
      *
      *  @return array
      */
-    function json(array $data = array())
+    public function json(array $data = array())
     {
         @header('Content-Type: application/json');
         die(json_encode($data));
@@ -19,59 +19,68 @@ class Api
 
     /**
      *  Resize image
-     *  
+     *
      *  @param string $url
      *  @param string $width
      *  @param string $height
+     *  @param integer $quality
      *
      *  @return string image
      */
-    function resizeImg($url, $width, $height) 
+    public function resizeImg($url, $width, $height, $quality=70)
     {
-
         @header('Content-type: image/jpeg');
+        $filePath = ROOT.'/'.$url;
 
         list($width_orig, $height_orig) = getimagesize($url);
-
         $ratio_orig = $width_orig/$height_orig;
-
         if ($width/$height > $ratio_orig) {
-          $width = $height*$ratio_orig;
+            $width = $height*$ratio_orig;
         } else {
-          $height = $width/$ratio_orig;
+            $height = $width/$ratio_orig;
         }
 
-        // This resamples the image
-        $image_p = imagecreatetruecolor($width, $height);
-        $image = imagecreatefromjpeg($url);
-        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
-
-        // Output the image
-        imagejpeg($image_p, null, 100);
+        $ext = pathinfo($filePath, PATHINFO_EXTENSION);
+        $image = '';
+        if ($ext == 'png') {
+            $image = imagecreatefrompng($filePath);
+            $bg = imagecreatetruecolor($width, $height);
+            imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
+            imagealphablending($bg, true);
+            imagecopyresampled($bg, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+            imagejpeg($bg, null, $quality);
+        } else {
+            // This resamples the image
+            $image_p = imagecreatetruecolor($width, $height);
+            $image = imagecreatefromjpeg($url);
+            imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+            imagejpeg($image_p, null, 100);
+            //imagedestroy($bg);
+        }
     }
+
+
+
 
     /**
      *  Pages
-     *  
+     *
      *  @return array
      */
-    function pages()
+    public function pages()
     {
         // check if exists name
-        if (array_key_exists('name', $_GET))
-        {
+        if (array_key_exists('name', $_GET)) {
             // get name or null
             $name = ($_GET['name']) ? $_GET['name'] : 'blog';
             // check if is a dir
-            if(is_dir(CONTENT.'/'.$name))
-            {
+            if (is_dir(CONTENT.'/'.$name)) {
                 // filter data
-                if (array_key_exists('filter', $_GET))
-                {
+                if (array_key_exists('filter', $_GET)) {
                     // get filter
                     $filter = ($_GET['filter']) ? $_GET['filter'] : null;
                     // get pages
-                    $pages = Barrio::run()->pages($name,'date','DESC',array('index','404'),null);
+                    $pages = Barrio::run()->getHeaders($name, 'date', 'DESC', array('index','404'), null);
                     // init output
                     $output = array();
                     // switch
@@ -80,45 +89,45 @@ class Api
                         // index.php?api=file&data=pages&name=blog&filter=title
                         case 'title': // get only titles
                             foreach ($pages as $item) {
-                               $arr = array("title" => $item['title']);
-                               // push array
-                               array_push($output, $arr);
+                                $arr = array("title" => $item['title']);
+                                // push array
+                                array_push($output, $arr);
                             }
                             break;
 
                         // index.php?api=file&data=pages&name=blog&filter=keywords
                         case 'keywords': // get only titles
                             foreach ($pages as $item) {
-                               $arr = array("keywords" => $item['keywords']);
-                               // push array
-                               array_push($output, $arr);
+                                $arr = array("keywords" => $item['keywords']);
+                                // push array
+                                array_push($output, $arr);
                             }
                             break;
 
                         // index.php?api=file&data=pages&name=blog&filter=tags
                         case 'tags': // get only titles
                             foreach ($pages as $item) {
-                               $arr = array("tags" => $item['tags']);
-                               // push array
-                               array_push($output, $arr);
+                                $arr = array("tags" => $item['tags']);
+                                // push array
+                                array_push($output, $arr);
                             }
                             break;
 
                         // index.php?api=file&data=pages&name=blog&filter=images
                         case 'images': // get only images
                             foreach ($pages as $item) {
-                               $arr = array("image" => $item['image']);
-                               // push array
-                               array_push($output, $arr);
+                                $arr = array("image" => $item['image']);
+                                // push array
+                                array_push($output, $arr);
                             }
                             break;
 
                         // index.php?api=file&data=pages&name=blog&filter=videos
                         case 'videos': // get only videos
                             foreach ($pages as $item) {
-                               $arr = array("video" => $item['video']);
-                               // push array
-                               array_push($output, $arr);
+                                $arr = array("video" => $item['video']);
+                                // push array
+                                array_push($output, $arr);
                             }
                             break;
 
@@ -127,22 +136,21 @@ class Api
                             $arr = array("total" => count($pages));
                             // push array
                             array_push($output, $arr);
-                            break;  
+                            break;
                     }
                     // print json
                     $this->json($output);
                 }
                 // index.php?api=file&data=pages&name=blog&limit=3
-                elseif (array_key_exists('limit', $_GET))
-                {
+                elseif (array_key_exists('limit', $_GET)) {
                     // get filter
                     $limit = ($_GET['limit']) ? $_GET['limit'] : 3;
                     // get pages
-                    $pages = Barrio::run()->pages($name,'date','DESC',array('index','404'),$limit);
+                    $pages = Barrio::run()->pages($name, 'date', 'DESC', array('index','404'), $limit);
                     // init array
                     $output = array();
                     foreach ($pages as $item) {
-                       $arr = array(
+                        $arr = array(
                             "title" => $item['title'],
                             "description" => $item['description'],
                             "tags" => $item['tags'],
@@ -156,23 +164,21 @@ class Api
                             "background" => $item['background'],
                             "video" => $item['video'],
                             "color" => $item['color'],
+                            "attrs" => $item['attrs'],
                             "url" => $item['url']
                        );
-                       // push array
-                       array_push($output, $arr);
+                        // push array
+                        array_push($output, $arr);
                     }
                     // print json
                     $this->json($output);
-                }
-                else
-
-                {   // index.php?api=file&data=pages&name=blog
+                } else {   // index.php?api=file&data=pages&name=blog
                     // get pages
-                    $pages = Barrio::run()->pages($name,'date','DESC',array('index','404'),null);
+                    $pages = Barrio::run()->pages($name, 'date', 'DESC', array('index','404'), null);
                     // init array
                     $output = array();
                     foreach ($pages as $item) {
-                       $arr = array(
+                        $arr = array(
                             "title" => $item['title'],
                             "description" => $item['description'],
                             "tags" => $item['tags'],
@@ -186,10 +192,11 @@ class Api
                             "background" => $item['background'],
                             "video" => $item['video'],
                             "color" => $item['color'],
+                            "attrs" => $item['attrs'],
                             "url" => $item['url']
                        );
-                       // push array
-                       array_push($output, $arr);
+                        // push array
+                        array_push($output, $arr);
                     }
                     // print json
                     $this->json($output);
@@ -201,22 +208,20 @@ class Api
 
     /**
      *  Pages
-     *  
+     *
      *  @return array
      */
-    function page()
+    public function page()
     {
         // index.php?api=file&data=page&name=blog
         // check if exists name
-        if (array_key_exists('name', $_GET))
-        {
+        if (array_key_exists('name', $_GET)) {
             // get name or null
             $name = ($_GET['name']) ? $_GET['name'] : '';
             $page = Barrio::run()->page($name);
 
             // convert shortcodes and markdown
-            include EXTENSIONS.'/markdown/Parsedown/Parsedown.php';
-            include EXTENSIONS.'/markdown/Parsedown/ParsedownExtra.php';
+            include EXTENSIONS.'/markdown/Parsedown.php';
             include EXTENSIONS.'/shortcodes/shortcodes.ext.php';
             // parse content
             $content = Barrio::parseShortcode($page['content']);
@@ -243,6 +248,7 @@ class Api
                 "background" => $page['background'],
                 "video" => $page['video'],
                 "color" => $page['color'],
+                "attrs" => $page['attrs'],
                 "content" => $content
             );
 
@@ -257,10 +263,9 @@ class Api
      *
      *  @return array
      */
-    function file()
+    public function file()
     {
-        if (array_key_exists('data', $_GET))
-        {
+        if (array_key_exists('data', $_GET)) {
             $data = ($_GET['data']) ? $_GET['data'] : null;
 
             switch ($data) {
@@ -278,20 +283,30 @@ class Api
      *
      *  @return array
      */
-    function image()
+    public function image()
     {
         //index.php?api=image&url=public/notfound.jpg
-        if(array_key_exists('url', $_GET)){
+        if (array_key_exists('url', $_GET)) {
             //index.php?api=image&url=public/notfound.jpg&w=1024
-            if(array_key_exists('w', $_GET)){
+            if (array_key_exists('w', $_GET)) {
                 //index.php?api=image&url=public/notfound.jpg&w=1024&h=768
-                if(array_key_exists('h', $_GET)){
-                    $this->resizeImg($_GET['url'], $_GET['w'], $_GET['h']);
-                }else{
-                    $this->resizeImg($_GET['url'], $_GET['w'], ($_GET['w']/2));
+                if (array_key_exists('h', $_GET)) {
+                    if (array_key_exists('q', $_GET)) {
+                        $this->resizeImg($_GET['url'], $_GET['w'], $_GET['h'], $_GET['q']);
+                    } else {
+                        $this->resizeImg($_GET['url'], $_GET['w'], $_GET['h']);
+                    }
+                } else {
+                    if (array_key_exists('q', $_GET)) {
+                        $this->resizeImg($_GET['url'], $_GET['w'], ($_GET['w']/2), $_GET['q']);
+                    } else {
+                        $this->resizeImg($_GET['url'], $_GET['w'], ($_GET['w']/2));
+                    }
                 }
-            }else{
-                $this->resizeImg($_GET['url'], 320, 180);
+            } elseif (array_key_exists('q', $_GET)) {
+                $this->resizeImg($_GET['url'], 320, 180, $_GET['q']);
+            } else {
+                $this->resizeImg($_GET['url'], 320, 180, 50);
             }
         }
     }
@@ -301,7 +316,7 @@ class Api
      *
      *  @return array
      */
-    function manifest()
+    public function manifest()
     {
         $iconUrl = Barrio::urlBase().'/themes/'.Barrio::$config['theme'].'/assets/img/icons';
         $json = array(
@@ -414,16 +429,16 @@ class Api
      *
      *  @return array
      */
-    function sitemap()
+    public function sitemap()
     {
-        $pages = Barrio::run()->pages('','date','DESC');
+        $pages = Barrio::run()->pages('', 'date', 'DESC');
         $html = '<?xml version="1.0" encoding="UTF-8"?>';
         $html .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
         foreach ($pages as $page) {
             $url = trim(Barrio::urlBase().'/'.$page['slug']);
             $html .= '<url>
               <loc>'.$url.'</loc>
-              <lastmod>'.date('c',$page['date']).'</lastmod>
+              <lastmod>'.date('c', $page['date']).'</lastmod>
            </url>';
         }
         $html .= '</urlset>';
@@ -436,16 +451,17 @@ class Api
      *
      *  @return array
      */
-    function help()
+    public function help()
     {
-        $file = EXTENSIONS.'/api/help/index.html';
+        $file = EXTENSIONS.'/api/help/index.php';
+        $site_url = Barrio::urlBase();
         die(file_get_contents($file));
     }
 }
 
 
 
-if ( array_key_exists('api', $_GET)){
+if (array_key_exists('api', $_GET)) {
     // enable Cors
     Barrio::cors();
     // method
@@ -465,7 +481,7 @@ if ( array_key_exists('api', $_GET)){
         //index.php?api=file&data=pages&name=blog&filter=videos
         case 'file': $api->file(); break;
 
-        //index.php?api=image&url=[public url]
+        //index.phpv[public url]
         //index.php?api=image&url=[public url]&w=[size width]
         //index.php?api=image&url=[public url]&w=[size width]&h=[size height]
         case 'image': $api->image(); break;
@@ -477,5 +493,3 @@ if ( array_key_exists('api', $_GET)){
         case 'sitemap': $api->sitemap(); break;
     }
 }
-
-

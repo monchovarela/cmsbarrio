@@ -1,0 +1,23 @@
+<FilesMatch "\.(htaccess|htpasswd|ini|html|md|py|log|sh|inc|bak|db)$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>
+
+AddDefaultCharset UTF-8
+
+Options -Indexes
+
+<IfModule mod_php5.c>
+    php_flag magic_quotes_gpc                 off
+    php_flag magic_quotes_sybase              off
+    php_flag register_globals                 off
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+    #RewriteBase  /
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+

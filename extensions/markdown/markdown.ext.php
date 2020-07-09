@@ -9,8 +9,7 @@
  *  @version 1.0.0
  */
 
-include EXTENSIONS.'/markdown/Parsedown/Parsedown.php';
-include EXTENSIONS.'/markdown/Parsedown/ParsedownExtra.php';
+include EXTENSIONS.'/markdown/Parsedown.php';
 
 Barrio::addFilter('content', 'markdown', 1);
 

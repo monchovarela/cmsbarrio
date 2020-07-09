@@ -1,229 +1,301 @@
 Title: Documentación
-Description: Funciones de Barrio CMS
-Template: docs
+Description: Como funciona Barrio CMS.
+Template: index
 
 ----
 
-Esta es la Documentación de **Barrio CMS** por defecto, luego depende de la plantilla que use puede haber mas funciones.
+- [Primeros pasos.](#paso1)
+- [Instalación.](#paso2)
+- [Estructura.](#paso3)
+- [Configuración.](#paso4)
+- [Plantillas.](#paso5)
+- [Aciones.](#paso6)
+- [Shortcodes.](#paso7)
 
 
-### htaccess
+<span id="paso1"></span>
+### Primeros pasos.
 
-{Code}# previene que no se vean estos tipos de archivo 
-<FilesMatch "\.(htaccess|htpasswd|ini|md|py|log|sh|inc|bak|db)$">
-Order Allow,Deny
-Deny from all
-</FilesMatch>
+#### Requisitos de Apache
+Aunque la mayoría de las distribuciones de Apache vienen con todo lo necesario, en aras de la exhaustividad, aquí hay una lista de los módulos de Apache necesarios:
 
-AddDefaultCharset UTF-8
+	mod_rewrite
 
-Options -Indexes
+También debe asegurarse de tener **AllowOverride All** configurado en los bloques **<Directory>** y / o **<VirtualHost>** para que el archivo **.htaccess** se procese correctamente y las reglas de reescritura surtan efecto.
 
-<IfModule mod_php5.c>
-    php_flag magic_quotes_gpc                 off
-    php_flag magic_quotes_sybase              off
-    php_flag register_globals                 off
-</IfModule>
+#### Requerimientos PHP
 
-<IfModule mod_rewrite.c>
-    RewriteEngine on
-    #RewriteBase  /
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php [QSA,L]
-</IfModule>
+La mayoría de los proveedores de alojamiento e incluso las configuraciones locales de **LAMP** tienen **PHP** preconfigurado con todo lo que necesita para que Barrio CMS se ejecute. 
+
+<span id="paso2"></span>
+### Instalación.
+
+Si descargó el archivo ZIP y luego planea moverlo a su raíz web, mueva **TODA LA CARPETA** porque contiene varios archivos ocultos (como .htaccess) que no se seleccionarán de manera predeterminada. La omisión de estos archivos ocultos puede causar problemas al ejecutar Barrio CMS.
+
+
+<span id="paso3"></span>
+### Estructura.
+
+{Code}
+└── Raíz/
+    ├── content/
+    │   ├── blog/ Carpeta del blog
+    │   ├── documentacion/ Carpeta de la documentación
+    │   ├── index.md (Pagina inicio)
+    │   └── 404.md (Pagina error)
+    ├── extensions (Plugins)/
+    │   ├── api/ 
+    │   ├── markdown/
+    │   └── shortcodes/
+    ├── public (Fotos, videos etc..)/
+    │   └── notfound.jpg
+    ├── themes/
+    │   └── default/
+    │       └── dist/
+    │           ├── assets/ (Estylos de la plantilla)
+    │           ├── includes/ (Rrozos de html)
+    │           ├── functions/ (Carpeta funciones)
+    │           ├── func.php (Archivo funciones)
+    │           └── index.html (Plntilla html)
+    ├── .htaccess 
+    ├── Barrio.php 
+    ├── config.php (Archivo configuración)
+    └── index.php
+{/Code}
+
+<span id="paso4"></span>
+### Configuración.
+
+En el archivo <mark>config.php</mark> encontraras la configuración de la web, desde el titulo, descripción hasta la configuración del menu de navegación.
+
+Puedes crear tu propia configuración pero <mark>no borres las variables que hay por defecto</mark>.
+
+Puedes llamar cualquier variable con el comando `<?php Barrio::$config['nombre'];?>` o si estas en el archivo _.md_ puedes usar `{Esc}{Config name=nombre}{/Esc}`. 
+
+Abre este archivo y verás el ejemplo.
+
+**Ejemplo:**  {Config name='title'}
+
+<span id="paso5"></span>
+### Plantillas.
+
+#### Los estilos
+
+La plantilla por defecto usa **classless** es un pequeño archivo CSS, que define pocos pero excelentes estilos para etiquetas HTML5 básicas más muy pocas clases para cuadrícula y espaciado. Nada mas. Nada menos.
+
+#### La plantilla
+
+{Code}
+// incluimos el archivo head.html
+<?php include THEME_INC.'/head.html'; ?>
+<main>
+	// la cabecera
+	<header>
+		// titulo y descripción archivo config.php
+		<h1><?php echo Barrio::$config['title'];?></h1>
+		<p><?php echo Barrio::$config['description'];?></p>
+		// Navegacion
+		<?php Barrio::runAction('navigation',[Barrio::$config['menu']]); ?>
+	</header>
+	// contenido
+	<section>
+	<?php 
+		// Acción theme_before 
+		Barrio::runAction('theme_before');
+		// Titulo y descripción archivo md 
+		echo '<h2>'.$page['title'].'</h2>'; 
+		echo '<p>'.$page['description'].'</p>';
+		// si estamos en la carpeta blog
+		if(Barrio::urlCurrent() == 'blog') { 
+			// Acción que scanea la carpeta blog
+			Barrio::runAction('pagination',[Barrio::urlCurrent()]);
+		}else{
+			// pagina normal
+			echo $page['content'];
+			// si la pagina esta dentro de una carpeta
+			if(Barrio::urlSegment(1)) {
+				// navegar dentro de la carpeta
+				Barrio::runAction('navFolder');
+			}
+		}
+		// Acción theme_after
+		Barrio::runAction('theme_after');
+	?>
+	</section>
+	// footer 
+	<footer>
+		<p>© <?php echo date('Y'); ?> 💓 <strong><?php echo Barrio::$config['title'];?></strong></p>
+	</footer>
+</main>
+// incluimos el javascript y demas
+<?php include THEME_INC.'/footer.html'; ?>
 {/Code}
 
 
-{Divider}
+<span id="paso6"></span>
+### Acciones.
 
-### Empezemos
+Las Acciones son funciones que podemos integrar en la plantilla para hacerla mas dináminca. Tenemos unas cuantas por defecto que son:
 
-Este es el archivo config.php de la configuración del CMS.
+- **head:** usada para incluir los estilos.
+- **theme_before:** comentarios tipo discus
+- **theme_after:** resolución de formularios
+- **footer:** Analytics y javascript
 
-{Code}// Theme color
-'theme_color' => '#fff',
-// background color
-'background_color' => '#fff',
-// orientation
-'orientation' => 'landscape',
-// display
-'display' => 'standalone',
-// shortname
-'short_name' => 'Moncho',
-// language
-'lang' => 'es',
-// charset
-'charset' => 'UTF-8',
-// timezone
-'timezone' => 'Europe/Brussels',
-// default theme
-'theme' => 'default',
-// title 
-'title' => 'CMS Barrio',
-// description
-'description' => 'Desarrollo web & Músico',
-// keywords
-'keywords' => 'desarrollo,web,musico',
-// author
-'author' => 'Moncho Varela',
-// email
-'email' => 'nakome@gmail.com',
-// default not found image
-'image' => 'public/notfound.jpg',
-// pagination per page
-'pagination' => 6,
-// blog
-'blog' => array(
-    // blog image
-    'image' => 'public/notfound.jpg',
-    // Blog title
-    'title' => 'Blog',
-     // Blog description
-    'description' => 'Articulos y actualizaciones.',
-    // search title
-    'search_title' => 'Buscar Pagina',
-    // search button
-    'search_btn' => 'Buscar',
-    // recent posts
-    'recent_posts' => 'Articulos recientes',
-    // last posts 
-    'last_posts' => 3
-),
-// navigation
-'menu' => array(
-    '/'             => 'Inicio',
-    '/blog'         => 'Blog',
-    '/documentacion'=> 'Documentacion',
-),
-// search
-'search' =>  array(
-    'results_of' => 'Resultados de la busqueda',
-    'no_results' => 'No hay resultados de:',
-    'read'       => 'Ir a enlace'
-),
-// copyright
-'copyright' => 'CMS Barrio',
-// not access
-'notaccess' => '!No tienes accesso aquí¡',
+#### Creando Extensiones
 
-// social
-'facebook' => 'https://facebook.com/nakome',
-'instagram' => 'https://instagram.com/monchovarela',
-'twitter' => 'https://twitter.com/nakome',
-'youtube' => 'https://youtube.com/nakome'
+Vamos a crear una extensión que automáticamente genere un enlace al final de cada pagina usando una acción que ya esta en la plantilla que es  `<?php Barrio::runAction('theme_after); ?>`.
 
-// you can add more here...
-{/Code}
-
-
-{Divider}
-
-
-### Constantes
-
-
-
-
-|       Constante    |   Descripción   |
-|         ---        |      ---        |
-| BARRIO 			| Variable boleana para prevenir el acceso |
-| ROOT 				| Define el directorio raiz de la web |
-| CONTENT 			| Define el directorio raiz de el contenido de los archivos md |
-| THEMES 			| Define el directorio raiz de las plantillas |
-| EXTENSIONS 		| Define el directorio raiz de las extensiones |
-| DEV_MODE 			| Variable boleana para ver errores |
-
-
-
-
-{Divider}
-
-
-
-
-### Estructura de paginas
-
-
-
-|       Localización  Fisica    |   Url |
-|               ---             |   --- |
-|  content/index.md             | /     |
-|  content/otra.md              | /otra |
-|  content/proyectos/otra.md    | /proyectos/otra |
-|  content/una/direccion/muy/larga/pagina.md    | /una/direccion/muy/larga/pagina |
-
-
-
-{Divider}
-
-
-
-### Variables del archivo .md
-
-Por defecto existen unas variables en los archivos de texto, estas son:
-
-{Code type='markdown'}&#10100;Url&#10101; = la direccíon de la pagina
-&#10100;Email&#10101; = Email por defecto de config.php
-&#10100;More&#10101; = funcíon para acortar los archivos de texto
-&#10100;Php&#10101; echo 'hola mundo'; &#10100;/Php&#10101;{/Code}
-
-
-{Divider}
-
-
-### Funciones Php
-
-
-**Acciones:**
-
-{Code type='php'}// Crear una Accion
-Barrio::addAction('demo',function($nombre = ''){
-    echo $nombre
+{Code type='php'}<?php
+// llamamos a la acción theme_after
+Barrio::addAction('theme_after',function(){
+    // y ahora que enseñe esto
+    echo '<a href="'.Barrio::urlBase().'/articulos">Ver articulos.</a>';
 });
-
-// llamar a la Accion
-Barrio::runAction('demo',['nombre']);
 {/Code}
 
 
-**Shortcodes:**
+Y ahora en todas las páginas al final se verá ese enlace, asi de facil.
 
-{Code type='php'}// Crear una Shortcode
-Barrio::addAction('Escribe',function($atributos){
-    // extrae atributos
+Ahora vamos añadir algo más, le vamos a decir que si está en la sección artículos y  la página extensiones enseñe el texto y si no no enseñe nada.
+
+{Code type='php'}<?php
+// llamamos a la acción theme_after
+Barrio::addAction('theme_after',function(){
+    // urlSegment sirve para señalar un segmento del enlace
+    // si pones var_dump(Barrio::urlSegments()) veras todos los segmentos del enlace
+    if(Barrio::urlSegment(0) == 'articulos' && Barrio::urlSegment(1) == 'extensiones'){
+         // y ahora que enseñe esto
+        echo '<a href="'.Barrio::urlBase().'/articulos">Ver articulos.</a>';
+    }
+});
+{/Code}
+
+
+Ahora haremos una acción que cambie el fondo solo en esta página, para ello usaremos  el  `Barrio::runAction('head')` que hay en el archivo _head.inc.html_.
+
+{Code type='php'}<?php
+// llamamos a la accion head
+Barrio::addAction('head',function(){
+     // urlSegment sirve para señalar un segmento del enlace
+    if(Barrio::urlSegment(0) == 'articulos' && Barrio::urlSegment(1) == 'extensiones'){
+         // y ahora incrustamos esto
+        echo '<style rel="stylesheet">
+                body{
+                    background:blue;
+                    color:white;
+                }
+                pre,code{
+                    background: #0000bb;
+                    border-color: #00008e;
+                    box-shadow: 0px 3px 6px -2px #02026f;
+                    color: white;
+                }
+        </style>';
+    }
+});
+{/Code}
+
+<span id="paso7"></span>
+### Shortcodes.
+
+Es muy fácil crear Shortcodes en **Barrio CMS** por ejemplo, vamos a crear un Shortcode que cambie el color del texto con el color que queramos.
+
+{Code type='php'}<?php
+// llamamos la funcion mejor capitalizada (letra mayúscula)
+Barrio::shortcodeAdd('Texto',function($atributos,$contenido){
+
+    // extraemos los atributos (en este caso $color)
     extract($atributos);
-    // valores por defecto
-    $nombre = (isset($nombte)) ? $nombre = $nombre : 'Nombre por defecto';
-    // retorna el nombre
-    return $nombre
+
+    // definimos el color, por defecto sera blue (mejor en ingles)
+    $color = (isset($color)) ? $color : 'blue';
+
+    // parseamos para poder usar markdown
+    $contenido = Parsedown::instance()->text($contenido);
+
+    // aplicamos un filtro para escribir dentro del shortcode
+    $resultado = Barrio::applyFilter('content','<div style="color:'.$color.'">'.$contenido.'</div>');
+
+    // quitamos espacios
+    $resultado = preg_replace('/\s+/', ' ', $resultado);
+
+    // enseñamos la plantilla
+    return $resultado;
 });
-
-// llamar a el Shortcode
-&#10100;Escribe nombre='Barrio CMS'&#10101;
-
 {/Code}
 
+Ahora si escribimos `{Esc}{Text color=green}{/Esc}` y dentro de este el texto y cerramos  con **corchetes** `{Esc}{/Text}{/Esc}` obtenemos esto:
+
+{Text color=green}
+Este es un texto dentro de un Shortcode en el que puedo usar **Markdown**
+{/Text }
+
+
+También puedes usar **código de color**
+
+{Code type='php'}{Esc}{Text color='#f00'} // con comillas simples
+    Hola soy **Rojo**
+{/Text}{/Esc}{/Code}
+
+
+{Text color='#f00'}
+   Hola soy **Rojo**
+{/Text}
+
+
+Ahora vamos hacer un Shortcode para incrustar videos de Youtube.
+En este caso **no necesitamos escribir dentro** así que es mas facil aun.
+
+{Code type='php'}<?php
+Barrio::shortcodeAdd('Youtube', function ($atributos) {
+
+    // extraemos los atributos (en este caso $src)
+    extract($atributos);
+
+    // el codigo del enlace
+    $id = (isset($id)) ? $id : '';
+
+    $clase = (isset($clase)) ? $clase : '';
+
+    // comprobamos que exista el $id
+    if($id){
+
+        // el html
+        $html = '<section class="'.$clase.'">';
+        $html .= '<iframe src="//www.youtube.com/embed/'.$id.'" frameborder="0" allowfullscreen></iframe>';
+        $html .= '</section>';
+        $html = preg_replace('/\s+/', ' ', $html);
+        return $html;
+
+    // si no se pone el atributo id que avise
+    }else{
+        return Barrio::error('Error [ id ] no encontrado');
+    }
+});
+{/Code}
+
+El código seria este:
+
+{Code type='php'}{Esc}{Youtube id='GxEc46k46gg'}{/Esc}{/Code}
+
+Y el resultado este 
+
+
+{Youtube id='GxEc46k46gg'}
 
 {Divider}
 
+**En caso de no poner el atributo id saldria esto:**
 
+{Youtube}
 
-**Otras funciones:**
+{Divider}
 
+Con los Shortcodes podemos crear desde **galerías**, **formularios** , **incrustar videos**, **Musica**, **Cambiar el Css** y todo un largo etcétera.
 
-|       Funcion    |   Descripción   |
-|         ---      |      ---        |
-| `Barrio::urlBase()`     |  Obtiene la dirección raíz   |
-| `Barrio::urlCurrent()`  |  Obtiene la dirección en la que se encuentra en ese momento   |
-| `Barrio::urlSegments()` |  Divide el hash en un array   |
-| `Barrio::urlSegment(0)` |  Obtiene el primer hash       |
-| `Barrio::shortArray($array,$clave,$orden)`  |  Ordena un array de elementos |
-| `Barrio::scanFiles($carpeta,$tipo,$ruta)`   |  Busca archivos en una carpeta |
-| `Barrio::pages($carpeta,$ord,$ord_por,$ignor,$limit)` | Busca las paginas en una carpeta |
-| `Barrio::page('blog')` |  Obtiene el array de la pagina |
+{Text color='var(--nc-lk-1)'}
+**Nota:** Si tienes instalado Barrio CMS en local puedes probar el editor para ver como funcionan los Shortcodes.
+{/Text}
 
-
-{Alert type='info' clase='mt-5'}
-**Nota:** Puedes crear mas funciones en el archivo `func.php` de la plantilla.
-{/Alert}
+{Divider type='br'}

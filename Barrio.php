@@ -7,7 +7,7 @@
  * @author    Moncho Varela / Nakome <nakome@gmail.com>
  * @copyright 2016 Moncho Varela / Nakome <nakome@gmail.com>
  *
- * @version 0.0.1
+ * @version 0.0.5
  *
  */
 
@@ -15,7 +15,7 @@ class Barrio
 {
     // constats
     const APPNAME = 'Barrio CMS';
-    const VERSION = '0.0.1';
+    const VERSION = '0.0.5';
     const SEPARATOR = '----';
 
     // public config
@@ -42,7 +42,8 @@ class Barrio
         'background' => 'Background',
         'video' => 'Video',
         'color' => 'Color',
-        );
+        'attrs' => 'Attrs'
+    );
 
 
     /**
@@ -82,18 +83,19 @@ class Barrio
      *
      *  @return string
      */
-    static function shortText(string $text, int $chars_limit)
+    public static function shortText(string $text, int $chars_limit)
     {
         // Check if length is larger than the character limit
-        if (strlen($text) > $chars_limit)
-        {
+        if (strlen($text) > $chars_limit) {
+            // solve ñ bug
+            $text = htmlentities(html_entity_decode($text));
             // If so, cut the string at the character limit
             $new_text = substr($text, 0, $chars_limit);
             // Trim off white space
             $new_text = trim($new_text);
             // Add at end of text ...
             return $new_text . "...";
-        }else{
+        } else {
             return $text;
         }
     }
@@ -509,6 +511,67 @@ class Barrio
     }
 
 
+
+    /**
+     *  Get only the Headers
+     *
+     * <code>
+     *  $posts = Barrio::getHeaders('blog','date','DESC',array('index','404'),null);
+     * </code>
+     *
+     * @param string $url        Url
+     * @param string $order_by   Order by
+     * @param string $order_type Order type
+     * @param array  $ignore     Pages to ignore
+     * @param int    $limit      Limit of pages
+     *
+     * @return array
+     */
+    public function getHeaders($url, $order_by = 'date', $order_type = 'DESC', $ignore = array('404'), $limit = null)
+    {
+        $headers = $this->headers;
+        $pages = self::scanFiles(CONTENT.'/'.$url, 'md');
+        foreach ($pages as $key => $page) {
+            if (!in_array(basename($page, '.md'), $ignore)) {
+                $content = file_get_contents($page);
+                $_headers = explode(self::SEPARATOR, $content);
+                foreach ($headers as $var => $regex) {
+                    if (preg_match('/^[ \\t\\/*#@]*'.preg_quote($regex, '/').':(.*)$/mi', $_headers[0], $match) && $match[1]) {
+                        $_pages[$key][$var] = trim($match[1]);
+                    } else {
+                        $_pages[$key][$var] = '';
+                    }
+                }
+                // if not exists date use filemtime
+                // and if exists return timestamp
+                if (!$_pages[$key]['date']) {
+                    $_pages[$key]['date'] = filemtime((string) $page);
+                } else {
+                    if (self::validateDate('d/m/Y', $_pages[$key]['date'])) {
+                        $date = str_replace('/', '-', $_pages[$key]['date']);
+                        $_pages[$key]['date'] = strtotime($date);
+                    }
+                }
+                // convert local to url
+                $url = str_replace(CONTENT, self::urlBase(), $page);
+                $url = str_replace('index.md', '', $url);
+                $url = str_replace('.md', '', $url);
+                $url = str_replace('\\', '/', $url);
+                $url = rtrim($url, '/');
+
+                $_pages[$key]['url'] = $url;
+                $_pages[$key]['slug'] = basename($page, '.md');
+            }
+        }
+        $_pages = self::shortArray($_pages, $order_by, $order_type);
+        if ($limit != null) {
+            $_pages = array_slice($_pages, null, $limit);
+        }
+        return $_pages;
+    }
+
+
+
     /**
      *  Get pages
      *
@@ -532,14 +595,13 @@ class Barrio
             if (!in_array(basename($page, '.md'), $ignore)) {
                 $content = file_get_contents($page);
                 $_headers = explode(self::SEPARATOR, $content);
-                foreach ($headers as $campo => $regex) {
+                foreach ($headers as $var => $regex) {
                     if (preg_match('/^[ \\t\\/*#@]*'.preg_quote($regex, '/').':(.*)$/mi', $_headers[0], $match) && $match[1]) {
-                        $_pages[$key][$campo] = trim($match[1]);
+                        $_pages[$key][$var] = trim($match[1]);
                     } else {
-                        $_pages[$key][$campo] = '';
+                        $_pages[$key][$var] = '';
                     }
                 }
-
                 // if not exists date use filemtime
                 // and if exists return timestamp
                 if (!$_pages[$key]['date']) {
@@ -550,7 +612,6 @@ class Barrio
                         $_pages[$key]['date'] = strtotime($date);
                     }
                 }
-
                 // convert local to url
                 $url = str_replace(CONTENT, self::urlBase(), $page);
                 $url = str_replace('index.md', '', $url);
@@ -559,7 +620,7 @@ class Barrio
                 $url = rtrim($url, '/');
 
                 $_pages[$key]['url'] = $url;
-
+    
                 $_content = $this->parseContent($content);
                 if (is_array($_content)) {
                     $_pages[$key]['content_short'] = $_content['content_short'];
@@ -575,7 +636,6 @@ class Barrio
         if ($limit != null) {
             $_pages = array_slice($_pages, null, $limit);
         }
-
         return $_pages;
     }
 
@@ -619,7 +679,6 @@ class Barrio
                 $content = file_get_contents(CONTENT.'/'.self::$config['lang'].'/404.md');
                 header($_SERVER['SERVER_PROTOCOL'].' 404 Not Found');
             }
-
         }
         $_headers = explode(self::SEPARATOR, $content);
         foreach ($headers as $campo => $regex) {
@@ -774,7 +833,7 @@ class Barrio
             }
         }
         // carga las extensions de la plantilla
-        $template_functions = THEMES.'/'.self::$config['theme'].'/func.php';
+        $template_functions = THEMES.'/'.self::$config['theme'].'/dist/func.php';
         if (file_exists($template_functions) && is_file($template_functions)) {
             include_once $template_functions;
         }
@@ -892,26 +951,25 @@ class Barrio
 
         
         // meta tag generator
-        self::addAction('meta',function () {
+        self::addAction('meta', function () {
             echo '<meta name="generator" content="Creado con Barrio CMS" />';
         });
 
         // parse date
         $file = CONTENT.'/'.Barrio::urlCurrent();
 
-        if (is_dir($file)){
+        if (is_dir($file)) {
             $file = $file.'/index.md';
             $date = date("d-m-Y", filemtime($file));
-        }else{
+        } else {
             $file .= '.md';
-            if(is_file($file)){
+            if (is_file($file)) {
                 $date = date("d-m-Y", filemtime($file));
-            }else{
+            } else {
                 $date = '';
             }
         }
 
-        
         // empty fields by default
         empty($page['title']) and $page['title'] = static::$config['title'];
         empty($page['tags']) and $page['tags'] = static::$config['keywords'];
@@ -925,6 +983,7 @@ class Barrio
         empty($page['video']) and $page['video'] = '';
         empty($page['color']) and $page['color'] = 'white';
         empty($page['keywords']) and $page['keywords'] = static::$config['keywords'];
+        empty($page['attrs']) and $page['attrs'] = '';
 
         $page = $page;
         $config = self::$config;
@@ -933,9 +992,12 @@ class Barrio
         // published
         $page['published'] = $page['published'] === 'false' ? false : true;
         if ($page['published']) {
-
-            include THEMES.'/'.$config['theme'].'/'.$layout.'.html';
-
+            $sourceUrl = THEMES.'/'.$config['theme'].'/dist/';
+            if (file_exists($sourceUrl.$layout.'.html')) {
+                include $sourceUrl.$layout.'.html';
+            } else {
+                include $sourceUrl.'index.html';
+            }
         } else {
             $this->errorPage($page);
         }
@@ -950,6 +1012,11 @@ class Barrio
      */
     public function errorPage($page = array())
     {
-        include THEMES.'/'.self::$config['theme'].'/404.html';
+        $error = THEMES.'/'.self::$config['theme'].'/dist/404.html';
+        if (file_exists($error)) {
+            include $error;
+        } else {
+            die('Pagina no encontrada.');
+        }
     }
 }

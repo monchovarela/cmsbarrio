@@ -1,64 +1,82 @@
+# Columnas
+
 {Row}
-  {Col num='12'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 12{/Text}
+  {Col num='4'}
+### Columna 4
+Lorem ipsum **dolor **sit amet, `consectetur `adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse _cillum _dolore 
   {/Col}
-{/Row}
+  {Col num='8'}
+### Columna 8
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolo`r in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.` 
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+  {/Col}
+{/Row}      
+
+
+{Divider}
 
 
 {Row}
   {Col num='8'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 8{/Text}
+### Columna 8
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
   {/Col}
   {Col num='4'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 4{/Text}
+### Columna 4
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
   {/Col}
-{/Row}
+{/Row}      
 
 
-{Row}
-  {Col num='4'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 4{/Text}
-  {/Col}
-  {Col num='8'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 8{/Text}
-  {/Col}
-{/Row}
-
+{Divider}
 
 {Row}
   {Col num='6'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 6{/Text}
+### Columna 6
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
   {/Col}
   {Col num='6'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 6{/Text}
+### Columna 6
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
   {/Col}
-{/Row}
+{/Row}      
 
-
-{Row}
-  {Col num='4'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 4{/Text}
-  {/Col}
-  {Col num='4'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 4{/Text}
-  {/Col}
-  {Col num='4'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 4{/Text}
-  {/Col}
-{/Row}
-
+{Divider}
 
 {Row}
+  {Col num='4'}
+### Columna 4
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+  {/Col}
+  {Col num='4'}
+### Columna 4
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+  {/Col}
+  {Col num='4'}
+### Columna 4
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+  {/Col}
+{/Row}      
+
+
+{Divider}
+
+{Row}
   {Col num='3'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 3{/Text}
+### Columna 3
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
   {/Col}
   {Col num='3'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 3{/Text}
+### Columna 3
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
   {/Col}
   {Col num='3'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 3{/Text}
+### Columna 3
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.   
   {/Col}
   {Col num='3'}
-    {Text cls='bg-dark text-light m-0 p-5 text-center'}Columna 3{/Text}
+### Columna 3
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
   {/Col}
-{/Row}
+{/Row} 

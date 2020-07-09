@@ -3,7 +3,6 @@
 
 class Shortcode
 {
-
     protected static $shortcode_tags = array();
 
     /**
@@ -76,5 +75,4 @@ class Shortcode
 
         return isset(self::$shortcode_tags[$shortcode]) ? $prefix.call_user_func(self::$shortcode_tags[$shortcode], $attributes, $matches[5], $shortcode).$suffix : '';
     }
-
 }

@@ -1,3 +1,10 @@
+Title: Hola Mundo
+Description: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic ullam tenetur aspernatur consequuntur enim voluptates commodi molestiae, quo qui fugit nulla, non obcaecati nihil, ipsum eum mollitia. Labore, iure cumque.
+Template: post
+
+----
+
+
 # Encabezados
 
 # Encabezado 1

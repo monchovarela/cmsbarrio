@@ -1,68 +1,49 @@
 <?php include 'inc/head.inc.html';?>
 
-<header class="row m-0 navigation">
+<header class="navigation">
+    <button id="render" class="ml-1 hint--bottom" title="Transformar">Transformar</button>
+    <button id="save" title="Guardar">Guardar</button>
 
-    <div class="col-md-4 text-left">
+    <select id="templates" class="templates mr-2">
+        <option value=""> Plantillas </option>
+        <?php
+            $files = File::scan(ROOT.'/public/demos');
+            foreach($files as $file){
+                echo '<option value="'.File::name($file).'">'.ucfirst(File::name($file)).'</option>';
+            }
+        ?>
+    </select>
 
-        <button id="render" class="btn btn-sm btn-dark hint--bottom" aria-label="Transformar">
-            <i class="fa fa-play text-info"></i>
-        </button>
+    <span><small>CTRL + ENTER para Ejecutar</small></span>
 
-        <select id="templates" class="templates">
-            <option value=""> -- </option>
-            <?php
-                $files = File::scan(ROOT.'/public/demos');
-                foreach($files as $file){
-                    echo '<option value="'.File::name($file).'">'.ucfirst(File::name($file)).'</option>';
-                }
-            ?>
-        </select>
-
-    </div>
-
-    <div class="col-md-4 text-center">
-        <p><small class="text-info">CTRL + ENTER para Ejecutar</small></p>
-    </div>
-
-    <div class="col-md-4 text-right">
-        <?php $site = str_replace('editor','',Url::base()); ?>
-        <a target="_blank" href="<?php echo $site;?>" id="home" class="btn btn-sm btn-dark hint--left hint--info" aria-label="Moncho Varela">
-            <i class="fa fa-question-circle text-success"></i>
-        </a>
-
-        <button id="save" class="btn btn-sm btn-dark hint--left hint--info" aria-label="Guardar"><i class="fa fa-download"></i></button>
-
-    </div>
 </header>
-
-
 
 <main class="app">
     <div id="code" class="split split-horizontal">
         <div class="editor">
             <div class="editor-control" id="editor-control">
-                <a href="#h1" class="text-bold hint--right" aria-label="Cabecera 1">H1</a>
-                <a href="#h2" class="text-bold hint--bottom" aria-label="Cabecera 2">H2</a>
-                <a href="#h3" class="text-bold hint--bottom" aria-label="Cabecera 3">H3</a>
+                <a href="#h1" class="hint--right" title="Cabecera 1">H1</a>
+                <a href="#h2" class="hint--bottom" title="Cabecera 2">H2</a>
+                <a href="#h3" class="hint--bottom" title="Cabecera 3">H3</a>
                 <span class="editor-divider"></span>
-                <a href="#bold" class="text-bold hint--bottom" aria-label="Negrita">B</a>
-                <a href="#italic" class="text-italic hint--bottom" aria-label="Italica">I</a>
-                <a href="#quote" class="hint--bottom" aria-label="Blockquote">BQ</a>
+                <a href="#bold" class="hint--bottom" title="Negrita">B</a>
+                <a href="#italic" class="hint--bottom" title="Italica">I</a>
+                <a href="#quote" class="hint--bottom" title="Blockquote">BQ</a>
                 <a href="#ul-list">
-                    <abbr class="hint--bottom" aria-label="Lista">UL</abbr>
+                    <abbr class="hint--bottom" title="Lista">UL</abbr>
                 </a>
                 <a href="#ol-list">
-                    <abbr class="hint--bottom" aria-label="Lista ordenada">OL</abbr>
+                    <abbr class="hint--bottom" title="Lista ordenada">OL</abbr>
                 </a>
 
-                <a href="#table"  class="hint--bottom" aria-label="Tabla">Tb</a>
-                <a href="#lorem"  class="hint--bottom" aria-label="Lorem ipsum">L</a>
+                <a href="#table"  class="hint--bottom" title="Tabla">Tb</a>
+                <a href="#lorem"  class="hint--bottom" title="Lorem ipsum">L</a>
 
-                <a href="#code" class="text Code hint--bottom" aria-label="Codigo">&lt;&gt;</a>
-                <a href="#hr"  class="hint--bottom" aria-label="linea">----</a>
+                <a href="#code" class="hint--bottom" title="Codigo">&lt;&gt;</a>
+                <a href="#hr"  class="hint--bottom" title="linea">----</a>
                 <span class="editor-divider"></span>
-                <a href="#link"  class="hint--bottom" aria-label="Enlace">link</a>
-                <a href="#image"  class="hint--bottom" aria-label="Imagen">Img</a>
+                <a href="#link"  class="hint--bottom" title="Enlace">link</a>
+                <a href="#image"  class="hint--bottom" title="Imagen">Img</a>
                 <span class="editor-divider"></span>
                 <select name="shortcodes" id="shortcodes">
                     <option value="">Shortcodes</option>
@@ -74,18 +55,14 @@
                     <option value="img">{Img}</option>
                     <option value="row">{Row}</option>
                     <option value="col">{Col}</option>
-                    <option value="alert">{Alert}</option>
-                    <option value="card">{Card}</option>
-                    <option value="btn">{Btn}</option>
-                    <option value="progress">{Progress}</option>
-                    <option value="icon">{Icon}</option>                
+                    <option value="btn">{Btn}</option>               
                 </select>
             </div>
             <textarea name="content" class="editor-area" id="editor-area" rows="10"><?php echo $content;?></textarea>
         </div>
     </div>
     <div id="preview" class="split split-horizontal">
-        <div class="container"></div>
+        <div id="root"></div>
     </div>
 </main>
 <?php include 'inc/footer.inc.html';?>

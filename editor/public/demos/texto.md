@@ -1,12 +1,31 @@
-{Text cls='bg-dark text-light m-0 p-0'}
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis molestiae velit modi, quia autem ratione esse itaque, cum dolor, suscipit magni quae cupiditate quidem veritatis totam sit nihil dolorem nisi!
-{/Text}
 
 
-{Text cls='bg-primary text-light m-0 p-5'}
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis molestiae velit modi, quia autem ratione esse itaque, cum dolor, suscipit magni quae cupiditate quidem veritatis totam sit nihil dolorem nisi!
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in** reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. **
+
+
+{Text color='red'}
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolo`r in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.` 
 {/Text}
 
-{Text bg='blue' color='white'}
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis molestiae velit modi, quia autem ratione esse itaque, cum dolor, suscipit magni quae cupiditate quidem veritatis totam sit nihil dolorem nisi!
+{Text color='blue'}
+Lorem ipsum dolor sit amet, **consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et** dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
 {/Text}
+
+{Text color='orange'}
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et **dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation**  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+{/Text}
+
+{Text color='red'}
+> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+{/Text}
+
+{Text bg='var(--nc-bg-2)' color='var(--nc-lk-1)'}
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in** reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. **
+{/Text}
+
+      
+
+
+
+
+

@@ -1,6 +1,5 @@
-Title: Blog
-Description: Articulos y actualizaciones.
-Image: public/background.jpg
+Title: Ideas & Recursos
+Description: Todo lo interesante que he encontrado en este universo.
 Template: group
 
 ----

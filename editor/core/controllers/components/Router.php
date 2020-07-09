@@ -77,10 +77,10 @@ class Router
             $pattern = trim($pattern, '/');
             // get any num all
             $pattern = str_replace(
-          array('\(', '\)', '\|', '\:any', '\:num', '\:all', '#'),
-          array('(', ')', '|', '[^/]+', '\d+', '.*?', '\#'),
-          preg_quote($pattern, '/')
-        );
+                array('\(', '\)', '\|', '\:any', '\:num', '\:all', '#'),
+                array('(', ')', '|', '[^/]+', '\d+', '.*?', '\#'),
+                preg_quote($pattern, '/')
+            );
             // this pattern
             $this->routes['#^'.$pattern.'$#'] = $callback;
         }

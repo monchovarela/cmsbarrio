@@ -2,7 +2,22 @@
 
 
 
-class Editor{
+class Editor
+{
+    public function render($data, $strip = false)
+    {
+        if ($strip) {
+            $tags = '<div><h1><h2><h3><h4><h5><h6><table><td><tr><th><hr><img><br><ul><ol><li><a><button><i><em><bloqcuote><iframe><video><b><strong><i><pre><code><style></style>';
+        }
+        $content = Filter::apply('content', $data, 1);
+        $content = Parsedown::instance()->text($content);
+        if ($strip) {
+            $content = strip_tags($content, $tags);
+        }
+        $content = Shortcode::parse($content);
+        $content = preg_replace('/\s+/', ' ', $content);
+        return $content;
+    }
 
     /**
      * Parse content
@@ -13,31 +28,9 @@ class Editor{
      */
     public function parseContent($data)
     {
-        $tags = '<div><h1><h2><h3><h4><h5><h6><table><td><tr><th><hr><img><br><ul><ol><li><a><button><i><em><bloqcuote><iframe><video><b><strong><i><pre><code><style></style>';
-
-        // nivel 1
-        $content = Filter::apply('content',$data,1);
-        $content = Parsedown::instance()->text($content);
-        $content = strip_tags($content, $tags);
-        $content = Shortcode::parse($content);
-        $content = preg_replace('/\s+/', ' ', $content);
-
-        // nivel 2
-        $content = Filter::apply('content',$content,1);
-        $content = Parsedown::instance()->text($content);
-        $content = Shortcode::parse($content);
-        $content = preg_replace('/\s+/', ' ', $content);
-        // nivel 3
-        $content = Filter::apply('content',$content,1);
-        $content = Parsedown::instance()->text($content);
-        $content = Shortcode::parse($content);
-        $content = preg_replace('/\s+/', ' ', $content);
-        // nivel 4
-        $content = Filter::apply('content',$content,1);
-        $content = Parsedown::instance()->text($content);
-        $content = Shortcode::parse($content);
-        $content = preg_replace('/\s+/', ' ', $content);
-
+        $content = $this->render($data, false);
+        $content = $this->render($content, false);
+        $content = $this->render($content, false);
         // salida
         $content = base64_encode(Shortcode::parse(Parsedown::instance()->text($content)));
         $content = static::evalPHP($content);

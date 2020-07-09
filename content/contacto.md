@@ -1,18 +1,10 @@
-Title: contacto
+Title: ¿Necesitas ayuda?
+Description: Dudas, escribeme.
 Template: index
 ----
-## Heading 2
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum nihil eligendi libero laboriosam iure tenetur sunt dolores explicabo velit nesciunt rem at vitae, aspernatur culpa eum consectetur, vero enim modi.
+Puedes contactar conmigo cubriendo el formulario o mandándome un [Whatsapp](https://api.whatsapp.com/send?phone=0034628333222&text=Hola). ¡Cuánta más información me puedas dar mejor! Puedes contar con que **tendrás una respuesta mía en menos de 24 horas** a no ser que me estés escribiendo en fin de semana o festivo, entonces quizás tarde un poco más.
 
-{Divider}
 
-{Row}
-{Col num='6'}
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum nihil eligendi libero laboriosam iure tenetur sunt dolores explicabo velit nesciunt rem at vitae, aspernatur culpa eum consectetur, vero enim modi.
-{/Col}
-{Col num='6'}
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum nihil eligendi libero laboriosam iure tenetur sunt dolores explicabo velit nesciunt rem at vitae, aspernatur culpa eum consectetur, vero enim modi.
-{/Col}
-{/Row}
+{Contact mail='nakome@demo.com'}
 

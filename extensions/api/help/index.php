@@ -305,7 +305,7 @@ nav li a {
       </button>
       <h2 class="text-deco-none">Barrio CMS Api test</h2>
       <div class="right">
-        <a href="https://monchovarela.es" class="btn">
+        <a href="./" class="btn">
           <i class="fa fa-external-link"></i>
         </a>
       </div>
@@ -333,7 +333,7 @@ nav li a {
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-var url = 'https://monchovarela.es/index.php?';
+var url = './index.php?';
 
 var waitForTime = function waitForTime(ms) {
   return new Promise(function (r) {
