@@ -5,7 +5,6 @@ Template: post
 ----
 
 {Style}
-
 input {
 	display: block;
 	margin: 0.8em 0;
@@ -54,14 +53,12 @@ ul li a:hover, ul li a:focus {
 }
 {/Style}
 
-<div id="root1">
+<div id="root" class="mt-2 mb-2">
   <input id="search" type="text" value="classless">
   <ul id="output"></ul>
 </div>
 
-
 {Script}
-
 !(function () {
 	let hits = [],
 		url = "https://hn.algolia.com/api/v1/search?query=",
