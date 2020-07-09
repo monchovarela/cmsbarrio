@@ -2,6 +2,7 @@
 
 El CMS que se adapta a cualquier proyecto
 
+-----------
 
 - [Primeros pasos.](#paso1)
 - [Instalación.](#paso2)
@@ -11,7 +12,7 @@ El CMS que se adapta a cualquier proyecto
 - [Aciones.](#paso6)
 - [Shortcodes.](#paso7)
 
-
+-----------
 
 <span id="paso1"></span>
 ### Primeros pasos.
