@@ -3,8 +3,7 @@
 El CMS que se adapta a cualquier proyecto
 
 
-
-- [¿Que es CMS barrio.](#paso1)
+- [Primeros pasos.](#paso1)
 - [Instalación.](#paso2)
 - [Estructura.](#paso3)
 - [Configuración.](#paso4)
@@ -225,7 +224,7 @@ Es muy fácil crear Shortcodes en **Barrio CMS** por ejemplo, vamos a crear un S
 
 Ahora si escribimos `{Text color=green}` y dentro de este el texto y cerramos  con **corchetes** `{/Text}` obtenemos esto:
 
-<p style="color:green">Este es un texto dentro de un Shortcode en el que puedo usar **Markdown**</p>
+	<p style="color:green">Este es un texto dentro de un Shortcode en el que puedo usar **Markdown**</p>
 
 También puedes usar **código de color**
 
@@ -233,7 +232,7 @@ También puedes usar **código de color**
 	    Hola soy **Rojo**
 	{/Text}
 
-<p style="color:#f00">Este es un texto dentro de un Shortcode en el que puedo usar 
+	<p style="color:#f00">Este es un texto dentro de un Shortcode en el que puedo usar 
 
 
 Ahora vamos hacer un Shortcode para incrustar videos de Youtube.
