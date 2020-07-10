@@ -14,7 +14,7 @@
         // language
         'lang' => 'es',
         // charset
-        'charset' => 'UTF-8',
+        'charset' => 'iso-8859-1',
         // timezone
         'timezone' => 'Europe/Brussels',
         // default theme
