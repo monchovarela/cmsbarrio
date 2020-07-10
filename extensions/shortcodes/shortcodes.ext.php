@@ -1,7 +1,7 @@
 <?php  defined('BARRIO') or die('Sin accesso a este script.');
 
 
-// CSS Minifier => http://ideone.com/Q5USEF + improvement(s)
+// minify css
 if (!function_exists('minify_css')) {
     function minify_css($input)
     {
@@ -49,7 +49,7 @@ if (!function_exists('minify_css')) {
         );
     }
 }
-
+// minify javascript
 if (!function_exists('minify_js')) {
     // JavaScript Minifier
     function minify_js($input)
@@ -81,6 +81,8 @@ if (!function_exists('minify_js')) {
         );
     }
 }
+
+
 
 /*
  * ================================
@@ -252,7 +254,7 @@ Barrio::addShortcode('Video', function ($attrs) {
 Barrio::addShortcode('Text', function ($attrs, $content) {
     extract($attrs);
 
-    $cls = (isset($cls)) ? 'class="'.$cls.'"' : '';
+    $cls = (isset($cls)) ? 'class="'.$cls.'"' : 'class="txt"';
     $color = (isset($color)) ? 'color:'.$color.';' : '';
     $bg = (isset($bg)) ? 'background-color:'.$bg.';' : '';
 
@@ -285,7 +287,7 @@ Barrio::addShortcode('Img', function ($attrs) {
     $src = (isset($src)) ? $src : '';
     $url = (isset($url)) ? $url : '';
     $cls = (isset($cls)) ? 'class="'.$cls.'"' : '';
-    $ext = (isset($ext)) ? $ext : false;
+    $ext = (isset($ext)) ? ($ext = ($ext == 'true') ? true : false) : false;
     $title = (isset($title)) ? $title : '';
     $site = Barrio::urlBase();
     $src = rtrim($src, '/');
@@ -363,46 +365,92 @@ Barrio::addShortcode('Col', function ($attrs, $content) {
 /*
  * ================================
  * Style
- * {Style}body{};{/Style}
+ * {Styles}body{};{/Styles}
+ * {Styles minify=true}body{};{/Styles}
  * ================================
  */
-Barrio::addShortcode('Style', function ($attrs, $content = '') {
+Barrio::addShortcode('Styles', function ($attrs, $content = '') {
     extract($attrs);
+    $minify = (isset($minify)) ? $minify : false;
     if ($content) {
+        // convert string to bool
+        $minify = ($minify == 'true') ? true : false;
+        // minify or not
+        $content = ($minify == true) ? minify_css($content) : $content;
         return Barrio::addAction('head', function () use ($content) {
             $html = "\n\n\t";
             $html .= '<!-- Shortcode css -->';
             $html .= "\n\t";
-            $html .= '<style rel="stylesheet">'.minify_css($content).'</style>';
+            $html .= '<style rel="stylesheet">'.$content.'</style>';
+            $html .= "\n\n";
+            echo $html;
+        });
+    } else {
+        return Barrio::error('Error [ contenido ] no encontrado en Style Shortcode');
+    }
+});
+/*
+ * ================================
+ * Style file
+ * {Style href='//example.css'}
+ * ================================
+ */
+Barrio::addShortcode('Style', function ($attrs) {
+    extract($attrs);
+    $href = (isset($href)) ? $href : '';
+    if ($href) {
+        return Barrio::addAction('head', function () use ($href) {
+            echo '<link rel="stylesheet" href="https://'.$href.'"/>';
+        });
+    } else {
+        return Barrio::error('Error [ href ] no encontrado');
+    }
+});
+/*
+ * ================================
+ * Scripts
+ * {Scripts}console.log("test");{/Scripts}
+ * {Scripts minify=true}console.log("test");{/Scripts}
+ * ================================
+ */
+Barrio::addShortcode('Scripts', function ($attrs, $content = '') {
+    extract($attrs);
+    $minify = (isset($minify)) ? $minify : false;
+    if ($content) {
+        // convert string to bool
+        $minify = ($minify == 'true') ? true : false;
+        // minify or not
+        $content = ($minify == true) ? minify_js($content) : $content;
+        return Barrio::addAction('footer', function () use ($content) {
+            $html = "\n\n\t";
+            $html .= '<!-- Shortcode scripts -->';
+            $html .= "\n\t";
+            $html .= '<script rel="javascript">'.$content.'</script>';
             $html .= "\n\n";
             echo $html;
         });
     } else {
         return Barrio::error('Error [ contenido ] no encontrado');
+    }
+});
+/*
+ * ================================
+ * Script file
+ * {Script src='//example.js'}
+ * ================================
+ */
+Barrio::addShortcode('Script', function ($attrs) {
+    extract($attrs);
+    $src = (isset($src)) ? $src : '';
+    if ($src) {
+        return Barrio::addAction('footer', function () use ($src) {
+            echo '<script rel="javascript" src="https:'.$src.'"></script>';
+        });
+    } else {
+        return Barrio::error('Error [ src ] no encontrado');
     }
 });
 
-/*
- * ================================
- * Script
- * {Script}console.log("test");{/Script}
- * ================================
- */
-Barrio::addShortcode('Script', function ($attrs, $content = '') {
-    extract($attrs);
-    if ($content) {
-        return Barrio::addAction('footer', function () use ($content) {
-            $html = "\n\n\t";
-            $html .= '<!-- Shortcode script -->';
-            $html .= "\n\t";
-            $html .= '<script rel="javascript">'.minify_js($content).'</script>';
-            $html .= "\n\n";
-            echo $html;
-        });
-    } else {
-        return Barrio::error('Error [ contenido ] no encontrado');
-    }
-});
 
 /*
  * ================================
@@ -411,7 +459,9 @@ Barrio::addShortcode('Script', function ($attrs, $content = '') {
  * ================================
  */
 Barrio::addShortcode('Esc', function ($attr, $content) {
-    return htmlspecialchars("$content", ENT_QUOTES);
+    $output = htmlspecialchars("$content", ENT_QUOTES);
+    $output = str_replace('&#039;',"'",$output);
+    return $output;
 });
 
 /**
@@ -424,10 +474,10 @@ Barrio::addShortcode('Esc', function ($attr, $content) {
  */
 Barrio::addShortcode('Code', function ($attrs, $content) {
     extract($attrs);
-    $code = (isset($code)) ? $code : 'php';
+    $type = (isset($type)) ? $type : 'php';
     if ($content) {
         $content = htmlentities(html_entity_decode($content));
-        $output = Barrio::applyFilter('content', '<pre class="line-numbers language-'.$code.'"><code class="language-'.$code.'">'.$content.'</code></pre>');
+        $output = Barrio::applyFilter('content', '<pre class="line-numbers language-'.$type.'"><code class="language-'.$type.'">'.$content.'</code></pre>');
         return $output;
     } else {
         return Barrio::error('Error [ contenido ] no encontrado');
@@ -463,10 +513,12 @@ Barrio::addShortcode('Divider', function ($attrs) {
     extract($attrs);
     $type = (isset($type)) ? $type : 'hr';
     $num = (isset($num)) ? $num : '2';
+    $cls = (isset($cls)) ? $cls : '';
+    $color = (isset($color)) ? 'style="border-color:'.$color.'"' : '';
     if ($type !== 'br') {
-        return '<hr class="mt-'.$num.' mb-'.$num.'" />';
+        return '<hr class="'.$cls.' mt-'.$num.' mb-'.$num.'" '.$color.'/>';
     } else {
-        return '<br class="mt-'.$num.' mb-'.$num.'" />';
+        return '<br class="'.$cls.' mt-'.$num.' mb-'.$num.'" '.$color.'/>';
     }
 });
 
@@ -487,7 +539,6 @@ Barrio::addShortcode('Space', function ($attrs) {
 /*
  * ====================================================
  * Btn
- * type = Tipo de boton [ouline] ( opcinal )
  * text = texto del boton
  * id =  id del boton (opcional)
  * href = dirección  (opcional)

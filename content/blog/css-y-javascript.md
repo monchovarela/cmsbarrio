@@ -4,7 +4,8 @@ Template: post
 
 ----
 
-{Style}
+
+{Styles minify=true}
 input {
 	display: block;
 	margin: 0.8em 0;
@@ -51,14 +52,14 @@ ul li a:hover, ul li a:focus {
 	height:20rem;
 	overflow-y:scroll;
 }
-{/Style}
+{/Styles}
 
 <div id="root" class="mt-2 mb-2">
   <input id="search" type="text" value="classless">
   <ul id="output"></ul>
 </div>
 
-{Script}
+{Scripts minify=true}
 !(function () {
 	let hits = [],
 		url = "https://hn.algolia.com/api/v1/search?query=",
@@ -89,5 +90,4 @@ ul li a:hover, ul li a:focus {
 		if (val) fetchData(val).then((r) => renderData(r.hits));
 	});
 })();
-
-{/Script}
+{/Scripts}

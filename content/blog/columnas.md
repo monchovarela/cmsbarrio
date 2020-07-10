@@ -4,7 +4,6 @@ Template: post
 
 ----
 
-{Script}console.log("test");{/Script}
 
 {Row}
   {Col num='4'}
