@@ -17,6 +17,6 @@
     {Img url='//google.es' title='Hello' src='../public/notfound.jpg'}
   {/Col}
   {Col num='6'}
-    {Img title='Hello' ext='true' src='//github.com/monchovarela/cmsbarrio/raw/master/screenshot.jpg'}
+    {Img title='Hello' ext='true' src='//monchovarela.es/public/proyectos/colectoxo.png'}
   {/Col}
 {/Row}

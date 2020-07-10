@@ -7,6 +7,7 @@ function showError($txt)
 }
 
 
+
 /*
  * ================================
  * Site url
@@ -64,7 +65,7 @@ Shortcode::add('Iframe', function ($attrs) {
 
     // src url
     $src = (isset($src)) ? $src : '';
-    $cls = (isset($cls)) ? $cls : 'iframe mt-2 mb-4';
+    $cls = (isset($cls)) ? $cls : 'iframe';
 
     // check src
     if ($src) {
@@ -93,7 +94,7 @@ Shortcode::add('Youtube', function ($attrs) {
     $cls = (isset($cls)) ? $cls : 'iframe';
 
     if ($id) {
-        $html = '<section class="'.$cls.' mt-2 mb-4">';
+        $html = '<section class="'.$cls.'">';
         $html .= '<iframe src="//www.youtube.com/embed/'.$id.'" frameborder="0" allowfullscreen></iframe>';
         $html .= '</section>';
         $html = preg_replace('/\s+/', ' ', $html);
@@ -164,7 +165,6 @@ Shortcode::add('Video', function ($attrs) {
     } else {
         return showError('Error [ src ] no encontrado');
     }
-
 });
 
 /*
@@ -178,7 +178,7 @@ Shortcode::add('Video', function ($attrs) {
 Shortcode::add('Text', function ($attrs, $content) {
     extract($attrs);
 
-    $cls = (isset($cls)) ? 'class="'.$cls.'"' : '';
+    $cls = (isset($cls)) ? 'class="'.$cls.'"' : 'class="txt"';
     $color = (isset($color)) ? 'color:'.$color.';' : '';
     $bg = (isset($bg)) ? 'background-color:'.$bg.';' : '';
 
@@ -211,7 +211,7 @@ Shortcode::add('Img', function ($attrs) {
     $src = (isset($src)) ? $src : '';
     $url = (isset($url)) ? $url : '';
     $cls = (isset($cls)) ? 'class="'.$cls.'"' : '';
-    $ext = (isset($ext)) ? $ext : false;
+    $ext = (isset($ext)) ? ($ext = ($ext == 'true') ? true : false) : false;
     $title = (isset($title)) ? $title : '';
     $site = Url::base();
     $src = rtrim($src, '/');
@@ -233,7 +233,7 @@ Shortcode::add('Img', function ($attrs) {
             }
         } else {
             if ($url) {
-                $html = '<a href="'.$url.'" title="'.$title.'"><img '.$cls.' src="'.$src.'" /></a>';
+                $html = '<a  href="'.$url.'" title="'.$title.'"><img '.$cls.' src="'.$src.'" /></a>';
             } else {
                 $html = '<img '.$cls.' src="'.$src.'" alt="'.$title.'"/>';
             }
@@ -285,6 +285,57 @@ Shortcode::add('Col', function ($attrs, $content) {
     return $content;
 });
 
+
+/*
+ * ================================
+ * Escape or convert html tags
+ * {Esc}echo 'holas';{/Esc}
+ * ================================
+ */
+Shortcode::add('Esc', function ($attr, $content) {
+    $output = htmlspecialchars("$content", ENT_QUOTES);
+    $output = str_replace('&#039;',"'",$output);
+    return $output;
+});
+
+/**
+ * ====================================================
+ *  Code
+ *   {Code type='php'}
+ *       bloques que sumen 12 en total
+ *   {/Code}
+ * ====================================================
+ */
+Shortcode::add('Code', function ($attrs, $content) {
+    extract($attrs);
+    $type = (isset($type)) ? $type : 'php';
+    if ($content) {
+        $content = htmlentities(html_entity_decode($content));
+        $output = Filter::apply('content', '<pre class="line-numbers language-'.$type.'"><code class="language-'.$type.'">'.$content.'</code></pre>');
+        return $output;
+    } else {
+        return showError('Error [ contenido ] no encontrado');
+    }
+});
+
+
+
+/*
+ * ================================
+ * Config
+ * Get config {Config name='title'}
+ * ================================
+ */
+Shortcode::add('Config', function ($attrs) {
+    extract($attrs);
+    if ($name) {
+        return Barrio::$config[$name];
+    } else {
+        return showError('Error [ name ] no encontrado');
+    }
+});
+
+
 /**
  * ====================================================
  *   {Divider}
@@ -296,18 +347,32 @@ Shortcode::add('Divider', function ($attrs) {
     extract($attrs);
     $type = (isset($type)) ? $type : 'hr';
     $num = (isset($num)) ? $num : '2';
+    $cls = (isset($cls)) ? $cls : '';
+    $color = (isset($color)) ? 'style="border-color:'.$color.'"' : '';
     if ($type !== 'br') {
-        return '<hr class="mt-'.$num.' mb-'.$num.'" />';
+        return '<hr class="'.$cls.' mt-'.$num.' mb-'.$num.'" '.$color.'/>';
     } else {
-        return '<br class="mt-'.$num.' mb-'.$num.'" />';
+        return '<br class="'.$cls.' mt-'.$num.' mb-'.$num.'" '.$color.'/>';
     }
+});
+
+
+/**
+ * ====================================================
+ *   {Space}
+ *   {Space num='2'}
+ * ====================================================
+ */
+Shortcode::add('Space', function ($attrs) {
+    extract($attrs);
+    $num = (isset($num)) ? $num : '2';
+    return str_repeat('&nbsp;', $num);
 });
 
 
 /*
  * ====================================================
  * Btn
- * type = Tipo de boton [ouline] ( opcinal )
  * text = texto del boton
  * id =  id del boton (opcional)
  * href = dirección  (opcional)
@@ -331,15 +396,3 @@ Shortcode::add('Btn', function ($attrs) {
     }
 });
 
-
-/**
- * ====================================================
- * Php
- * {Php}echo 'holas';{/Php}
- * ====================================================
- */
-Shortcode::add('Php', function ($attr, $content) {
-    ob_start();
-    eval("$content");
-    return ob_get_clean();
-});
