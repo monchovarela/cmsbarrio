@@ -164,6 +164,11 @@ Estoy escondidoo.
 
     {Esc}{Img title='Hello' src='public/notfound.jpg'}{/Esc}
 
+**Si el enlace es de otro dominio**
+
+    {Esc}{Img title='Hello' ext='true' src='//monchovarela.es/public/proyectos/colectoxo.png'}{/Esc}
+
+**Nota:** Los enlaces de otro dominio no hace falta poner `https:` solo basta con poner `//` por ejemplo `//example.com/image.png`
 
 **Ejemplo de todo junto:**
 

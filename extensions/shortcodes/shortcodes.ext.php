@@ -293,25 +293,32 @@ Barrio::addShortcode('Img', function ($attrs) {
     $src = rtrim($src, '/');
 
     $html = '';
+    $srcset = '';
     // exits $src
     if ($src) {
-        if ($ext == true || $ext == 'true') {
+        if ($ext == true || $ext == 'true' || $ext == 'si' || $ext == 'yes') {
             $src = '//'.$src;
+            $srcset = false;
         } else {
-            $src = Barrio::urlBase().'/'.$src;
+            // index.php?api=image&url=public/notfound.jpg&w=600
+            $normal = $src;
+            $src = Barrio::urlBase().'/index.php?api=image&url='.$src.'&w=';
+            $srcset = 'loading="lazy" sizes="(max-width: 500px) 100vw, (max-width: 900px) 50vw, 800px" src="'.$normal.'" srcset="'.$src.'500 500w,'.$src.'800 800w,'.$src.'1000 1000w,'.$src.'1400 1400w"';
         }
+
+        $image = ($srcset) ? $srcset : 'src="'.$src.'"';
 
         if ($title) {
             if ($url) {
-                $html = '<a href="'.$url.'" title="'.$title.'"><figure><img '.$cls.' src="'.$src.'" alt="'.$title.'"/><figcaption>'.$title.'</figcaption></figure></a>';
+                $html = '<a href="'.$url.'" title="'.$title.'"> <figure> <img '.$image.' '.$cls.'  alt="'.$title.'"/> <figcaption>'.$title.'</figcaption> </figure> </a>';
             } else {
-                $html = '<figure><img '.$cls.' src="'.$src.'" alt="'.$title.'"/><figcaption>'.$title.'</figcaption></figure>';
+                $html = '<figure><img '.$cls.' '.$image.' alt="'.$title.'"/><figcaption>'.$title.'</figcaption></figure>';
             }
         } else {
             if ($url) {
-                $html = '<a  href="'.$url.'" title="'.$title.'"><img '.$cls.' src="'.$src.'" /></a>';
+                $html = '<a  href="'.$url.'" title="'.$title.'"><img '.$cls.' '.$image.' /></a>';
             } else {
-                $html = '<img '.$cls.' src="'.$src.'" alt="'.$title.'"/>';
+                $html = '<img '.$cls.' '.$image.' alt="'.$title.'"/>';
             }
         }
 
