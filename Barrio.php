@@ -45,6 +45,34 @@ class Barrio
         'attrs' => 'Attrs'
     );
 
+    /**
+     * Prevent CRSF
+     * 
+     * @return string $token
+     */
+    public function generateToken($name) 
+    {
+        if (!session_id()) session_start();
+        if(@session_start)
+        {
+            $length = 32;
+            $uniqId = uniqid(mt_rand());
+            $sha1 = sha1($uniqId);
+            $baseConvert = base_convert($sha1, 16, 36);
+            $_SESSION['token'] = substr($baseConvert, 0, $length);
+            return $_SESSION['token'];
+        }
+
+    }
+    /**
+     * Check token
+     * 
+     * @return bool 
+     */
+    public function checkToken($token, $name) 
+    {
+        return $token === $_SESSION['token'];
+    }
 
     /**
      * Error info

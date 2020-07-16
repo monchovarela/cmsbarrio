@@ -252,14 +252,6 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
     {/Esc}
 
 
-{Php}
-    function sayName($name){
-      print($name);
-    }
-    sayName('Hello World');
-{/Php}
-
-
 
 #### Estilos Css y Javascript
 

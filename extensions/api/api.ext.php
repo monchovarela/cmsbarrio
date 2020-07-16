@@ -59,9 +59,93 @@ class Api
         }
     }
 
+    /**
+     * Headers array
+     * 
+     * @return array $args
+     */
+    public function getHeaders($args = array())
+    {
+        return array(
+            "title" => $args['title'],
+            "description" => $args['description'],
+            "tags" => $args['tags'],
+            "author" => $args['author'],
+            "image" => $args['image'],
+            "date" => $args['date'],
+            "robots" => $args['robots'],
+            "keywords" => $args['keywords'],
+            "template" => $args['template'],
+            "published" => $args['published'],
+            "background" => $args['background'],
+            "video" => $args['video'],
+            "color" => $args['color'],
+            "attrs" => $args['attrs']
+        );
+    }
 
+    public function filterPages($filter = null,$pages = array())
+    {
+        // init output
+        $output = array();
+        // switch
+        switch ($filter) {
 
+            // index.php?api=file&data=pages&name=blog&filter=title
+            case 'title': // get only titles
+                foreach ($pages as $item) {
+                    $arr = array("title" => $item['title']);
+                    // push array
+                    array_push($output, $arr);
+                }
+                break;
 
+            // index.php?api=file&data=pages&name=blog&filter=keywords
+            case 'keywords': // get only keywords
+                foreach ($pages as $item) {
+                    $arr = array("keywords" => $item['keywords']);
+                    // push array
+                    array_push($output, $arr);
+                }
+                break;
+
+            // index.php?api=file&data=pages&name=blog&filter=images
+            case 'images': // get only images
+                foreach ($pages as $item) {
+                    $arr = array("image" => $item['image']);
+                    // push array
+                    array_push($output, $arr);
+                }
+                break;
+
+            // index.php?api=file&data=pages&name=blog&filter=videos
+            case 'videos': // get only videos
+                foreach ($pages as $item) {
+                    $arr = array("video" => $item['video']);
+                    // push array
+                    array_push($output, $arr);
+                }
+                break;
+
+            // index.php?api=file&data=pages&name=blog&filter=attrs
+            case 'attrs': // get only attrs
+                foreach ($pages as $item) {
+                    $arr = array("attrs" => $item['attrs']);
+                    // push array
+                    array_push($output, $arr);
+                }
+                break;
+
+            // index.php?api=file&data=pages&name=blog&filter=count
+            case 'count': // count
+                $arr = array("total" => count($pages));
+                // push array
+                array_push($output, $arr);
+                break;
+        }
+        // print json
+        $this->json($output);
+    }
     /**
      *  Pages
      *
@@ -81,65 +165,7 @@ class Api
                     $filter = ($_GET['filter']) ? $_GET['filter'] : null;
                     // get pages
                     $pages = Barrio::run()->getHeaders($name, 'date', 'DESC', array('index','404'), null);
-                    // init output
-                    $output = array();
-                    // switch
-                    switch ($filter) {
-
-                        // index.php?api=file&data=pages&name=blog&filter=title
-                        case 'title': // get only titles
-                            foreach ($pages as $item) {
-                                $arr = array("title" => $item['title']);
-                                // push array
-                                array_push($output, $arr);
-                            }
-                            break;
-
-                        // index.php?api=file&data=pages&name=blog&filter=keywords
-                        case 'keywords': // get only titles
-                            foreach ($pages as $item) {
-                                $arr = array("keywords" => $item['keywords']);
-                                // push array
-                                array_push($output, $arr);
-                            }
-                            break;
-
-                        // index.php?api=file&data=pages&name=blog&filter=tags
-                        case 'tags': // get only titles
-                            foreach ($pages as $item) {
-                                $arr = array("tags" => $item['tags']);
-                                // push array
-                                array_push($output, $arr);
-                            }
-                            break;
-
-                        // index.php?api=file&data=pages&name=blog&filter=images
-                        case 'images': // get only images
-                            foreach ($pages as $item) {
-                                $arr = array("image" => $item['image']);
-                                // push array
-                                array_push($output, $arr);
-                            }
-                            break;
-
-                        // index.php?api=file&data=pages&name=blog&filter=videos
-                        case 'videos': // get only videos
-                            foreach ($pages as $item) {
-                                $arr = array("video" => $item['video']);
-                                // push array
-                                array_push($output, $arr);
-                            }
-                            break;
-
-                        // index.php?api=file&data=pages&name=blog&filter=count
-                        case 'count': // count
-                            $arr = array("total" => count($pages));
-                            // push array
-                            array_push($output, $arr);
-                            break;
-                    }
-                    // print json
-                    $this->json($output);
+                    $this->filterPages($filter, $pages);
                 }
                 // index.php?api=file&data=pages&name=blog&limit=3
                 elseif (array_key_exists('limit', $_GET)) {
@@ -150,23 +176,8 @@ class Api
                     // init array
                     $output = array();
                     foreach ($pages as $item) {
-                        $arr = array(
-                            "title" => $item['title'],
-                            "description" => $item['description'],
-                            "tags" => $item['tags'],
-                            "author" => $item['author'],
-                            "image" => $item['image'],
-                            "date" => $item['date'],
-                            "robots" => $item['robots'],
-                            "keywords" => $item['keywords'],
-                            "template" => $item['template'],
-                            "published" => $item['published'],
-                            "background" => $item['background'],
-                            "video" => $item['video'],
-                            "color" => $item['color'],
-                            "attrs" => $item['attrs'],
-                            "url" => $item['url']
-                       );
+                        $arr = $this->getHeaders($item);
+                        $arr['url'] = $item['url'];
                         // push array
                         array_push($output, $arr);
                     }
@@ -174,27 +185,11 @@ class Api
                     $this->json($output);
                 } else {   // index.php?api=file&data=pages&name=blog
                     // get pages
-                    $pages = Barrio::run()->pages($name, 'date', 'DESC', array('index','404'), null);
+                    $pages = Barrio::run()->getHeaders($name, 'date', 'DESC', array('index','404'), null);
                     // init array
                     $output = array();
                     foreach ($pages as $item) {
-                        $arr = array(
-                            "title" => $item['title'],
-                            "description" => $item['description'],
-                            "tags" => $item['tags'],
-                            "author" => $item['author'],
-                            "image" => $item['image'],
-                            "date" => $item['date'],
-                            "robots" => $item['robots'],
-                            "keywords" => $item['keywords'],
-                            "template" => $item['template'],
-                            "published" => $item['published'],
-                            "background" => $item['background'],
-                            "video" => $item['video'],
-                            "color" => $item['color'],
-                            "attrs" => $item['attrs'],
-                            "url" => $item['url']
-                       );
+                        $arr = $this->getHeaders($item);;
                         // push array
                         array_push($output, $arr);
                     }
@@ -232,26 +227,9 @@ class Api
             // parse content
             $content = Barrio::parseShortcode($content);
             $content = Parsedown::instance()->text(Barrio::parseShortcode($content));
-
             // array
-            $arr = array(
-                "title" => $page['title'],
-                "description" => $page['description'],
-                "tags" => $page['tags'],
-                "author" => $page['author'],
-                "image" => $page['image'],
-                "date" => $page['date'],
-                "robots" => $page['robots'],
-                "keywords" => $page['keywords'],
-                "template" => $page['template'],
-                "published" => $page['published'],
-                "background" => $page['background'],
-                "video" => $page['video'],
-                "color" => $page['color'],
-                "attrs" => $page['attrs'],
-                "content" => $content
-            );
-
+            $arr = $this->getHeaders($page);
+            $arr['content'] = base64_encode($content);
             // print json
             $this->json($arr);
         }
@@ -319,6 +297,43 @@ class Api
     public function manifest()
     {
         $iconUrl = Barrio::urlBase().'/themes/'.Barrio::$config['theme'].'/assets/img/icons';
+        
+        $sizes = array(
+            '192','144','114','120',
+            '144','152','180','96',
+            '72','76','60','57','36','48',
+        );     
+
+        $icons = array();
+        foreach ($sizes as $size) {
+            $density = '0.75';
+            switch($size){
+                case '192':
+                    $density = '4.0';
+                    break;
+                case '144':
+                    $density = '3.0';
+                    break;
+                case '96':
+                    $density = '2.0';
+                    break;
+                case '72':
+                    $density = '1.5';
+                    break;
+                case '48':
+                    $density = '1.5';
+                    break;
+            }
+
+            $icons[] =  array(
+                "src" => $iconUrl."/apple-icon-{$size}x{$size}.png",
+                "sizes" => "{$size}x{$size}",
+                "type" => "image\/png",
+                "density" => $density
+            );
+
+        };
+
         $json = array(
             "name" =>  Barrio::$config['title'],
             "short_name" =>  Barrio::$config['title'],
@@ -327,98 +342,7 @@ class Api
             "theme_color" => Barrio::$config['theme_color'],
             "background_color" => Barrio::$config['background_color'],
             "orientation" =>  Barrio::$config['orientation'],
-            "icons" => array(
-                array(
-                    "src" => $iconUrl."/apple-icon-114x114.png",
-                    "sizes" => "114x114",
-                    "type" => "image\/png",
-                    "density" => "0.75"
-                ),
-                array(
-                    "src" => $iconUrl."/apple-icon-120x120.png",
-                    "sizes" => "120x120",
-                    "type" => "image\/png",
-                    "density" => "0.75"
-                ),
-                array(
-                    "src" => $iconUrl."/apple-icon-144x144.png",
-                    "sizes" => "144x144",
-                    "type" => "image\/png",
-                    "density" => "0.75"
-                ),
-                array(
-                    "src" => $iconUrl."/apple-icon-152x152.png",
-                    "sizes" => "152x152",
-                    "type" => "image\/png",
-                    "density" => "0.75"
-                ),
-                array(
-                    "src" => $iconUrl."/apple-icon-180x180.png",
-                    "sizes" => "180x180",
-                    "type" => "image\/png",
-                    "density" => "0.75"
-                ),
-                array(
-                    "src" => $iconUrl."/apple-icon-57x57.png",
-                    "sizes" => "57x57",
-                    "type" => "image\/png",
-                    "density" => "0.75"
-                ),
-                array(
-                    "src" => $iconUrl."/apple-icon-60x60.png",
-                    "sizes" => "60x60",
-                    "type" => "image\/png",
-                    "density" => "0.75"
-                ),
-                array(
-                    "src" => $iconUrl."/apple-icon-72x72.png",
-                    "sizes" => "72x72",
-                    "type" => "image\/png",
-                    "density" => "0.75"
-                ),
-                array(
-                    "src" => $iconUrl."/apple-icon-76x76.png",
-                    "sizes" => "76x76",
-                    "type" => "image\/png",
-                    "density" => "0.75"
-                ),
-                array(
-                    "src" => $iconUrl."/android-icon-36x36.png",
-                    "sizes" => "36x36",
-                    "type" => "image\/png",
-                    "density" => "0.75"
-                ),
-                array(
-                    "src" => $iconUrl."/android-icon-48x48.png",
-                    "sizes" => "48x48",
-                    "type" => "image\/png",
-                    "density" => "1.0"
-                ),
-                array(
-                    "src" => $iconUrl."/android-icon-72x72.png",
-                    "sizes" => "72x72",
-                    "type" => "image\/png",
-                    "density" => "1.5"
-                ),
-                array(
-                    "src" => $iconUrl."/android-icon-96x96.png",
-                    "sizes" => "96x96",
-                    "type" => "image\/png",
-                    "density" => "2.0"
-                ),
-                array(
-                    "src" => $iconUrl."/android-icon-144x144.png",
-                    "sizes" => "144x144",
-                    "type" => "image\/png",
-                    "density" => "3.0"
-                ),
-                array(
-                    "src" => $iconUrl."/android-icon-192x192.png",
-                    "sizes" => "192x192",
-                    "type" => "image\/png",
-                    "density" => "4.0"
-                )
-            )
+            "icons" => $icons
         );
         // render json
         $this->json($json);
