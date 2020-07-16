@@ -36,7 +36,7 @@ Template: post
 
 
 
-
+[//]: # (Shortcode css add style on Head.)
 {Styles minify=true}
     :root {
         --nc-tx-1: #E8EAF6;
@@ -63,26 +63,22 @@ Template: post
 {/Styles}
 
 
-
+[//]: # (You can add Php code on markdown.)
 {Php}
     $pages = Barrio::scanFiles(CONTENT.'/blog','md',false);
-
     $html = '<select id="test_api">';
     $html .= '<option> Seleciona el articulo </option>';
-
-    foreach($pages as $filename)
-    {   
+    foreach($pages as $filename){   
         // api=file&data=page&name=filename
         $name = str_replace('.md','',$filename);
         $html .= '<option value="'.$name.'">'.$name.'</option>';
     }
-
     $html .= '</select>';
     $html .= '<pre id="test_output"></pre>';
     echo $html;
 {/Php}
 
-
+[//]: # (Add Javascript, this render on footer.)
 {Scripts minify=true}
     const api = window.test_api;
     const out = window.test_output;
