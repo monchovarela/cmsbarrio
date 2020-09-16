@@ -1,7 +1,7 @@
 <?php  defined('BARRIO') or die('Sin accesso a este script.');
 
     return array(
-        "base_url" => "http://localhost/cmsbarrio",
+        "base_url" => "http://localhost:8000",
         // Theme color
         'theme_color' => '#fff',
         // background color
