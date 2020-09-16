@@ -67,12 +67,20 @@ Si descargó el archivo ZIP y luego planea moverlo a su raíz web, mueva **TODA 
 <span id="paso4"></span>
 ### Configuración.
 
-En el archivo <mark>config.php</mark> encontraras la configuración de la web, desde el titulo, descripción hasta la configuración del menu de navegación.
+En el archivo <mark>config.php</mark> encontraras la configuración de la web, la url del sitio, el titulo, la descripción o la configuración del menu de navegación.
 
 Puedes crear tu propia configuración pero <mark>no borres las variables que hay por defecto</mark>.
 
 Puedes llamar cualquier variable con el comando `<?php Barrio::$config['nombre'];?>` o si estas en el archivo _.md_ puedes usar `{Config name=nombre}`. 
 
+**Nota:** Recuerda que lo primero que debes hacer es cambiar la url  en `base_url`.
+
+Puedes probar en el terminal si tienes Php instalado esto:
+	
+	cd [nombre de la carpeta donde esta Barrio]
+	php -S localhost:8000
+
+Esto creara un servidor listo para que puedas usar **Barrio CMS**.
 
 <span id="paso5"></span>
 ### Plantillas.

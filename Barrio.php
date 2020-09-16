@@ -315,8 +315,7 @@ class Barrio
      */
     public static function urlBase()
     {
-        $https = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') ? 'https://' : 'http://';
-        return $https . rtrim(rtrim($_SERVER['HTTP_HOST'], '\\/') . dirname($_SERVER['PHP_SELF']), '\\/');
+        return self::$config['base_url'];
     }
 
     /**
@@ -925,7 +924,6 @@ class Barrio
         // Load config
         $this->loadConfig($path);
 
-
         // configure timezone
         @ini_set('date.timezone', static::$config['timezone']);
         if (function_exists('date_default_timezone_set')) {
@@ -934,39 +932,11 @@ class Barrio
             putenv('TZ='.static::$config['timezone']);
         }
 
-
-
         // Sanitize url
         self::runSanitize();
 
-
         // charset
         header('Content-Type: text/html; charset='.static::$config['charset']);
-        function_exists('mb_language') and mb_language('uni');
-        function_exists('mb_regex_encoding') and mb_regex_encoding(static::$config['charset']);
-        function_exists('mb_internal_encoding') and mb_internal_encoding(static::$config['charset']);
-
-
-
-        // no magic quotes
-        if (get_magic_quotes_gpc()) {
-            /**
-             * Stripslashes
-             *
-             * @param string $value the value
-             *
-             * @return string
-             */
-            function stripslashesGPC(&$value)
-            {
-                $value = stripslashes($value);
-            }
-            array_walk_recursive($_GET, 'stripslashesGPC');
-            array_walk_recursive($_POST, 'stripslashesGPC');
-            array_walk_recursive($_COOKIE, 'stripslashesGPC');
-            array_walk_recursive($_REQUEST, 'stripslashesGPC');
-        }
-
 
         // load session
         !session_id() and @session_start();
@@ -977,7 +947,6 @@ class Barrio
         // load current page
         $page = $this->page(Barrio::urlCurrent());
 
-        
         // meta tag generator
         self::addAction('meta', function () {
             echo '<meta name="generator" content="Creado con Barrio CMS" />';
@@ -1013,14 +982,12 @@ class Barrio
         empty($page['keywords']) and $page['keywords'] = static::$config['keywords'];
         empty($page['attrs']) and $page['attrs'] = '';
 
-        $page = $page;
-        $config = self::$config;
         $layout = !empty($page['template']) ? $page['template'] : 'index';
 
         // published
         $page['published'] = $page['published'] === 'false' ? false : true;
         if ($page['published']) {
-            $sourceUrl = THEMES.'/'.$config['theme'].'/dist/';
+            $sourceUrl = THEMES.'/'.self::$config['theme'].'/dist/';
             if (file_exists($sourceUrl.$layout.'.html')) {
                 include $sourceUrl.$layout.'.html';
             } else {

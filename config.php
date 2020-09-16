@@ -1,6 +1,7 @@
 <?php  defined('BARRIO') or die('Sin accesso a este script.');
 
     return array(
+        "base_url" => "http://localhost/cmsbarrio",
         // Theme color
         'theme_color' => '#fff',
         // background color
@@ -8,7 +9,7 @@
         // orientation
         'orientation' => 'landscape',
         // display
-        'display' => 'standalone',
+        'display' => 'minimal-ui',
         // shortname
         'short_name' => 'BarrioCMS',
         // language
