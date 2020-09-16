@@ -7,7 +7,7 @@ Template: index
 
 ----
 
-{Style}
+{Styles minify=true}
   :root {
     --nc-tx-1: #fff;
     --nc-tx-2: #dedede;
@@ -20,7 +20,7 @@ Template: index
     --nc-ac-1: #03A9F4;
     --nc-ac-tx: #000000;
   }
-{/Style}
+{/Styles}
 
 Desde hace un tiempo me encanta navegar en sitios con opción a diseños obscuros o dark mode, no por su estética sino por la comodidad para mis ojos. Afortunadamente para mis desafortunados ojos, cada vez más sitios web están implementando esta opción y así lo hice yo también para BTemplates. Agregar una opción de diseño obscuro o dark es más sencillo de lo que parece y es posible realizarlo usando CSS y quizá un poco de Javascript.
 
