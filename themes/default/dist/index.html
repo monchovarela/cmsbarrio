@@ -3,22 +3,22 @@
   <header>
     <h1><?php echo Barrio::$config['title'];?></h1>
     <p><?php echo Barrio::$config['description'];?></p>
-    <?php Barrio::runAction('navigation',[Barrio::$config['menu']]); ?>
+    <?php Barrio::runAction('theme_navigation',[Barrio::$config['menu']]); ?>
   </header>
   <section>
     <?php 
-      Barrio::runAction('theme_before');
+      Barrio::runAction('theme_content_before');
       echo '<h2>'.$page['title'].'</h2>'; 
       echo '<p>'.$page['description'].'</p>';
       if(Barrio::urlCurrent() == 'blog') { 
-        Barrio::runAction('pagination',[Barrio::urlCurrent()]);
+        Barrio::runAction('theme_pagination',[Barrio::urlCurrent()]);
       }else{
         echo $page['content'];
         if(Barrio::urlSegment(1)) {
-          Barrio::runAction('navFolder');
+          Barrio::runAction('theme_navFolder');
         }
       }
-      Barrio::runAction('theme_after');
+      Barrio::runAction('theme_content_after');
     ?>
   </section>
   <footer>

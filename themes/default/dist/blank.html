@@ -1,25 +1,28 @@
 <!DOCTYPE html>
-<html lang="<?php echo Barrio::$config['lang']; ?>">
+<html lang="<?php echo $config['lang']; ?>">
 <head>
+	<!-- title -->
     <title> <?php echo $page['title']; ?></title>
     <!-- Content-Type -->
     <?php echo Theme::contentType();?>
-    <!-- refresh 30min ? -->
-    <?php echo Theme::refresh(1800);?>
     <!-- meta -->
     <?php echo Theme::meta($page);?>
     <!-- viewport -->
     <?php echo Theme::viewport();?>
-    <!-- meta actions -->
-    <?php Barrio::runAction('theme_meta'); ?>
+    <!-- meta Extensions -->
     <?php Barrio::runAction('meta'); ?>
     <!-- canonical -->
     <?php echo Theme::canonical();?>
     <!-- script vars -->
     <?php echo Theme::vars();?>
-    <!-- head actions -->
-    <?php Barrio::runAction('theme_head'); ?>
+    <!-- css & javascript -->
     <?php Barrio::runAction('head'); ?>
 </head>
-
 <body>
+	<?php Barrio::runAction('content_before'); ?>
+	<?php echo $page['content']; ?>
+	<?php  Barrio::runAction('content_after'); ?>
+	<!-- javascript -->
+	<?php Barrio::runAction('footer'); ?>
+</body>
+</html>

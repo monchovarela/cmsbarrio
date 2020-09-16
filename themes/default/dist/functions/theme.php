@@ -1,6 +1,9 @@
 <?php  defined('BARRIO') or die('Sin accesso a este script.');
 
 
+
+
+
 /**
  * Simple theme class
  */
@@ -19,7 +22,7 @@ class Theme
     /**
      * Run non static
      *
-     * self::run()-nonStaticMethod();
+     * self::run()->nonStaticMethod();
      */
     private static function run()
     {
@@ -46,6 +49,77 @@ class Theme
     {
         $script = self::run()->assets.'/js';
         echo '<script rel="javascript" src="'.$script.'/main.min.js"></script>';
+    }
+
+    /**
+     * Content type
+     *
+     * @return string html
+     */
+    public static function contentType($page = array())
+    {
+        return '<meta http-equiv="Content-Type" content="text/html; charset='.Barrio::$config['charset'].'">';
+    }
+
+    /**
+     * Meta tags basic
+     *
+     * @return string html
+     */
+    public static function meta($page = array())
+    {
+        $html = '<meta charset="'.Barrio::$config['charset'].'">';
+        $html .= '<meta name="author" content="'.$page['author'].'">';
+        $html .= '<meta name="keywords" content="'.$page['keywords'].'" />';
+        $html .= '<meta name="description" content="'.$page['description'].'"/>';
+        $html .= '<meta name="robots" content="'.$page['robots'].'"/>';
+        $html .= '<meta name="application-name" content="Barrio CMS" />';
+        return $html;
+    }
+
+    /**
+     * Meta tag canonical
+     *
+     * @return string html
+     */
+    public static function canonical()
+    {
+        $url = Barrio::urlBase().'/'.Barrio::urlCurrent();
+        return '<link rel="canonical" href="'.$url.'" />';
+    }
+
+    /**
+     * Meta refresh
+     *
+     * @return string html
+     */
+    public static function refresh($time)
+    {
+        return '<meta http-equiv="refresh" content="'.$time.'">';
+    }
+
+    /**
+     * Meta viewport
+     *
+     * @return string html
+     */
+    public static function viewport()
+    {
+        return '<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">';
+    }
+
+    /**
+     * Meta script vars
+     *
+     * @return string html
+     */
+    public static function vars()
+    {
+        $html = '<script>';
+        $html .= 'var site_url = "'.Barrio::urlBase().'";';
+        $html .= 'var site_url_current = "'.Barrio::urlCurrent().'"';
+        $html .= '</script>';
+        return $html;
     }
 
     /**
@@ -178,7 +252,6 @@ class Theme
         }
     }
 
-
     /**
      * Create folder navigation
      *
@@ -231,7 +304,6 @@ class Theme
             }
         }
     }
-
 
     /**
      * Search function

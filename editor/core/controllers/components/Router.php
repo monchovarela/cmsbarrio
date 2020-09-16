@@ -119,17 +119,16 @@ class Router
         function_exists('mb_language') and mb_language('uni');
         function_exists('mb_regex_encoding') and mb_regex_encoding(static::$config['charset']);
         function_exists('mb_internal_encoding') and mb_internal_encoding(static::$config['charset']);
-        // Gets the current configuration setting of magic_quotes_gpc and kill magic quotes
-        if (get_magic_quotes_gpc()) {
-            function stripslashesGPC(&$value)
-            {
-                $value = stripslashes($value);
-            }
-            array_walk_recursive($_GET, 'stripslashesGPC');
-            array_walk_recursive($_POST, 'stripslashesGPC');
-            array_walk_recursive($_COOKIE, 'stripslashesGPC');
-            array_walk_recursive($_REQUEST, 'stripslashesGPC');
+
+        function stripslashesGPC(&$value)
+        {
+            $value = stripslashes($value);
         }
+        array_walk_recursive($_GET, 'stripslashesGPC');
+        array_walk_recursive($_POST, 'stripslashesGPC');
+        array_walk_recursive($_COOKIE, 'stripslashesGPC');
+        array_walk_recursive($_REQUEST, 'stripslashesGPC');
+
         // Start the session
         Session::start();
         // launch
