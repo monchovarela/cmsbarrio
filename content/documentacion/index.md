@@ -204,22 +204,16 @@ Es muy fácil crear Shortcodes en **Barrio CMS** por ejemplo, vamos a crear un S
 {Code type='php'}<?php
 // llamamos la funcion mejor capitalizada (letra mayúscula)
 Barrio::shortcodeAdd('Texto',function($atributos,$contenido){
-
     // extraemos los atributos (en este caso $color)
     extract($atributos);
-
     // definimos el color, por defecto sera blue (mejor en ingles)
     $color = (isset($color)) ? $color : 'blue';
-
     // parseamos para poder usar markdown
     $contenido = Parsedown::instance()->text($contenido);
-
     // aplicamos un filtro para escribir dentro del shortcode
     $resultado = Barrio::applyFilter('content','<div style="color:'.$color.'">'.$contenido.'</div>');
-
     // quitamos espacios
     $resultado = preg_replace('/\s+/', ' ', $resultado);
-
     // enseñamos la plantilla
     return $resultado;
 });
@@ -249,25 +243,19 @@ En este caso **no necesitamos escribir dentro** así que es mas facil aun.
 
 {Code type='php'}<?php
 Barrio::shortcodeAdd('Youtube', function ($atributos) {
-
     // extraemos los atributos (en este caso $src)
     extract($atributos);
-
     // el codigo del enlace
     $id = (isset($id)) ? $id : '';
-
     $clase = (isset($clase)) ? $clase : '';
-
     // comprobamos que exista el $id
     if($id){
-
         // el html
         $html = '<section class="'.$clase.'">';
         $html .= '<iframe src="//www.youtube.com/embed/'.$id.'" frameborder="0" allowfullscreen></iframe>';
         $html .= '</section>';
         $html = preg_replace('/\s+/', ' ', $html);
         return $html;
-
     // si no se pone el atributo id que avise
     }else{
         return Barrio::error('Error [ id ] no encontrado');
