@@ -74,13 +74,8 @@ Puedes crear tu propia configuración pero <mark>no borres las variables que hay
 Puedes llamar cualquier variable de `config.php`si estas en el archivo _.md_ con `{Config name=nombre}`. 
 
 <span id="paso5"></span>
+
 ### Plantillas.
-
-#### Los estilos
-
-La plantilla por defecto usa **classless** es un pequeño archivo CSS, que define pocos pero excelentes estilos para etiquetas HTML5 básicas más muy pocas clases para cuadrícula y espaciado. Nada mas. Nada menos.
-
-#### La plantilla
 
     {* Esto es un comentario que no se vera *}
     {* Incluimos los trozos de codigo de la carpeta includes *}
