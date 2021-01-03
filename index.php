@@ -1,22 +1,24 @@
 <?php
 
-if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-    exit('Barrio necesita PHP 5.3.0 en adelante.');
+/*
+ * Declara al principio del archivo, las llamadas a las funciones respetarán
+ * estrictamente los indicios de tipo (no se lanzarán a otro tipo).
+ */
+declare (strict_types = 1);
+
+/**
+ *  Definir el acceso a los archivos
+ */
+define('ACCESS', true);
+
+/**
+ * Definir el PATH al directorio raíz (sin trailing slash).
+ */
+define('ROOT_DIR', rtrim(dirname(__FILE__), '\\/'));
+
+// si la version es mas baja salimos
+if (version_compare(PHP_VERSION, '7.4.0', '<')) {
+    exit('Barrio necesita PHP 7.4.0 en adelante.');
 }
 
-define('BARRIO', true);
-define('ROOT', rtrim(dirname(__FILE__), '\\/'));
-define('CONTENT', ROOT.'/content');
-define('THEMES', ROOT.'/themes');
-define('EXTENSIONS', ROOT.'/extensions');
-define('DEV_MODE', true);
-
-if (DEV_MODE) {
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-} else {
-    error_reporting(0);
-}
-
-require ROOT.'/Barrio.php';
-Barrio::Run()->init('config.php');
+include ROOT_DIR . '/core/init.php';

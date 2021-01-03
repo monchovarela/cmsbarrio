@@ -1,7 +1,5 @@
 Title: Flat file CMS?
-Description: QUe es un sistema de contenidos en formato Flat file.
-Template: index
-
+Description: Que es un sistema de contenidos en formato Flat file.
 ----
 
 Los grandes **CMS** utilizan `MySQL` o sistemas similares de gestión de bases de datos en un segundo plano. Los sistemas de gestión de bases de datos **(SGBD)** actúan de manera relacional y trabajan con varias tablas para gestionar las consultas, para lo que necesitan un servidor adicional. Los **flat file CMS** no cuentan con elementos de gestión de bases de datos, por lo que es habitual hablar de ellos como **CMS sin bases de datos**. Con ello no hay lugar para los **SGBD** y tampoco para los servidores configurados a tales efectos. 
@@ -9,7 +7,7 @@ Los grandes **CMS** utilizan `MySQL` o sistemas similares de gestión de bases d
 
 Estos sistemas pueden o bien erigirse como la solución perfecta o lograr simplicidad donde se necesita complejidad. Las ventajas de los sistemas de gestión de contenidos basados en archivos planos surgen en la mayoría de los casos de su estructura simple:
 
-{Divider}
+{Divider type=br}
 
 {Details title='Velocidad'}
 en el caso de los proyectos web de poca envergadura, una **SGBD** relacional excede el objetivo y no es realmente necesaria. Mediante la simplificación de la estructura en un sistema flat file se pueden lograr mejores tasas de velocidad.
@@ -37,6 +35,6 @@ cambiar de un servidor a otro en WordPress, Typo3 o Drupal es una tarea muy labo
 cuando se utiliza un CMS clásico el contenido se edita en el backend. Por ello, para realizar cambios en un flat file CMS o crear contenido nuevo puedes recurrir a tu editor preferido.
 {/Details}
 
-{Divider}
+{Divider type=br}
 
 Los **flat file CMS** son una variante relativamente nueva de los sistemas de gestión de contenidos que se erige como competidora para los CMS tradicionales como **WordPress**, **Typo3** o **Drupal**. Estos sistemas se basan en los llamados flat files o archivos planos, es decir, archivos con una estructura muy sencilla, y plantean tanto ventajas como inconvenientes con respecto a los grandes rivales.

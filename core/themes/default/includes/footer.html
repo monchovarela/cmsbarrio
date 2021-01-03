@@ -1,0 +1,20 @@
+<div id="darkModeSwitcher" 
+	class="position-fixed py-2 px-3 bg-dark text-white rounded-pill" >
+	<div class="form-check form-switch pull-right">
+		<input class="form-check-input" type="checkbox" id="darkMode">
+		<label id="darkModeLabel" for="darkMode">Light</label>
+	</div>
+</div>
+
+<script rel="javascript" src="{Assets: js/bootstrap.min.js}"></script>
+
+{If: DEV_MODE}
+	<script rel="javascript" src="{Assets: js/main.js}"></script>
+{Else}
+	<script rel="javascript" src="{Assets: js/main.min.js}"></script>
+{/If}
+
+<!-- modulos -->
+{Action: footer}
+</body>
+</html>

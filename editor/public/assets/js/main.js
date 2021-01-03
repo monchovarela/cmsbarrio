@@ -28,15 +28,9 @@ function decodeUnicode(str) {
 
 var maxWidth = 768;
 
-Split(["#code", "#preview"], {
-  minSize: [400, 400],
+Split(["#editorWindowCode", "#editorWindowPreview"], {
+  minSize: [300, 300],
 
-  elementStyle: (dimension, size, gutterSize) => ({
-    "flex-basis": `calc(${size}% - ${gutterSize}px)`,
-  }),
-  gutterStyle: (dimension, gutterSize) => ({
-    "flex-basis": `${gutterSize}px`,
-  }),
 });
 
 var render = document.querySelector("#render"),
@@ -225,13 +219,11 @@ save.addEventListener("click", function (e) {
     }
   });
 });
-
 renderCode();
 render.addEventListener("click", function (e) {
   e.preventDefault();
   renderCode();
 });
-
 templates.addEventListener("change", function (e) {
   e.preventDefault();
   if (e.target.value) {
@@ -253,7 +245,6 @@ templates.addEventListener("change", function (e) {
   }
   return false;
 });
-
 content.addEventListener("keydown", function (e) {
   if (e.ctrlKey && e.keyCode == 13) {
     renderCode();

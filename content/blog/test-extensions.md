@@ -4,28 +4,14 @@ Template: post
 
 ----
 
-#### Probando Css
-
-    :root {
-        --nc-tx-1: #E8EAF6;
-        --nc-tx-2: #C5CAE9;
-        --nc-bg-1: #1A237E;
-        --nc-bg-2: #3F51B5;
-        --nc-bg-3: #3F51B5;
-        --nc-lk-1: #FFEB3B;
-        --nc-lk-2: #F57F17;
-        --nc-lk-tx: #3F51B5;
-        --nc-ac-1: #009688;
-        --nc-ac-tx: #E0F2F1;
-    }
-
 #### Probando Token
 
     {Php}
-        $token = Barrio::run()->generateToken('test');
-        $checkToken = Barrio::run()->checkToken($token,'test');
+        use Token\Token as Token;
+        $token = Token::generate('test');
+        $checkToken = Token::check($token,'test');
         if($checkToken){
-            echo "El token es bueno 🐲\n\t".$token;
+            echo "El token es bueno 🐲 ".$token;
         }else{
             echo 'El token es malo 👽';
         }   
@@ -34,22 +20,8 @@ Template: post
 
 #### Probando la Api
 
-
-
 [//]: # (Shortcode css add style on Head.)
 {Styles minify=true}
-    :root {
-        --nc-tx-1: #E8EAF6;
-        --nc-tx-2: #C5CAE9;
-        --nc-bg-1: #1A237E;
-        --nc-bg-2: #3F51B5;
-        --nc-bg-3: #3F51B5;
-        --nc-lk-1: #FFEB3B;
-        --nc-lk-2: #F57F17;
-        --nc-lk-tx: #3F51B5;
-        --nc-ac-1: #009688;
-        --nc-ac-tx: #E0F2F1;
-    }
     .wait{
         opacity:1;
         animation: fade 500ms infinite ease-in-out;
@@ -57,16 +29,18 @@ Template: post
     @keyframes fade {
         from {opacity:0;}
     }
-
-    pre{color: var(--nc-lk-1);}
-
+    pre{
+        color: var(--bs-light);
+        background: var(--bs-primary);
+        border-color: var(--bs-primary);
+    }
 {/Styles}
 
 
 [//]: # (You can add Php code on markdown.)
 {Php}
-    $pages = Barrio::scanFiles(CONTENT.'/blog','md',false);
-    $html = '<select id="test_api">';
+    $pages = File\File::scan(CONTENT.'/blog','md',false);
+    $html = '<select id="test_api" class="form-control">';
     $html .= '<option> Seleciona el articulo </option>';
     foreach($pages as $filename){   
         // api=file&data=page&name=filename

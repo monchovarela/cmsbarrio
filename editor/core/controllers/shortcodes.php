@@ -1,12 +1,10 @@
-<?php  defined('BARRIO') or die('Sin accesso a este script.');
+<?php defined('BARRIO') or die('Sin accesso a este script.');
 
 function showError($txt)
 {
     $content = "<span style=\"display: inline-block; background: #f55; color: white; padding: 4px 10px; border-radius: 4px; font-family: 'Lucida Console', Monaco, monospace, sans-serif; font-size: 80%\"><b style=\"color:#FFEB3B;\">Error</b>: {$txt}</span>";
     return $content;
 }
-
-
 
 /*
  * ================================
@@ -28,7 +26,6 @@ Shortcode::add('Site_current', function ($attrs) {
     return Url::current();
 });
 
-
 /*
  * ================================
  * Details
@@ -39,9 +36,9 @@ Shortcode::add('Details', function ($attrs, $content) {
     extract($attrs);
 
     $title = (isset($title)) ? $title : 'Info';
-    
+
     $content = Parsedown::instance()->text($content);
-    $output = Filter::apply('content', '<details><summary>'.$title.'</summary>'.$content.'</details>');
+    $output = Filter::apply('content', '<details><summary>' . $title . '</summary>' . $content . '</details>');
     $output = preg_replace('/\s+/', ' ', $output);
 
     if ($content) {
@@ -50,7 +47,6 @@ Shortcode::add('Details', function ($attrs, $content) {
         return showError('Error [ content ] no encontrado');
     }
 });
-
 
 /*
  * ================================
@@ -69,12 +65,12 @@ Shortcode::add('Iframe', function ($attrs) {
 
     // check src
     if ($src) {
-        $html = '<section class="'.$cls.'">';
-        $html .= '<iframe src="https://'.$src.'" frameborder="0" allowfullscreen></iframe>';
+        $html = '<section class="' . $cls . '">';
+        $html .= '<iframe src="https://' . $src . '" frameborder="0" allowfullscreen></iframe>';
         $html .= '</section>';
         $html = preg_replace('/\s+/', ' ', $html);
         return $html;
-    // show error if not exists src
+        // show error if not exists src
     } else {
         return showError('Error [ src ] no encontrado');
     }
@@ -94,8 +90,8 @@ Shortcode::add('Youtube', function ($attrs) {
     $cls = (isset($cls)) ? $cls : 'iframe';
 
     if ($id) {
-        $html = '<section class="'.$cls.'">';
-        $html .= '<iframe src="//www.youtube.com/embed/'.$id.'" frameborder="0" allowfullscreen></iframe>';
+        $html = '<section class="' . $cls . '">';
+        $html .= '<iframe src="//www.youtube.com/embed/' . $id . '" frameborder="0" allowfullscreen></iframe>';
         $html .= '</section>';
         $html = preg_replace('/\s+/', ' ', $html);
         return $html;
@@ -103,7 +99,6 @@ Shortcode::add('Youtube', function ($attrs) {
         return showError('Error [ id ] no encontrado');
     }
 });
-
 
 /*
  * =============================================
@@ -119,8 +114,8 @@ Shortcode::add('Vimeo', function ($attrs) {
     $cls = (isset($cls)) ? $cls : 'iframe';
 
     if ($id) {
-        $html = '<section class="'.$cls.'">';
-        $html .= '<iframe src="https://player.vimeo.com/video/'.$id.'" frameborder="0" allowfullscreen></iframe>';
+        $html = '<section class="' . $cls . '">';
+        $html .= '<iframe src="https://player.vimeo.com/video/' . $id . '" frameborder="0" allowfullscreen></iframe>';
         $html .= '</section>';
         $html = preg_replace('/\s+/', ' ', $html);
         return $html;
@@ -128,7 +123,6 @@ Shortcode::add('Vimeo', function ($attrs) {
         return showError('Error [ id ] no encontrado');
     }
 });
-
 
 /*
  * =============================================
@@ -156,9 +150,9 @@ Shortcode::add('Video', function ($attrs) {
 
     if ($src) {
         $url = Url::base();
-        $src = ($ext) ? $src : $url.'/'.$src;
-        $html = '<section class="'.$cls.'">';
-        $html .= '<video src="'.$src.'" '.$controls.' '.$autoplay.' '.$autobuffer.'  '.$muted.' '.$loop.'> </video>';
+        $src = ($ext) ? $src : $url . '/' . $src;
+        $html = '<section class="' . $cls . '">';
+        $html .= '<video src="' . $src . '" ' . $controls . ' ' . $autoplay . ' ' . $autobuffer . '  ' . $muted . ' ' . $loop . '> </video>';
         $html .= '</section>';
         $html = preg_replace('/\s+/', ' ', $html);
         return $html;
@@ -178,12 +172,12 @@ Shortcode::add('Video', function ($attrs) {
 Shortcode::add('Text', function ($attrs, $content) {
     extract($attrs);
 
-    $cls = (isset($cls)) ? 'class="'.$cls.'"' : 'class="txt"';
-    $color = (isset($color)) ? 'color:'.$color.';' : '';
-    $bg = (isset($bg)) ? 'background-color:'.$bg.';' : '';
+    $cls = (isset($cls)) ? 'class="' . $cls . '"' : 'class="txt"';
+    $color = (isset($color)) ? 'color:' . $color . ';' : '';
+    $bg = (isset($bg)) ? 'background-color:' . $bg . ';' : '';
 
     $content = Parsedown::instance()->text($content);
-    $output = Filter::apply('content', '<div '.$cls.' style="'.$color.' '.$bg.'">'.$content.'</div>');
+    $output = Filter::apply('content', '<div ' . $cls . ' style="' . $color . ' ' . $bg . '">' . $content . '</div>');
     $output = preg_replace('/\s+/', ' ', $output);
 
     if ($content) {
@@ -192,8 +186,6 @@ Shortcode::add('Text', function ($attrs, $content) {
         return showError('Error [ content ] no encontrado');
     }
 });
-
-
 
 /*
  * ====================================================
@@ -210,7 +202,7 @@ Shortcode::add('Img', function ($attrs) {
 
     $src = (isset($src)) ? $src : '';
     $url = (isset($url)) ? $url : '';
-    $cls = (isset($cls)) ? 'class="'.$cls.'"' : '';
+    $cls = (isset($cls)) ? 'class="' . $cls . '"' : '';
     $ext = (isset($ext)) ? ($ext = ($ext == 'true') ? true : false) : false;
     $title = (isset($title)) ? $title : '';
     $site = Url::base();
@@ -220,22 +212,22 @@ Shortcode::add('Img', function ($attrs) {
     // exits $src
     if ($src) {
         if ($ext == true || $ext == 'true') {
-            $src = '//'.$src;
+            $src = '//' . $src;
         } else {
-            $src = Url::base().'/'.$src;
+            $src = Url::base() . '/' . $src;
         }
 
         if ($title) {
             if ($url) {
-                $html = '<a href="'.$url.'" title="'.$title.'"><figure><img '.$cls.' src="'.$src.'" alt="'.$title.'"/><figcaption>'.$title.'</figcaption></figure></a>';
+                $html = '<a href="' . $url . '" title="' . $title . '"><figure><img ' . $cls . ' src="' . $src . '" alt="' . $title . '"/><figcaption>' . $title . '</figcaption></figure></a>';
             } else {
-                $html = '<figure><img '.$cls.' src="'.$src.'" alt="'.$title.'"/><figcaption>'.$title.'</figcaption></figure>';
+                $html = '<figure><img ' . $cls . ' src="' . $src . '" alt="' . $title . '"/><figcaption>' . $title . '</figcaption></figure>';
             }
         } else {
             if ($url) {
-                $html = '<a  href="'.$url.'" title="'.$title.'"><img '.$cls.' src="'.$src.'" /></a>';
+                $html = '<a  href="' . $url . '" title="' . $title . '"><img ' . $cls . ' src="' . $src . '" /></a>';
             } else {
-                $html = '<img '.$cls.' src="'.$src.'" alt="'.$title.'"/>';
+                $html = '<img ' . $cls . ' src="' . $src . '" alt="' . $title . '"/>';
             }
         }
 
@@ -245,7 +237,6 @@ Shortcode::add('Img', function ($attrs) {
         return showError('Error [ src ] no encontrado');
     }
 });
-
 
 /*
  * ====================================================
@@ -259,11 +250,10 @@ Shortcode::add('Img', function ($attrs) {
 Shortcode::add('Row', function ($attrs, $content) {
     extract($attrs);
     $cls = (isset($cls)) ? $cls : '';
-    $output = Filter::apply('content', '<div class="row '.$cls.'">'.$content.'</div>');
+    $output = Filter::apply('content', '<div class="row ' . $cls . '">' . $content . '</div>');
     $output = preg_replace('/\s+/', ' ', $output);
     return $output;
 });
-
 
 /**
  * ====================================================
@@ -280,11 +270,10 @@ Shortcode::add('Col', function ($attrs, $content) {
     $num = (isset($num)) ? $num : '6';
     $cls = (isset($cls)) ? $cls : '';
     $content = Parsedown::instance()->text($content);
-    $content = Filter::apply('content', '<div class="col-'.$num.' '.$cls.'">'.$content.'</div>');
+    $content = Filter::apply('content', '<div class="col-' . $num . ' ' . $cls . '">' . $content . '</div>');
     $content = preg_replace('/\s+/', ' ', $content);
     return $content;
 });
-
 
 /*
  * ================================
@@ -294,7 +283,7 @@ Shortcode::add('Col', function ($attrs, $content) {
  */
 Shortcode::add('Esc', function ($attr, $content) {
     $output = htmlspecialchars("$content", ENT_QUOTES);
-    $output = str_replace('&#039;',"'",$output);
+    $output = str_replace('&#039;', "'", $output);
     return $output;
 });
 
@@ -311,30 +300,12 @@ Shortcode::add('Code', function ($attrs, $content) {
     $type = (isset($type)) ? $type : 'php';
     if ($content) {
         $content = htmlentities(html_entity_decode($content));
-        $output = Filter::apply('content', '<pre class="line-numbers language-'.$type.'"><code class="language-'.$type.'">'.$content.'</code></pre>');
+        $output = Filter::apply('content', '<pre class="line-numbers language-' . $type . '"><code class="language-' . $type . '">' . $content . '</code></pre>');
         return $output;
     } else {
         return showError('Error [ contenido ] no encontrado');
     }
 });
-
-
-
-/*
- * ================================
- * Config
- * Get config {Config name='title'}
- * ================================
- */
-Shortcode::add('Config', function ($attrs) {
-    extract($attrs);
-    if ($name) {
-        return Barrio::$config[$name];
-    } else {
-        return showError('Error [ name ] no encontrado');
-    }
-});
-
 
 /**
  * ====================================================
@@ -348,14 +319,13 @@ Shortcode::add('Divider', function ($attrs) {
     $type = (isset($type)) ? $type : 'hr';
     $num = (isset($num)) ? $num : '2';
     $cls = (isset($cls)) ? $cls : '';
-    $color = (isset($color)) ? 'style="border-color:'.$color.'"' : '';
+    $color = (isset($color)) ? 'style="border-color:' . $color . '"' : '';
     if ($type !== 'br') {
-        return '<hr class="'.$cls.' mt-'.$num.' mb-'.$num.'" '.$color.'/>';
+        return '<hr class="' . $cls . ' mt-' . $num . ' mb-' . $num . '" ' . $color . '/>';
     } else {
-        return '<br class="'.$cls.' mt-'.$num.' mb-'.$num.'" '.$color.'/>';
+        return '<br class="' . $cls . ' mt-' . $num . ' mb-' . $num . '" ' . $color . '/>';
     }
 });
-
 
 /**
  * ====================================================
@@ -368,7 +338,6 @@ Shortcode::add('Space', function ($attrs) {
     $num = (isset($num)) ? $num : '2';
     return str_repeat('&nbsp;', $num);
 });
-
 
 /*
  * ====================================================
@@ -383,16 +352,15 @@ Shortcode::add('Btn', function ($attrs) {
     extract($attrs);
 
     $text = (isset($text)) ? $text : '';
-    $cls = (isset($cls)) ? 'class="'.$cls.'"' : '';
-    $id = (isset($id)) ? 'id="'.$id.'"' : '';
+    $cls = (isset($cls)) ? 'class="' . $cls . '"' : '';
+    $id = (isset($id)) ? 'id="' . $id . '"' : '';
     $href = (isset($href)) ? $href : '#';
 
     if ($text) {
-        $html = '<a '.$cls.' '.$id.' href="'.$href.'" title="'.$text.'"><button>'.$text.'</button></a>';
+        $html = '<a ' . $cls . ' ' . $id . ' href="' . $href . '" title="' . $text . '"><button>' . $text . '</button></a>';
         $html = preg_replace('/\s+/', ' ', $html);
         return $html;
     } else {
         return showError('Error [ text ] no encontrado');
     }
 });
-

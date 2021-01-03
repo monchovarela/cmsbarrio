@@ -38,7 +38,7 @@ class Router
      */
     public static function loadConfig()
     {
-        $path = ROOT.'/config.php';
+        $path = ROOT . '/config.php';
         if (file_exists($path)) {
             static::$config = (require $path);
         } else {
@@ -50,7 +50,7 @@ class Router
      */
     public static function loadComponent($file)
     {
-        $filename = COMPONENTS.'/'.str_replace('\\', '/', $file).'.php';
+        $filename = COMPONENTS . '/' . str_replace('\\', '/', $file) . '.php';
         if (file_exists($filename)) {
             include $filename;
             if (class_exists($file)) {
@@ -82,7 +82,7 @@ class Router
                 preg_quote($pattern, '/')
             );
             // this pattern
-            $this->routes['#^'.$pattern.'$#'] = $callback;
+            $this->routes['#^' . $pattern . '$#'] = $callback;
         }
     }
 
@@ -105,7 +105,6 @@ class Router
         self::loadComponent('ParsedownExtra');
         self::loadComponent('Shortcode');
 
-
         // Turn on output buffering
         ob_start();
         // Sanitize url
@@ -115,19 +114,10 @@ class Router
         // zona horaria por defecto
         date_default_timezone_set(static::$config['timezone']);
         // Send default header and set internal encoding
-        header('Content-Type: text/html; charset='.static::$config['charset']);
+        header('Content-Type: text/html; charset=' . static::$config['charset']);
         function_exists('mb_language') and mb_language('uni');
         function_exists('mb_regex_encoding') and mb_regex_encoding(static::$config['charset']);
         function_exists('mb_internal_encoding') and mb_internal_encoding(static::$config['charset']);
-
-        function stripslashesGPC(&$value)
-        {
-            $value = stripslashes($value);
-        }
-        array_walk_recursive($_GET, 'stripslashesGPC');
-        array_walk_recursive($_POST, 'stripslashesGPC');
-        array_walk_recursive($_COOKIE, 'stripslashesGPC');
-        array_walk_recursive($_REQUEST, 'stripslashesGPC');
 
         // Start the session
         Session::start();

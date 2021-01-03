@@ -1,19 +1,7 @@
 Title: Kitchen Sink
 Description: De todo un poco como en bótica.
-
+Template: post
 ----
-
-
-{Styles minify=true}
-.demo1,.demo2,.demo3,.demo4{text-align:center;}
-.demo1,.demo1 button{background:blue; color:white;}
-.demo2{background:darkblue; color:white;}
-.demo3{background:green; color:white;}
-.demo4{background:darkgreen; color:white;}
-.demo5{margin: 0;padding:1em;background:Khaki; color:white;}
-.demo6{border-color:Indigo;}
-pre{background: var(--nc-tx-1);color: var(--nc-bg-1);}
-{/Styles}
 
 
 #### Columnas
@@ -228,13 +216,24 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
 
     {Esc}
     {Btn  text='hola' id='btn1'} // para usar javascript
-    {Btn  text='hola' cls='btn-sm'} // con clase
+    {Btn  text='hola' cls='btn btn-sm btn-primary'} // con clase
     {Btn  text='hola' href='//example.com'} // enlaces
     {/Esc}
 
 
-{Btn  text='hola' href='//google'}
-{Btn  text='hola' cls='demo1' href={Url}}
+{Btn  text='hola' cls='btn btn-success' href='//google.es'}
+{Btn  text='hola' cls='btn btn-info' href='//google.es'}
+{Btn  text='hola' cls='btn btn-warning' href='//google.es'}
+{Btn  text='hola' cls='btn btn-dark' href='//google.es'}
+{Btn  text='hola' cls='btn btn-secondary' href='//google.es'}
+{Btn  text='hola' cls='btn btn-primary' href='https://google.es'}
+
+{Btn  text='hola' cls='btn btn-sm btn-success' href='//google.es'}
+{Btn  text='hola' cls='btn btn-sm btn-info' href='//google.es'}
+{Btn  text='hola' cls='btn btn-sm btn-warning' href='//google.es'}
+{Btn  text='hola' cls='btn btn-sm btn-dark' href='//google.es'}
+{Btn  text='hola' cls='btn btn-sm btn-secondary' href='//google.es'}
+{Btn  text='hola' cls='btn btn-sm btn-primary' href='https://google.es'}
 
 {Divider type=br}
 
