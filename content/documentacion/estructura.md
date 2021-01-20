@@ -6,7 +6,7 @@ Template: index
 
 Contenido de la carpeta de Barrio CMS.
 
-{Code}
+[Code]
 └── root/ 
     ├── content/ (contenido de la web)
     │   ├── blog
@@ -38,6 +38,6 @@ Contenido de la carpeta de Barrio CMS.
     ├── .htaccess
     ├── index.php
     └── README.md
-{/Code}
+[/Code]
 
 Dentro de la carpeta **content** se encontraran los archivos 

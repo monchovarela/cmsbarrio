@@ -14,7 +14,95 @@ use Action\Action as Action;
 use Barrio\Barrio as Barrio;
 use Text\Text as Text;
 
+if (!function_exists('assets')) {
+    /**
+     * Assets
+     *
+     * @param string $source
+     *
+     * @return string
+     */
+    function assets(string $source = "")
+    {
+        $themeName = config('theme');
+        $folder = url() . '/core/themes/' . $themeName . '/assets/' . $source;
+        return $folder;
+    }
+}
+if (!function_exists('action')) {
+    /**
+     * Action
+     *
+     * @param string $name
+     *
+     * @return Action
+     */
+    function action(string $name = "")
+    {
+        return Action::run($name);
+    }
+}
+if (!function_exists('config')) {
+    /**
+     * Config
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    function config(string $name = "")
+    {
+        return (Barrio::$config[$name]) ? Barrio::$config[$name] : "";
+    }
+}
+if (!function_exists('url')) {
+    /**
+     * Site url
+     *
+     * @return string
+     */
+    function url()
+    {
+        return Barrio::urlBase();
+    }
+}
+if (!function_exists('urlCurrent')) {
+    /**
+     * Current url
+     *
+     * @return string
+     */
+    function urlCurrent()
+    {
+        return Barrio::urlCurrent();
+    }
+}
+if (!function_exists('imageToDataUri')) {
+    /**
+     * Convertir imagen a Data uri
+     *
+     * @param string $source
+     *
+     * @return string
+     */
+    function imageToDataUri(string $source)
+    {
+        $img = str_replace(Barrio::urlBase(), ROOT_DIR, $source);
+        // Read image path, convert to base64 encoding
+        $imageData = base64_encode((string) file_get_contents($img));
+        // Format the image SRC:  data:{mime};base64,{data};
+        $src = 'data: ' . mime_content_type($img) . ';base64,' . $imageData;
+        return $src;
+    }
+}
 if (!function_exists('arrayOfMenu')) {
+    /**
+     * Generar un menu
+     *
+     * @param array $nav
+     *
+     * @return string
+     */
     function arrayOfMenu($nav)
     {
         $html = '';
@@ -58,8 +146,10 @@ if (!function_exists('arrayOfMenu')) {
         return $html;
     }
 }
-
 if (!function_exists('menu')) {
+    /**
+     * Crear menu
+     */
     function menu()
     {
         // array del menu
@@ -68,32 +158,38 @@ if (!function_exists('menu')) {
         return $navigation;
     }
 }
-
 if (!function_exists('posts')) {
+    /**
+     * Obtener un lista articulos
+     *
+     * @param string $name
+     * @param int $num
+     * @param string $nav
+     */
     function posts($name, $num = 0, $nav = true)
     {
-        // get pages
+        // obtenemos las cabeceras
         $posts = Barrio::run()->getHeaders($name, 'date', 'DESC', ['index', '404']);
-        // limit
+        // limit de la paginacion
         $limit = ($num) ? $num : Barrio::$config['pagination'];
         // init
         $blogPosts = array();
-
-        if ($posts) {
+        // si hay articulos y si es array
+        if ($posts && is_array($posts)) {
             foreach ($posts as $f) {
                 // push on blogposts
                 array_push($blogPosts, $f);
             }
-            // fragment
+            // dividimos en fragmentos para la paginacion
             $articulos = array_chunk($blogPosts, $limit);
-            // get number
+            // obtenemos el numero
             $pgkey = isset($_GET['page']) ? $_GET['page'] : 0;
             $items = $articulos[$pgkey];
             $html = '<div class="row">';
             foreach ($items as $articulo) {
-                $date = date('d/m/Y', (int) $articulo['date']);
-                $html .= '<div class="col-xl-6 col-md-6 mb-3">
-                <div class="card shadow">';
+                $date = (date('d/m/Y', (int) $articulo['date'])) ? date('d/m/Y', (int) $articulo['date']) : date('d/m/Y');
+                $html .= '<div class="col-xl-6 col-md-6 mb-4">
+                <div class="card shadow mb-3">';
                 if (preg_match("/http/s", $articulo['image'])) {
                     if ($articulo['image']) {
                         $html .= '<img src="' . $articulo['image'] . '"/>';
@@ -103,7 +199,7 @@ if (!function_exists('posts')) {
                 } else {
                     if ($articulo['image']) {
                         $src = Barrio::urlBase() . '/' . $articulo['image'];
-                        $html .= '<img src="' . $src . '" alt="' . $articulo['title'] . '"/>';
+                        $html .= '<img src="' . imageToDataUri($src) . '" alt="' . $articulo['title'] . '"/>';
                     } else {
                         $html .= '<div style="height: 12rem;background: #212529;color: #6c757d;display: flex;justify-content: center;align-items: center;font-family: ultra;letter-spacing: 1.8px;text-transform: uppercase;">' . $articulo['title'] . '</div>';
                     }
@@ -112,7 +208,7 @@ if (!function_exists('posts')) {
                     <h4 class="card-title mb-3">' . $articulo['title'] . '</h4>
                     <p class="card-subtitle mb-3"><b>' . Barrio::$config['blogdate'] . ':</b> ' . $date . '</p>
                     <p class="card-text mb-2">' . Text::short($articulo['description'], 50) . '</p>
-                    <a href="' . $articulo['url'] . '" class="btn btn-sm btn-dark my-3 float-end">' . Barrio::$config['readmore'] . '</a>
+                    <a href="' . $articulo['url'] . '" class="btn btn-sm btn-dark my-3 float-end"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-folder-symlink" viewBox="0 0 16 16"><path d="M11.798 8.271l-3.182 1.97c-.27.166-.616-.036-.616-.372V9.1s-2.571-.3-4 2.4c.571-4.8 3.143-4.8 4-4.8v-.769c0-.336.346-.538.616-.371l3.182 1.969c.27.166.27.576 0 .742z"/><path d="M.5 3l.04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm.694 2.09A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09l-.636 7a1 1 0 0 1-.996.91H2.826a1 1 0 0 1-.995-.91l-.637-7zM6.172 2a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.684.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z"/></svg><span class="ms-2">' . Barrio::$config['readmore'] . '</span></a>
                   </div>
                 </div></div><!-- / post -->';
             }
@@ -151,8 +247,13 @@ if (!function_exists('posts')) {
         }
     }
 }
-
 if (!function_exists('primary_post')) {
+    /**
+     * Obtener el primer articulo
+     *
+     * @param string $name
+     * @param int $num
+     */
     function primary_post(string $name = 'blog', int $num = 1)
     {
         $articulos = Barrio::run()->getHeaders($name, 'date', 'DESC', ['index', '404'], $num);
@@ -165,11 +266,11 @@ if (!function_exists('primary_post')) {
                 if (preg_match("/http/s", $articulo['image'])) {
                     $src = $articulo['image'];
                 } else {
-                    $src = Barrio::urlBase() . '/' . $articulo['image'];
+                    $src = imageToDataUri($articulo['image']);
                 }
                 $image = '<img class="img-thumbnail shadow" src="' . $src . '" />';
             }
-            $html .= '<div class="row mb-3"><div class="col-md-6">';
+            $html .= '<div class="row mb-5"><div class="col-md-6">';
             if ($articulo['image']) {
                 $html .= $image;
             } elseif ($articulo['video']) {
@@ -187,20 +288,71 @@ if (!function_exists('primary_post')) {
             $html .= '  </div>';
             $html .= '  <div class="col-md-6">';
             $html .= '      <h2 class="text-ultra mb-3">' . $articulo['title'] . '</h2>';
-            $html .= '      <p class="mb-3">' . Text::short($articulo['description'], 50) . '</p>';
-            $html .= '      <p><a class="btn btn-dark" href="' . $articulo['url'] . '">Ver mas</a></p>';
+            $html .= '      <p class="mb-3">' . $articulo['description'] . '</p>';
+
+            // atributos
+            if ($articulo['attrs']) {
+                $attrs = $articulo['attrs'];
+                $html .= generateAttrs($attrs);
+            }
+            $html .= '      <p><a class="btn btn-dark" href="' . $articulo['url'] . '"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-folder-symlink" viewBox="0 0 16 16"><path d="M11.798 8.271l-3.182 1.97c-.27.166-.616-.036-.616-.372V9.1s-2.571-.3-4 2.4c.571-4.8 3.143-4.8 4-4.8v-.769c0-.336.346-.538.616-.371l3.182 1.969c.27.166.27.576 0 .742z"/><path d="M.5 3l.04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm.694 2.09A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09l-.636 7a1 1 0 0 1-.996.91H2.826a1 1 0 0 1-.995-.91l-.637-7zM6.172 2a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.684.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z"/></svg><span class="ms-2">Ver mas</span></a></p>';
             $html .= '  </div>';
             $html .= '</div>';
         }
         echo $html;
     }
 }
-
+if (!function_exists('generateAttrs')) {
+    /**
+     * Generar atributos
+     *
+     * @param array $attrs
+     */
+    function generateAttrs($attrs)
+    {
+        $html = '<div class="my-4">';
+        $toJson = json_decode((string) $attrs, true);
+        if (is_array($toJson)) {
+            // si hay colores
+            if ($toJson['colores']) {
+                $colores = explode(',', $toJson['colores']);
+                $html .= '<p class="m-0"><b>Colores usados: </b></p>';
+                $html .= '<div class="colors">';
+                foreach ($colores as $color) {
+                    $html .= '<div class="color float-start" style="background:' . $color . ';"><span>' . $color . '</span></div>';
+                }
+                $html .= '</div>';
+            }
+            // si hay codigo
+            if ($toJson['code']) {
+                $code = explode(',', $toJson['code']);
+                $html .= '<p class="mb-1"><b class="me-2">Codigo: </b> ';
+                foreach ($code as $cod) {
+                    $html .= '<span class="me-1 badge bg-dark text-light">' . ucfirst($cod) . '</span>';
+                }
+                $html .= '</p>';
+            }
+            // si hay cms
+            if ($toJson['cms']) {
+                $html .= '<p class="mb-1"><b class="me-2">CMS: </b> ' . $toJson['cms'] . '</p>';
+            }
+        }
+        $html .= '</div>';
+        return $html;
+    }
+}
 if (!function_exists('last_posts')) {
+    /**
+     * Obtener los ultimos articulos
+     *
+     * @param string $name
+     * @param int $cols
+     * @param int $num
+     */
     function last_posts(string $name = 'blog', int $cols = 3, int $num = 4)
     {
         $articulos = Barrio::run()->getHeaders($name, 'date', 'DESC', ['index', '404'], $num);
-        $html = '<div class="row mb-3">';
+        $html = '<div class="row mb-5">';
         foreach ($articulos as $articulo) {
             $date = date('d/m/Y', $articulo['date']);
             $image = '';
@@ -209,11 +361,11 @@ if (!function_exists('last_posts')) {
                 if (preg_match("/http/s", $articulo['image'])) {
                     $src = $articulo['image'];
                 } else {
-                    $src = Barrio::urlBase() . '/' . $articulo['image'];
+                    $src = imageToDataUri($articulo['image']);
                 }
                 $image = '<img class="card-img-top" src="' . $src . '" />';
             }
-            $html .= '<div class="col-md-' . $cols . '"><div class="card shadow">';
+            $html .= '<div class="col-md-' . $cols . '"><div class="card shadow mb-3">';
             if ($articulo['image']) {
                 $html .= '  <div class="thumbnail top">' . $image . '</div>';
             } elseif ($articulo['video']) {
@@ -226,7 +378,7 @@ if (!function_exists('last_posts')) {
             $html .= '<div class="card-body">
                 <h5 class="card-title">' . $articulo['title'] . '</h5>
                 <p class="card-text">' . Text::short($articulo['description'], 50) . '</p>
-                <a href="' . $articulo['url'] . '" class="btn btn-dark float-end">Ver mas</a>
+                <a href="' . $articulo['url'] . '" class="btn btn-dark float-end"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-folder-symlink" viewBox="0 0 16 16"><path d="M11.798 8.271l-3.182 1.97c-.27.166-.616-.036-.616-.372V9.1s-2.571-.3-4 2.4c.571-4.8 3.143-4.8 4-4.8v-.769c0-.336.346-.538.616-.371l3.182 1.969c.27.166.27.576 0 .742z"/><path d="M.5 3l.04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm.694 2.09A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09l-.636 7a1 1 0 0 1-.996.91H2.826a1 1 0 0 1-.995-.91l-.637-7zM6.172 2a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.684.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z"/></svg><span class="ms-2">Ver mas</span></a>
               </div>
             </div></div>';
         }
@@ -234,13 +386,16 @@ if (!function_exists('last_posts')) {
         echo $html;
     }
 }
-
 if (!function_exists('navFolder')) {
+    /**
+     * Navegacion de carpetas
+     */
     function navFolder()
     {
         $source = CONTENT . '/' . trim(Barrio::urlSegment(0));
         if (is_dir($source)) {
             $pages = Barrio::run()->getHeaders(trim(Barrio::urlSegment(0)), 'date', 'DESC', array('index', '404'));
+
             if (count($pages) > 1) {
                 $url = trim(Barrio::urlCurrent());
                 $site_url = trim(Barrio::urlBase() . '/' . Barrio::urlSegment(0));
@@ -283,8 +438,10 @@ if (!function_exists('navFolder')) {
         }
     }
 }
-
 if (!function_exists('search')) {
+    /**
+     * Accion de buscar
+     */
     Action::add('theme_after', "search");
     function search()
     {
@@ -349,3 +506,33 @@ if (!function_exists('search')) {
         }
     }
 }
+
+/**
+ * ====================================
+ *      incluimos el plugin de cookie
+ * ====================================
+ */
+Action::add('head', function () {
+
+    $src = array(
+        'style' => 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css',
+        'javascript' => 'https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js',
+    );
+
+    $html = '<link rel="stylesheet" href="' . $src['style'] . '"/>';
+    $html .= '<script rel="javascript" src="' . $src['javascript'] . '"></script>';
+    $html .= '<script>
+        window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+          "position": "bottom-right",
+          "content": {
+            "message": "Utilizamos cookies propias y de terceros. Si continúa navegando acepta su uso.",
+            "dismiss": "Aceptar",
+            "link": "Leer mas",
+            "href": "' . Barrio::urlBase() . '/politica-de-cookies"
+          }
+        })});
+        </script>';
+
+    echo $html;
+});

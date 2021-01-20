@@ -5,81 +5,81 @@ Template: post
 
 ----
 
-{Row}
-  {Col num='4'}
+[Row]
+  [Col num='4']
 ### Columna 4
 Lorem ipsum **dolor **sit amet, `consectetur `adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  {/Col}
-  {Col num='8'}
+  [/Col]
+  [Col num='8']
 ### Columna 8
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  {/Col}
-{/Row}      
+  [/Col]
+[/Row]      
 
 
-{Divider}
+[Divider]
 
 
-{Row}
-  {Col num='8'}
+[Row]
+  [Col num='8']
 ### Columna 8
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-  {/Col}
-  {Col num='4'}
+  [/Col]
+  [Col num='4']
 ### Columna 4
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-  {/Col}
-{/Row}      
+  [/Col]
+[/Row]      
 
 
-{Divider}
+[Divider]
 
-{Row}
-  {Col num='6'}
+[Row]
+  [Col num='6']
 ### Columna 6
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-  {/Col}
-  {Col num='6'}
+  [/Col]
+  [Col num='6']
 ### Columna 6
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  
-  {/Col}
-{/Row}      
+  [/Col]
+[/Row]      
 
-{Divider}
+[Divider]
 
-{Row}
-  {Col num='4'}
+[Row]
+  [Col num='4']
 ### Columna 4
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  {/Col}
-  {Col num='4'}
+  [/Col]
+  [Col num='4']
 ### Columna 4
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  {/Col}
-  {Col num='4'}
+  [/Col]
+  [Col num='4']
 ### Columna 4
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  {/Col}
-{/Row}      
+  [/Col]
+[/Row]      
 
 
-{Divider}
+[Divider]
 
-{Row}
-  {Col num='3'}
+[Row]
+  [Col num='3']
 ### Columna 3
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  {/Col}
-  {Col num='3'}
+  [/Col]
+  [Col num='3']
 ### Columna 3
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  {/Col}
-  {Col num='3'}
+  [/Col]
+  [Col num='3']
 ### Columna 3
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  
-  {/Col}
-  {Col num='3'}
+  [/Col]
+  [Col num='3']
 ### Columna 3
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-  {/Col}
-{/Row} 
+  [/Col]
+[/Row] 

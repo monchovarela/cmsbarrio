@@ -7,7 +7,7 @@ Template: index
 
 Es muy fácil crear Shortcodes en **Barrio CMS** por ejemplo, vamos a crear un Shortcode que cambie el color del texto con el color que queramos.
 
-{Code type='php'}<?php
+[Code type='php']<?php
 // llamamos la funcion mejor capitalizada (letra mayúscula)
 Shortcode::add('Texto',function($atributos,$contenido){
     // extraemos los atributos (en este caso $color)
@@ -23,9 +23,9 @@ Shortcode::add('Texto',function($atributos,$contenido){
     // enseñamos la plantilla
     return $resultado;
 });
-{/Code}
+[/Code]
 
-Ahora si escribimos `{Esc}{Text color=green}{/Esc}` y dentro de este el texto y cerramos  con **corchetes** `{Esc}{/Text}{/Esc}` obtenemos esto:
+Ahora si escribimos `[Esc][Text color=green][/Esc]` y dentro de este el texto y cerramos  con **corchetes** `[Esc][/Text][/Esc]` obtenemos esto:
 
 {Text color=green}
 Este es un texto dentro de un Shortcode en el que puedo usar **Markdown**
@@ -34,20 +34,20 @@ Este es un texto dentro de un Shortcode en el que puedo usar **Markdown**
 
 También puedes usar **código de color**
 
-{Code type='php'}{Esc}{Text color='#f00'} // con comillas simples
+[Code type='php'][Esc][Text color='#f00'] // con comillas simples
     Hola soy **Rojo**
-{/Text}{/Esc}{/Code}
+[/Text][/Esc][/Code]
 
 
-{Text color='#f00'}
+[Text color='#f00']
    Hola soy **Rojo**
-{/Text}
+[/Text]
 
 
 Ahora vamos hacer un Shortcode para incrustar videos de Youtube.
 En este caso **no necesitamos escribir dentro** así que es mas facil aun.
 
-{Code type='php'}<?php
+[Code type='php']<?php
 Shortcode::add('Youtube', function ($atributos) {
     // extraemos los atributos (en este caso $src)
     extract($atributos);
@@ -67,29 +67,29 @@ Shortcode::add('Youtube', function ($atributos) {
         return Barrio::error('Error [ id ] no encontrado');
     }
 });
-{/Code}
+[/Code]
 
 El código seria este:
 
-{Code type='php'}{Esc}{Youtube id='GxEc46k46gg'}{/Esc}{/Code}
+[Code type='php'][Esc][Youtube id='GxEc46k46gg'][/Esc][/Code]
 
 Y el resultado este 
 
 
-{Youtube id='GxEc46k46gg'}
+[Youtube id='GxEc46k46gg']
 
-{Divider}
+[Divider]
 
 **En caso de no poner el atributo id saldria esto:**
 
-{Youtube}
+[Youtube]
 
-{Divider}
+[Divider]
 
 Con los Shortcodes podemos crear desde **galerías**, **formularios** , **incrustar videos**, **Musica**, **Cambiar el Css** y todo un largo etcétera.
 
-{Text color='var(--nc-lk-1)'}
+[Text color='var(--nc-lk-1)']
 **Nota:** Si tienes instalado Barrio CMS en local puedes probar el editor para ver como funcionan los Shortcodes.
-{/Text}
+[/Text]
 
-{Divider type='br'}
+[Divider type='br']

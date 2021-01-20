@@ -6,7 +6,7 @@ Template: post
 
 #### Probando Token
 
-    {Php}
+    [Php]
         use Token\Token as Token;
         $token = Token::generate('test');
         $checkToken = Token::check($token,'test');
@@ -15,13 +15,13 @@ Template: post
         }else{
             echo 'El token es malo 👽';
         }   
-    {/Php}
+    [/Php]
 
 
 #### Probando la Api
 
 [//]: # (Shortcode css add style on Head.)
-{Styles minify=true}
+[Styles minify=true]
     .wait{
         opacity:1;
         animation: fade 500ms infinite ease-in-out;
@@ -34,11 +34,10 @@ Template: post
         background: var(--bs-primary);
         border-color: var(--bs-primary);
     }
-{/Styles}
+[/Styles]
 
 
-[//]: # (You can add Php code on markdown.)
-{Php}
+[Php]
     $pages = File\File::scan(CONTENT.'/blog','md',false);
     $html = '<select id="test_api" class="form-control">';
     $html .= '<option> Seleciona el articulo </option>';
@@ -50,10 +49,10 @@ Template: post
     $html .= '</select>';
     $html .= '<pre id="test_output"></pre>';
     echo $html;
-{/Php}
+[/Php]
 
 [//]: # (Add Javascript, this render on footer.)
-{Scripts minify=true}
+[Scripts minify=true]
     const api = window.test_api;
     const out = window.test_output;
     const getData = async (url) => {
@@ -77,4 +76,4 @@ Template: post
             },800);
         };
     });
-{/Scripts}
+[/Scripts]

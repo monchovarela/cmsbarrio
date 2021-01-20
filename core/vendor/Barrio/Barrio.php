@@ -8,12 +8,10 @@ require VENDOR . '/Barrio/traits/Debuging.php';
 require VENDOR . '/Barrio/traits/Info.php';
 require VENDOR . '/Barrio/traits/Navigation.php';
 require VENDOR . '/Barrio/traits/Pages.php';
-require VENDOR . '/Barrio/traits/Template.php';
 require VENDOR . '/Barrio/traits/Url.php';
 require VENDOR . '/Barrio/traits/Validate.php';
 
 use Action\Action as Action;
-use Template\Template as Template;
 
 /**
  * Cargar traits
@@ -23,7 +21,6 @@ use Traits\Debuging as D;
 use Traits\Info as I;
 use Traits\Navigation as N;
 use Traits\Pages as P;
-use Traits\Template as T;
 use Traits\Url as U;
 use Traits\Validate as V;
 
@@ -39,7 +36,7 @@ use Traits\Validate as V;
 class Barrio
 {
 
-    use C, D, I, N, P, T, U, V;
+    use C, D, I, N, P, U, V;
 
     /**
      * Constantes
@@ -102,8 +99,14 @@ class Barrio
         $modules = array_filter(scandir(MODULES), function ($item) {return $item[0] !== '.';});
         foreach ($modules as $module) {
             $file = MODULES . '/' . $module . '/' . $module . '.module.php';
-            if (file_exists($file) && is_file($file)) {
-                include_once $file;
+            $configFile = MODULES . '/' . $module . '/' . $module . '.config.php';
+
+            if (file_exists($configFile) && is_file($configFile)) {
+                $config = include_once $configFile;
+                if ($config['enabled']) {
+                    include_once $file;
+                }
+
             }
         }
     }
@@ -202,7 +205,6 @@ class Barrio
 
         // Cargamos los modulos
         $this->loadModules();
-
         // Cargamos las funciones de la plantilla
         $this->loadThemeFunctions();
 
@@ -250,21 +252,16 @@ class Barrio
         $config = self::$config;
         $layout = !empty($page['template']) ? $page['template'] : 'index';
 
-        $T = new Template();
-        $T->tags = self::run()->tags();
-        $T->set('page', $page);
-        $T->set('config', $config);
-
         // Comprobamos si esta publicada la página
         $page['published'] = $page['published'] === 'false' ? false : true;
 
         if ($page['published']) {
             $sourceUrl = THEMES . '/' . $config['theme'] . '/';
             if (file_exists($sourceUrl . $layout . '.html')) {
-                echo $T->draw($sourceUrl . $layout . '.html');
+                include $sourceUrl . $layout . '.html';
                 exit(1);
             } else {
-                echo $T->draw($sourceUrl . 'index.html');
+                include $sourceUrl . 'index.html';
                 exit(1);
             }
         } else {

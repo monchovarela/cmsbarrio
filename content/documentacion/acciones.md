@@ -15,19 +15,19 @@ Las Acciones son funciones que podemos integrar en la plantilla para hacerla mas
 
 Vamos a crear una extensión que automáticamente genere un enlace al final de cada pagina usando una acción que ya esta en la plantilla que es  `<?php Barrio::runAction('theme_after); ?>`.
 
-{Code type='php'}<?php
+[Code type='php']<?php
 // llamamos a la acción theme_after
 Action::add('theme_after',function(){
     // y ahora que enseñe esto
     echo '<a href="'.Barrio::urlBase().'/articulos">Ver articulos.</a>';
 });
-{/Code}
+[/Code]
 
 Y ahora en todas las páginas al final se verá ese enlace, asi de facil.
 
 Ahora vamos añadir algo más, le vamos a decir que si está en la sección artículos y  la página extensiones enseñe el texto y si no no enseñe nada.
 
-{Code type='php'}<?php
+[Code type='php']<?php
 // llamamos a la acción theme_after
 Action::add('theme_after',function(){
     // urlSegment sirve para señalar un segmento del enlace
@@ -37,12 +37,12 @@ Action::add('theme_after',function(){
         echo '<a href="'.Barrio::urlBase().'/articulos">Ver articulos.</a>';
     }
 });
-{/Code}
+[/Code]
 
 
 Ahora haremos una acción que cambie el fondo solo en esta página, para ello usaremos  el  `Action::run('head')` que hay en el archivo _head.inc.html_.
 
-{Code type='php'}<?php
+[Code type='php']<?php
 // llamamos a la accion head
 Action::add('head',function(){
      // urlSegment sirve para señalar un segmento del enlace
@@ -62,4 +62,4 @@ Action::add('head',function(){
         </style>';
     }
 });
-{/Code}
+[/Code]

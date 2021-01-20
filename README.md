@@ -202,9 +202,9 @@ Ahora si escribimos `{Text color=green}` y dentro de este el texto y cerramos  c
 
 También puedes usar **código de color**
 
-    {Text color='#f00'} // con comillas simples
+    [Text color='#f00'] // con comillas simples
         Hola soy **Rojo**
-    {/Text}
+    [/Text]
 
     <p style="color:#f00">Este es un texto dentro de un Shortcode en el que puedo usar 
 
@@ -242,7 +242,7 @@ En este caso **no necesitamos escribir dentro** así que es mas facil aun.
 
 El código seria este:
 
-    {Youtube id='GxEc46k46gg'}
+    [Youtube id='GxEc46k46gg']
 
 
 Con los Shortcodes podemos crear desde **galerías**, **formularios** , **incrustar videos**, **Musica**, **Cambiar el Css** y todo un largo etcétera.

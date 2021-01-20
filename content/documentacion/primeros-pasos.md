@@ -31,4 +31,4 @@ Puedes crear tu propia configuración pero <mark>no borres las variables que hay
 
 Puedes llamar cualquier variable e el archivo _.md_ .
 
-**Ejemplo:**  `{Esc}{Config name='title'}{/Esc}` = {Config name='title'} 
+**Ejemplo:**  `[Esc][Config name='title'][/Esc]` = [Config name='title'] 

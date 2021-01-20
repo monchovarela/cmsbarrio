@@ -93,48 +93,22 @@ _cursiva_
 __negrita__
 
 
-
-
 ###  Links o enlaces en línea
 
-[enlace en línea](http://www.limni.net)
+[Link title='enlace en línea' href='http://www.limni.net']
 
 ### Links o enlaces como referencia
 
-[nombre que quieres darle a tu enlace][nombre de tu referencia]
-
-[nombre de tu referencia]: http://www.tuenlace.com
+[Link title='nombre que quieres darle a tu enlace' href='http://www.tuenlace.com']
 
 ### Links automáticos
 
 <http://www.limni.net>
 
-
 ### Código puro 
 
 `Esto es una línea de código`
 
-
 ### Texto preformateado
 
-
-         Esto es una línea de código
-
-
-### Imágenes
-
-![Texto alternativo](//via.placeholder.com/150 "Título alternativo")
-
-De esta forma podrías insertar una imagen
-
-![nombre de la imagen][img1]
-
-O dos, sin ensuciar tu espacio de escritura.
-
-![nombre de la imagen2][img2] 
-![nombre de la imagen][img1]
-
-
-[img1]: //via.placeholder.com/150 "Título alternativo"
-[img2]: //via.placeholder.com/150 "Título alternativo"
-
+	Esto es una línea de código

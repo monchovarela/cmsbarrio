@@ -28,7 +28,7 @@ Template: blank
 
 
 
-{Scripts minify=true}
+[Scripts minify=true]
 !(function () {
 	let hits = [],
 		url = "https://hn.algolia.com/api/v1/search?query=",
@@ -61,4 +61,4 @@ Template: blank
 		if (val) fetchData(val).then((r) => renderData(r.hits));
 	});
 })();
-{/Scripts}
+[/Scripts]

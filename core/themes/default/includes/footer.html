@@ -1,20 +1,19 @@
-<div id="darkModeSwitcher" 
-	class="position-fixed py-2 px-3 bg-dark text-white rounded-pill" >
-	<div class="form-check form-switch pull-right">
-		<input class="form-check-input" type="checkbox" id="darkMode">
-		<label id="darkModeLabel" for="darkMode">Light</label>
+	<div id="darkModeSwitcher" 
+		class="position-fixed py-2 px-3 bg-dark text-white rounded-pill" >
+		<div class="form-check form-switch pull-right">
+			<input class="form-check-input" type="checkbox" id="darkMode">
+			<label id="darkModeLabel" for="darkMode">Light</label>
+		</div>
 	</div>
-</div>
 
-<script rel="javascript" src="{Assets: js/bootstrap.min.js}"></script>
-
-{If: DEV_MODE}
-	<script rel="javascript" src="{Assets: js/main.js}"></script>
-{Else}
-	<script rel="javascript" src="{Assets: js/main.min.js}"></script>
-{/If}
-
-<!-- modulos -->
-{Action: footer}
+    <!-- Javascript -->
+    <script rel="javascript" src="<?php echo assets('js/bootstrap.min.js');?>"></script>
+    <?php if(DEV_MODE) { ?>
+    <script rel="javascript" src="<?php echo assets('js/main.js');?>"></script>
+    <?php }else{ ?>
+    <script rel="javascript" src="<?php echo assets('js/main.main.js');?>"></script>
+    <?php } ?>
+    <!-- modulos -->
+    <?php echo action('footer');?>
 </body>
 </html>

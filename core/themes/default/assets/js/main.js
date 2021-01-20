@@ -50,3 +50,31 @@ function resetTheme() {
 		_id(darkLabel).innerHTML = lightLang;
 	}
 }
+
+let images = document.querySelectorAll('.zoom');
+if(images) Array.from(images).forEach(item => item.addEventListener('click',createZoom));
+function createZoom(){
+  let overlay = '',
+      clone = this.cloneNode(),
+      removeElements = function(){
+        clone.className = 'zoom-out';
+        let w = setTimeout(() => {
+          clone.remove();      
+          overlay.remove();
+          clearTimeout(w);
+        },180);
+      },
+      args = {
+        className: 'image-zoom mh-75 bg-dark',
+        sizes:'(max-width: 500px) 100vw, (max-width: 900px) 50vw, 1024px',
+        onload: function() {
+          overlay = document.createElement('div');
+          overlay.className = 'overlay-zoom';
+          overlay.onclick = removeElements
+          document.body.appendChild(overlay);
+        },
+        onclick: removeElements
+      }
+  for (const [k, v] of Object.entries(args)) clone[k] = v;
+  document.body.appendChild(clone);
+}

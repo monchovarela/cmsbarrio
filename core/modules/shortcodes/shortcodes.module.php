@@ -99,6 +99,8 @@ if (!function_exists('minify_js')) {
 /*
  * ================================
  * Site url
+ *
+ * [Site_url]
  * ================================
  */
 Shortcode::add('Site_url', function ($attrs) {
@@ -109,6 +111,8 @@ Shortcode::add('Site_url', function ($attrs) {
 /*
  * ================================
  * Site current
+ *
+ * [Site_current]
  * ================================
  */
 Shortcode::add('Site_current', function ($attrs) {
@@ -117,9 +121,37 @@ Shortcode::add('Site_current', function ($attrs) {
 });
 
 /*
+ * =============================================
+ *   Link
+ *
+ *   [Link href='GxEc46k46gg']
+ *   [Link title='Ir a' href='GxEc46k46gg']
+ *   [Link alt='website' title='Ir a' href='GxEc46k46gg']
+ *   [Link cls='btn' title='Ir a' href='GxEc46k46gg']
+ * =============================================
+ */
+Shortcode::add('Link', function ($attrs) {
+    extract($attrs);
+
+    $href = (isset($href)) ? $href : Barrio::urlBase();
+    $title = (isset($title)) ? $title : 'link';
+    $alt = (isset($alt)) ? 'alt="' . $alt . '"' : '';
+    $cls = (isset($cls)) ? 'class="' . $cls . '"' : '';
+
+    if ($href) {
+        $html = '<a ' . $cls . ' href="' . $href . '" ' . $alt . '>' . $title . '</a>';
+        $html = preg_replace('/\s+/', ' ', $html);
+        return $html;
+    } else {
+        return Barrio::error('Error [ href ] no encontrada');
+    }
+});
+
+/*
  * ================================
  * Details
- * {Details title='example'}Markdown Hidden content {/Details}
+ *
+ * [Details title='example']Markdown Hidden content [/Details]
  * ================================
  */
 Shortcode::add('Details', function ($attrs, $content) {
@@ -141,7 +173,8 @@ Shortcode::add('Details', function ($attrs, $content) {
 /*
  * ================================
  * Iframe
- * {iframe src='monchovarela.es'}
+ *
+ * [iframe src='monchovarela.es']
  * ================================
  */
 Shortcode::add('Iframe', function ($attrs) {
@@ -170,8 +203,9 @@ Shortcode::add('Iframe', function ($attrs) {
 /*
  * =============================================
  *   Youtube
- *   {Youtube id='GxEc46k46gg'}
- *   {Youtube cls='well' id='GxEc46k46gg'}
+ *
+ *   [Youtube id='GxEc46k46gg']
+ *   [Youtube cls='well' id='GxEc46k46gg']
  * =============================================
  */
 Shortcode::add('Youtube', function ($attrs) {
@@ -195,8 +229,9 @@ Shortcode::add('Youtube', function ($attrs) {
 /*
  * =============================================
  *   Vimeo
- *   {Vimeo id='149129821'}
- *   {Vimeo cls='iframe' id='149129821'}
+ *
+ *   [Vimeo id='149129821']
+ *   [Vimeo cls='iframe' id='149129821']
  * =============================================
  */
 Shortcode::add('Vimeo', function ($attrs) {
@@ -220,12 +255,12 @@ Shortcode::add('Vimeo', function ($attrs) {
 /*
  * =============================================
  *   Video
- *   {Video src='public/videos/movie.mp4'}
- *   {Video cls='iframe' src='public/videos/movie.mp4'}
- *   {Video cls='iframe' autoplay='' src='public/videos/movie.mp4'}
- *   {Video cls='iframe' autoplay='' autobuffer='' src='public/videos/movie.mp4'}
- *   {Video cls='iframe' autoplay='' autobuffer='' muted='' src='public/videos/movie.mp4'}
- *   {Video cls='iframe' autoplay='' autobuffer='' muted='' loop='' src='public/videos/movie.mp4'}
+ *
+ *   [Video src='public/videos/movie.mp4']
+ *   [Video cls='iframe' src='public/videos/movie.mp4']
+ *   [Video cls='iframe' autoplay='' src='public/videos/movie.mp4']
+ *   [Video cls='iframe' autoplay='' autobuffer='' src='public/videos/movie.mp4']
+ *   [Video cls='iframe' autoplay='' autobuffer='' muted='' loop='' src='public/videos/movie.mp4']
  * =============================================
  */
 Shortcode::add('Video', function ($attrs) {
@@ -258,9 +293,10 @@ Shortcode::add('Video', function ($attrs) {
 /*
  * ====================================================
  *   Texto
- *   {Text}Color texto{/Text}
- *   {Text color='white'}Color texto{/Text}
- *   {Text bg='blue' color='white'}Color texto{/Text}
+ *
+ *   [Text]Color texto[/Text]
+ *   [Text bg='blue']Color texto[/Text]
+ *   [Text bg='blue' color='white']Color texto[/Text]
  * ====================================================
  */
 Shortcode::add('Text', function ($attrs, $content) {
@@ -284,11 +320,12 @@ Shortcode::add('Text', function ($attrs, $content) {
 /*
  * ====================================================
  *   Image
- *   {Img src='{url}/public/image.jpg'}
- *   {Img cls='well' src='{url}/public/image.jpg'}
- *   {Img url='//google.es' cls='well' src='{url}/public/image.jpg'}
- *   {Img url='//google.es' title='Hello' cls='well' src='{url}/public/image.jpg'}
- *   {Img url='//google.es' title='Hello' cls='well' ext='' src='//otraurl.com/public/image.jpg'}
+ *
+ *   [Img src='//otraurl.com/public/image.jpg']
+ *   [Img url='//google.es' src='//otraurl.com/public/image.jpg']
+ *   [Img url='//google.es' title='Hello' src='//otraurl.com/public/image.jpg']
+ *   [Img url='//google.es' title='Hello' cls='well' src='//otraurl.com/public/image.jpg']
+ *   [Img url='//google.es' title='Hello' cls='well' ext='' src='//otraurl.com/public/image.jpg']
  * ====================================================
  */
 Shortcode::add('Img', function ($attrs) {
@@ -343,15 +380,16 @@ Shortcode::add('Img', function ($attrs) {
  * ====================================================
  *  Row
  * - cls = css class
- *   {Row}
+ *   [Row]
  *       bloques que sumen 12 en total
- *   {/Row}
+ *   [/Row]
  * ====================================================
  */
 Shortcode::add('Row', function ($attrs, $content) {
     extract($attrs);
     $cls = (isset($cls)) ? $cls : '';
-    $output = Filter::apply('content', '<div class="row ' . $cls . '">' . $content . '</div>');
+    $num = (isset($num)) ? 'row-cols-'.$num : '';
+    $output = Filter::apply('content', '<div class="row ' . $cls . ' '.$num.'">' . $content . '</div>');
     $output = preg_replace('/\s+/', ' ', $output);
     return $output;
 });
@@ -361,9 +399,9 @@ Shortcode::add('Row', function ($attrs, $content) {
  * num = col number
  * cls = class
  *
- * {Col num='8'}
+ * [Col num='8']
  *      texto en markdown
- * {/Col}
+ * [/Col]
  * ====================================================
  */
 Shortcode::add('Col', function ($attrs, $content) {
@@ -371,7 +409,7 @@ Shortcode::add('Col', function ($attrs, $content) {
     $num = (isset($num)) ? $num : '6';
     $cls = (isset($cls)) ? $cls : '';
     $content = Parsedown::instance()->text($content);
-    $content = Filter::apply('content', '<div class="col-md-' . $num . ' ' . $cls . '">' . $content . '</div>');
+    $content = Filter::apply('content', '<div class="col-' . $num . ' col-md-' . $num . ' ' . $cls . '">' . $content . '</div>');
     $content = preg_replace('/\s+/', ' ', $content);
     return $content;
 });
@@ -379,8 +417,9 @@ Shortcode::add('Col', function ($attrs, $content) {
 /*
  * ================================
  * Style
- * {Styles}body{};{/Styles}
- * {Styles minify=true}body{};{/Styles}
+ *
+ * [Styles]body{};[/Styles]
+ * [Styles minify=true]body{};[/Styles]
  * ================================
  */
 Shortcode::add('Styles', function ($attrs, $content = '') {
@@ -406,7 +445,8 @@ Shortcode::add('Styles', function ($attrs, $content = '') {
 /*
  * ================================
  * Style file
- * {Style href='//example.css'}
+ *
+ * [Style href='//example.css']
  * ================================
  */
 Shortcode::add('Style', function ($attrs) {
@@ -423,8 +463,9 @@ Shortcode::add('Style', function ($attrs) {
 /*
  * ================================
  * Scripts
- * {Scripts}console.log("test");{/Scripts}
- * {Scripts minify=true}console.log("test");{/Scripts}
+ *
+ * [Scripts]console.log("test");[/Scripts]
+ * [Scripts minify=true]console.log("test");[/Scripts]
  * ================================
  */
 Shortcode::add('Scripts', function ($attrs, $content = '') {
@@ -450,7 +491,8 @@ Shortcode::add('Scripts', function ($attrs, $content = '') {
 /*
  * ================================
  * Script file
- * {Script src='//example.js'}
+ *
+ * [Script src='//example.js']
  * ================================
  */
 Shortcode::add('Script', function ($attrs) {
@@ -468,7 +510,8 @@ Shortcode::add('Script', function ($attrs) {
 /*
  * ================================
  * Escape or convert html tags
- * {Esc}echo 'holas';{/Esc}
+ *
+ * [Esc]echo 'holas';[/Esc]
  * ================================
  */
 Shortcode::add('Esc', function ($attr, $content) {
@@ -480,9 +523,9 @@ Shortcode::add('Esc', function ($attr, $content) {
 /**
  * ====================================================
  *  Code
- *   {Code type='php'}
- *       bloques que sumen 12 en total
- *   {/Code}
+ *   [Code type='php']
+ *       php code here
+ *   [/Code]
  * ====================================================
  */
 Shortcode::add('Code', function ($attrs, $content) {
@@ -500,7 +543,8 @@ Shortcode::add('Code', function ($attrs, $content) {
 /*
  * ================================
  * Config
- * Get config {Config name='title'}
+ *
+ * Get config [Config name='title']
  * ================================
  */
 Shortcode::add('Config', function ($attrs) {
@@ -514,9 +558,11 @@ Shortcode::add('Config', function ($attrs) {
 
 /**
  * ====================================================
- *   {Divider}
- *   {Divider num='2'}
- *   {Divider type='br' num='2'}
+ * Divider
+ *
+ * [Divider]
+ * [Divider num='2']
+ * [Divider type='br' num='2']
  * ====================================================
  */
 Shortcode::add('Divider', function ($attrs) {
@@ -534,8 +580,10 @@ Shortcode::add('Divider', function ($attrs) {
 
 /**
  * ====================================================
- *   {Space}
- *   {Space num='2'}
+ * Space
+ *
+ * [Space]
+ * [Space num=2]
  * ====================================================
  */
 Shortcode::add('Space', function ($attrs) {
@@ -550,7 +598,9 @@ Shortcode::add('Space', function ($attrs) {
  * text = texto del boton
  * id =  id del boton (opcional)
  * href = dirección  (opcional)
- * {Btn  text='hola' id='btn' href='//example.com'}
+ *
+ * [Btn text='hola']
+ * [Btn text='hola' id='btn' href='//example.com']
  * ====================================================
  */
 Shortcode::add('Btn', function ($attrs) {
@@ -573,92 +623,12 @@ Shortcode::add('Btn', function ($attrs) {
 /**
  * ====================================================
  * Php
- * {Php}echo 'holas';{/Php}
+ *
+ * [Php]echo 'holas';[/Php]
  * ====================================================
  */
 Shortcode::add('Php', function ($attr, $content) {
     ob_start();
     eval("$content");
     return ob_get_clean();
-});
-
-/**
- * ====================================================
- * {Contact} // usa el del config.php
- * {Contact mail='nakome@demo.com'}
- * ====================================================
- */
-Shortcode::add('Contact', function ($atributos) {
-    extract($atributos);
-    // atributos
-    $mail = (isset($mail)) ? $mail : Barrio::$config['email'];
-    $arrLang = array(
-        'email' => 'Email',
-        'subject' => 'Asunto',
-        'message' => 'Mensaje',
-        'send' => 'Enviar Correo',
-        'error' => 'Lo siento hubo un problema al enviarlo por favor intentelo otra vez',
-        'success' => 'Gracias tu mensaje ha sido enviado',
-    );
-
-    $language = $arrLang;
-
-    $error = '';
-    if (isset($_POST['Submit'])) {
-        // vars
-        $recepient = $mail;
-        $sitename = Barrio::urlBase();
-        $service = trim($_POST["subject"]);
-        $email = trim($_POST["email"]);
-        $text = trim($_POST["message"]);
-
-        $message = "Asunto: $service \n\nMessage: $text";
-        $pagetitle = "Nuevo mensaje desde \"$sitename\"";
-
-        // send mail
-        if (mail($recepient, $pagetitle, $message, "Content-type: text/plain; charset=\"utf-8\" \nFrom: <$email>")) {
-            // success
-            $error = '<p><strong>' . $language['success'] . ' ....</strong></p>';
-        } else {
-            // error
-            $error = '<p><strong class="red">' . $language['error'] . '..</strong></p>';
-        };
-    }
-    // show error
-    $html = $error;
-    $html .= '<form class="form" action="" method="post"  name="form1">
-        <div class="form-floating mb-3">
-          <input type="email" name="email" class="form-control" id="fmail" placeholder="' . $language['email'] . '" required>
-          <label for="fmail">' . $language['email'] . '</label>
-        </div>
-        <div class="form-floating mb-3">
-          <input type="text" name="subject" class="form-control" id="fsubject" placeholder="' . $language['subject'] . '" required>
-          <label for="fsubject">' . $language['subject'] . '</label>
-        </div>
-        <div class="form-floating mb-3">
-          <textarea  name="message" id="fmsg" class="form-control" style="height:10rem" placeholder="' . $language['message'] . '" required></textarea>
-          <label for="fmsg">' . $language['message'] . '</label>
-        </div>
-        <input type="submit" id="send" name="Submit" class="btn btn-primary" value="' . $language['send'] . '">
-    </form>
-    <script rel="javascript">
-        var id = el => document.getElementById(el);
-        var send = id("send"),
-        fmail = id("fmail"),
-        fsubject = id("fsubject"),
-        fmsg = id("fmsg");
-        send.addEventListener("click",function(evt){
-            if(fmail.value !== "" && fsubject.value !== "" && fmsg.value !== "") {
-                send.value = "Enviando...";
-            } else {
-                if(fmail.value === "")
-                    fmail.classList.add("is-invalid");
-                if(fsubject.value === "")
-                    fsubject.classList.add("is-invalid");
-                if(fmsg.value ===  "")
-                    fmsg.classList.add("is-invalid");
-            }
-        });
-    </script>';
-    return $html;
 });

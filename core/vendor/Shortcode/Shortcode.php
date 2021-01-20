@@ -64,9 +64,11 @@ class Shortcode
         }
 
         $shortcodes = implode('|', array_map('preg_quote', array_keys(self::$shortcode_tags)));
-        $pattern = "/(.?)\\{([{$shortcodes}]+)(.*?)(\\/)?\\}(?(4)|(?:(.+?)\\{\\/\\s*\\2\\s*\\}))?(.?)/s";
-
-        return preg_replace_callback($pattern, 'self::handle', $content);
+        // old tags {Shortcode attr=''}
+        //$pattern1 = "/(.?)\\{([{$shortcodes}]+)(.*?)(\\/)?\\}(?(4)|(?:(.+?)\\{\\/\\s*\\2\\s*\\}))?(.?)/s";
+        // [Shortcode attr='']
+        $pattern2 = "/(.?)\\[([{$shortcodes}]+)(.*?)(\\/)?\\](?(4)|(?:(.+?)\\[\\/\\s*\\2\\s*\\]))?(.?)/s";
+        return preg_replace_callback($pattern2, 'self::handle', $content);
     }
 
     /**
