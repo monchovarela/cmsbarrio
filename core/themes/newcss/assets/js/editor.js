@@ -50,7 +50,7 @@ var Editor=function(e){var t=this,a=document,n=[],l=0,r=null;t.area=void 0!==e?e
                 editor.wrap("[Link title='Ir a' href='enlace_aqui", "']");
             },
             'row': function() {
-                editor.wrap('[Row]', '\n{/Row]');
+                editor.wrap('[Row]', '\n[/Row]');
             },
             'col': function() {
                 editor.wrap("[Col num='4']", '\n[/Col]');
@@ -198,7 +198,7 @@ var Editor=function(e){var t=this,a=document,n=[],l=0,r=null;t.area=void 0!==e?e
 
 var maxWidth = 768;
 Split(["#code", "#preview"], {
-    minSize: [400, 400],
+    minSize: [500, 400],
     elementStyle: (dimension, size, gutterSize) => ({
         "flex-basis": `calc(${size}% - ${gutterSize}px)`,
     }),
@@ -208,16 +208,7 @@ Split(["#code", "#preview"], {
 });
 
 let store = localStorage;
-if(store.getItem('demoEditor')) window.editorArea.value = store.getItem('demoEditor');
+if (store.getItem('demoEditor')) window.editorArea.value = store.getItem('demoEditor');
 window.render.onclick = function() {
-    store.setItem('demoEditor',window.editorArea.value);
+    store.setItem('demoEditor', window.editorArea.value);
 }
-
-// or with onreadystatechange…
-let stateCheck = setInterval(() => {
-  if (document.readyState === 'complete') {
-    clearInterval(stateCheck);
-    // document ready
-    window.progress.style.display='none';
-  }
-}, 100);

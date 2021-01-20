@@ -60,7 +60,7 @@
 html{font-size:var(--font-size);-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;min-width:300px;overflow-x:hidden;overflow-y:scroll;text-rendering:optimizeLegibility;text-size-adjust:100%;}
 address,area,article,aside,audio,blockquote,datalist,details,dl,fieldset,figure,form,iframe,img,input,meter,nav,ol,optgroup,option,output,p,pre,progress,ruby,section,table,textarea,ul,video{margin-bottom:1rem}
 button,html,input,select{font-family:var(--font-sans)}
-body{margin:0 auto;max-width: 100%;padding:2rem;border-radius:6px;overflow-x:hidden;word-break:break-word;overflow-wrap:break-word;background:var(--bg-1);color:var(--tx-2);font-size:1.03rem;line-height: 2rem;}
+body{margin:0 auto;max-width: 100%;padding:2rem;overflow-x:hidden;word-break:break-word;overflow-wrap:break-word;background:var(--bg-1);color:var(--tx-2);font-size:1.03rem;line-height: 2rem;}
 ::selection{background:var(--ac-1);color:var(--ac-tx)}
 h1,h2,h3,h4,h5,h6{line-height:1;color:var(--tx-1);padding-top:.875rem}
 h2, h3{color: var(--tx-2);padding-bottom:2px;margin-bottom:8px;}
@@ -104,7 +104,7 @@ details[open]{padding-bottom:.75rem}
 details[open] summary{margin-bottom:6px}
 details[open]>:last-child{margin-bottom:0}
 dt{font-weight:700}
-dd::before{content:'â†’ '}
+dd::before{content:'Ã¢â€ â€™ '}
 hr{border:0;border-bottom:1px solid var(--bg-3);margin:1rem auto}
 fieldset{margin-top:1rem;padding:2rem;border:1px solid var(--bg-3);border-radius:4px}
 legend{padding:auto .5rem}

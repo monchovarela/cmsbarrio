@@ -58,7 +58,6 @@ return array(
             '/documentacion/acciones' => 'Acciones',
             '/documentacion/shortcodes' => 'Shortcodes',
             '/index.php?api=help' => 'Api',
-            '/kitchen-shink' => 'Test Colores',
         ),
         '/editor' => 'Editor',
         '/contacto' => 'Contacto',
