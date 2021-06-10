@@ -1,5 +1,7 @@
 Title: Flat file CMS?
 Description: Que es un sistema de contenidos en formato Flat file.
+Json: /content/test.json
+Template:home
 ----
 
 Los grandes **CMS** utilizan `MySQL` o sistemas similares de gestión de bases de datos en un segundo plano. Los sistemas de gestión de bases de datos **(SGBD)** actúan de manera relacional y trabajan con varias tablas para gestionar las consultas, para lo que necesitan un servidor adicional. Los **flat file CMS** no cuentan con elementos de gestión de bases de datos, por lo que es habitual hablar de ellos como **CMS sin bases de datos**. Con ello no hay lugar para los **SGBD** y tampoco para los servidores configurados a tales efectos. 

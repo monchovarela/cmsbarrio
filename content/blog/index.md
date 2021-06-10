@@ -1,5 +1,4 @@
-Title: Ideas & Recursos
-Description: Todo lo interesante que he encontrado en este universo.
+Title: Blog
+Description: Como funciona el blog.
 Template: group
-
 ----

@@ -1,7 +1,6 @@
 Title: Testeando Javascript
 Description: Incluye el Javascript para crear paginas personalizadas.
 Template: blank
-
 ----
 
 
@@ -9,7 +8,7 @@ Template: blank
 <div class="container">
 	<div class="row mt-3">
 		<div class="col-md-8 m-auto">
-			<p><a href="{Site_url}/blog">&#x21A9; Volver al Blog</a></p>
+			<p><a href="[Site_url]/blog">&#x21A9; Volver al Blog</a></p>
 			<p>Buscador usando Agnolia api.</p>
 		</div>
 	</div>

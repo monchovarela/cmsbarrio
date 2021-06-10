@@ -59,7 +59,6 @@ Si descargó el archivo ZIP y luego planea moverlo a su raíz web, mueva **TODA 
         ├── public (Fotos, videos etc..)/
         │   └── notfound.jpg
         ├── .htaccess 
-        ├── tmp/ (Archivos temporales)
         ├── 404.html (De uso solo para redirigir)
         └── index.php
 
@@ -77,21 +76,24 @@ Puedes llamar cualquier variable de `config.php`si estas en el archivo _.md_ con
 
 ### Plantillas.
 
-    // Incluimos los trozos de codigo de la carpeta includes
-	<?php include 'includes/head.html';?>
-	<?php include 'includes/header.html';?>
-	<main>
-		// El Objeto $page incluye todas las variables de la cabecera
-	    <h1 class="divider"><?php echo $page['title'];?></h1>
-	    <h2 class="my-5"><?php echo $page['description'];?></h2>
-	    // Action se usa para algunos modulos
-	    <?php echo action('theme_before');?>
-	    // Contenido
-	    <?php echo $page['content'];?>
-	    <?php echo action('theme_after');?>
-	</main>
-	<?php include 'includes/prefooter.html';?>
-	<?php include 'includes/footer.html';?>
+    <?php include 'includes/head.html';?>
+    <?php include 'includes/header.html';?>
+    <main>
+      <div class="container">
+        <div class="row">
+            <div class="col-md-10 m-auto">
+                <h1 class="divider"><?php echo $page['title'];?></h1>
+                <h2 class="mb-3 mt-5"><?php echo $page['description'];?></h2>
+                <?php echo action('theme_before');?>
+                <?php echo $page['content'];?>
+                <?php echo action('theme_after');?>
+            </div>
+        </div>
+       </div>
+    </main>
+    <?php include 'includes/prefooter.html';?>
+    <?php include 'includes/footer.html';?>
+
 
 
 
@@ -107,7 +109,7 @@ Las Acciones son funciones que podemos integrar en la plantilla para hacerla mas
 
 #### Creando Extensiones
 
-Vamos a crear una extensión que automáticamente genere un enlace al final de cada pagina usando una acción que ya esta en la plantilla que es  `<?php echo Action::run('theme_after');?>`.
+Vamos a crear una extensión que automáticamente genere un enlace al final de cada pagina usando una acción que ya esta en la plantilla que es  `<?php echo action('theme_after');?>`.
 
     <?php
         // llamamos a la acción theme_after
@@ -194,7 +196,7 @@ Ahora si escribimos `[Text color=green]` y dentro de este el texto y cerramos  c
 
 También puedes usar **código de color**
 
-    [Text color='#f00'] // con comillas simples
+    [Text color='#f00'] // con comillas simples con comillas dobles no funcionara
         Hola soy **Rojo**
     [/Text]
 
@@ -213,7 +215,7 @@ En este caso **no necesitamos escribir dentro** así que es mas facil aun.
             // el codigo del enlace
             $id = (isset($id)) ? $id : '';
 
-            $clase = (isset($clase)) ? $clase : '';
+            $clase = (isset($clase)) ? $clase : 'video';
 
             // comprobamos que exista el $id
             if($id){

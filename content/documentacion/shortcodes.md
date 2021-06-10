@@ -1,7 +1,6 @@
 Title: Shortcodes
 Description: Como funciona Barrio CMS.
 Template: index
-
 ----
 
 

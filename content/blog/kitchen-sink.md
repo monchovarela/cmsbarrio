@@ -4,10 +4,10 @@ Template: post
 ----
 
 [Styles]
-.demo1,.demo2,.demo3,.demo4 {padding: 0.2rem 0;background: var(--ac-1);color: var(--bg-1);font-weight: bold;letter-spacing: 3.3px;text-transform: uppercase;display:flex;justify-content: space-around;align-items: center;height:4rem;}
+.demo1,.demo2,.demo3,.demo4 {padding: 0.2rem 0;background: var(--bs-light);color: var(--bs-dark);font-weight: bold;letter-spacing: 3.3px;text-transform: uppercase;display:flex;justify-content: space-around;align-items: center;height:4rem;}
 .demo1 *,.demo2 *,.demo3 *,.demo4 *{margin:0;}
 .demo1,.demo2,.demo3,.demo4 {animation:flash 3s infinite ease-in-out;}
-@keyframes flash{50%{background:var(--ac-tx)}}
+@keyframes flash{50%{background:var(--bs-gray)}}
 [/Styles]
 
 

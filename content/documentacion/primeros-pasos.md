@@ -1,7 +1,6 @@
 Title: Primeros pasos
 Description: Como funciona Barrio CMS.
 Template: index
-
 ----
 
 

@@ -1,11 +1,11 @@
 <?php include 'includes/head.html';?>
 <?php include 'includes/header.html';?>
-<main>
+<main class="mt-5">
   <div class="container">
     <div class="row">
         <div class="col-md-10 m-auto">
-            <h1 class="divider"><?php echo $page['title'];?></h1>
-            <h2 class="mb-3 mt-5"><?php echo $page['description'];?></h2>
+            <h1 class="fw-bold display-1 divider"><?php echo $page['title'];?></h1>
+            <h2 class="mb-3"><?php echo $page['description'];?></h2>
             <?php echo action('theme_before');?>
             <?php echo $page['content'];?>
             <?php echo action('theme_after');?>

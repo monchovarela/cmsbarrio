@@ -43,12 +43,11 @@
     </IfModule>
 
 	RewriteEngine On
-
 	RewriteBase /cmsbarrio
 	ErrorDocument 404 /404.html
 	RewriteCond %{HTTP:Authorization} ^(.+)$
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-	
+    
     # redireccionar 404
     RedirectMatch 404 /\\.git(/|$)
     RedirectMatch 404 /\\.env(/|$)

@@ -31,7 +31,7 @@ return array(
     // timezone
     'timezone' => 'Europe/Brussels',
     // plantilla por defecto
-    'theme' => 'newcss',
+    'theme' => 'default',
     // titulo de la web
     'title' => 'Barrio CMS',
     // descripcion de la web
@@ -57,6 +57,7 @@ return array(
             '/documentacion/estructura' => 'Estructura',
             '/documentacion/acciones' => 'Acciones',
             '/documentacion/shortcodes' => 'Shortcodes',
+            '/documentacion/test-shortcodes' => 'Test Shortcodes',
             '/index.php?api=help' => 'Api',
         ),
         '/editor' => 'Editor',

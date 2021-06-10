@@ -58,6 +58,9 @@ var Editor=function(e){var t=this,a=document,n=[],l=0,r=null;t.area=void 0!==e?e
             'btn': function() {
                 editor.wrap("[Btn text='boton' href='", "']");
             },
+            'html': function() {
+                editor.wrap("[Html src='/public/", "']");
+            },
             'lorem': function() {
                 editor.wrap('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum nihil eligendi libero laboriosam iure tenetur sunt dolores explicabo velit nesciunt rem at vitae, aspernatur culpa eum consectetur, vero enim modi.\n\n', '');
             },

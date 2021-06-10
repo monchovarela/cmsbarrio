@@ -1,7 +1,6 @@
 Title: Acciones
 Description: Como funciona Barrio CMS.
 Template: index
-
 ----
 
 Las Acciones son funciones que podemos integrar en la plantilla para hacerla mas dináminca. Tenemos unas cuantas por defecto que son:

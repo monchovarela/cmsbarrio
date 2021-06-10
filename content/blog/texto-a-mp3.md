@@ -1,7 +1,6 @@
 Title: Paso a paso
 Description: Pasa texto a mp3 con Python
 Template: post
-
 ----
 
 Primero tenemos que instalar la libreria gTTS asi que abrimos un terminal como admin y escribimos esto:

@@ -7,12 +7,8 @@
 	</div>
 
     <!-- Javascript -->
-    <script rel="javascript" src="<?php echo assets('js/bootstrap.min.js');?>"></script>
-    <?php if(DEV_MODE) { ?>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script rel="javascript" src="<?php echo assets('js/main.js');?>"></script>
-    <?php }else{ ?>
-    <script rel="javascript" src="<?php echo assets('js/main.main.js');?>"></script>
-    <?php } ?>
     <!-- modulos -->
     <?php echo action('footer');?>
 </body>

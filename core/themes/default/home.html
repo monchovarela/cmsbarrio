@@ -1,21 +1,33 @@
 <?php include 'includes/head.html';?>
 <?php include 'includes/header.html';?>
 <main>
-    <div class="container">
-        <?php primary_post('proyectos');?>
-        <div class="row">
-            <div class="col-md-12">
-                <h3 class="divider">Ultimos articulos</h3>
+
+    <section class="py-5 mb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="divider"><?php echo $page['title'];?></h1>
+                    <h2 class="mb-3 mt-5"><?php echo $page['description'];?></h2>
+                    <?php echo action('theme_before');?>
+                    <?php echo $page['content'];?>
+                    <?php echo action('theme_after');?>
+                </div>
             </div>
         </div>
-        <?php last_posts('blog',6,2) ?>
-        <div class="row">
-            <div class="col-md-12">
-                <h3 class="divider">Ultimos proyectos</h3>
+    </section>
+
+    <section class="bg-light py-5 mb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="divider">Ultimos articulos</h3>
+                </div>
             </div>
+            <?php last_posts('blog',4,3) ?>
         </div>
-        <?php last_posts('proyectos',4,3) ?>
-    </div>
+    </section>
+        
+
 </main>
 <?php include 'includes/prefooter.html';?>
 <?php include 'includes/footer.html';?>

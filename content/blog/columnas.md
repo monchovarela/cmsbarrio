@@ -2,7 +2,6 @@ Title: Columnas
 Description: Shortcodes de columnas
 Attrs: 'uno',true,100
 Template: post
-
 ----
 
 [Row]

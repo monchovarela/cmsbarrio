@@ -1,7 +1,6 @@
 Title: Hola Mundo
 Description: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic ullam tenetur aspernatur.
 Template: post
-
 ----
 
 

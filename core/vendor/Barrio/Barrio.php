@@ -3,17 +3,18 @@
 namespace Barrio;
 
 // cargamos los traits
-require VENDOR . '/Barrio/traits/Cors.php';
-require VENDOR . '/Barrio/traits/Debuging.php';
-require VENDOR . '/Barrio/traits/Info.php';
-require VENDOR . '/Barrio/traits/Navigation.php';
-require VENDOR . '/Barrio/traits/Pages.php';
-require VENDOR . '/Barrio/traits/Url.php';
-require VENDOR . '/Barrio/traits/Validate.php';
+require VENDOR.'/Barrio/traits/Cors.php';
+require VENDOR.'/Barrio/traits/Debuging.php';
+require VENDOR.'/Barrio/traits/Info.php';
+require VENDOR.'/Barrio/traits/Navigation.php';
+require VENDOR.'/Barrio/traits/Pages.php';
+require VENDOR.'/Barrio/traits/Url.php';
+require VENDOR.'/Barrio/traits/Validate.php';
 
 use Action\Action as Action;
+use File\File as File;
 
-/**
+/*
  * Cargar traits
  */
 use Traits\Cors as C;
@@ -25,40 +26,44 @@ use Traits\Url as U;
 use Traits\Validate as V;
 
 /**
- * Barrio CMS
+ * Barrio CMS.
  *
  * @author    Moncho Varela / Nakome <nakome@gmail.com>
  * @copyright 2016 Moncho Varela / Nakome <nakome@gmail.com>
  *
  * @version 1.0.0
- *
  */
 class Barrio
 {
-
-    use C, D, I, N, P, U, V;
+    use C;
+    use D;
+    use I;
+    use N;
+    use P;
+    use U;
+    use V;
 
     /**
-     * Constantes
+     * Constantes.
      */
-    const APPNAME = 'Barrio CMS';
-    const VERSION = '0.0.5';
-    const SEPARATOR = '----';
+    public const APPNAME = 'Barrio CMS';
+    public const VERSION = '0.0.5';
+    public const SEPARATOR = '----';
 
     /**
-     * Static Configuración
+     * Static Configuración.
      */
     public static $config;
 
     /**
-     * Static Modulos
+     * Static Modulos.
      */
-    private static $modules = array();
+    private static $modules = [];
 
     /**
-     * Variables Cabecera
+     * Variables Cabecera.
      */
-    private $headers = array(
+    private $headers = [
         'title' => 'Title',
         'description' => 'Description',
         'tags' => 'Tags',
@@ -72,14 +77,15 @@ class Barrio
         'background' => 'Background',
         'video' => 'Video',
         'color' => 'Color',
-        'source' => 'Source',
         'css' => 'Css',
         'javascript' => 'Javascript',
         'attrs' => 'Attrs', // = [1,2,true,'string']
-    );
+        'json' => 'Json', // = /content/data/test.json
+        'password' => 'Password' // for page with password
+    ];
 
     /**
-     * Encadenamos
+     * Encadenamos.
      *
      * @return new static
      */
@@ -89,44 +95,43 @@ class Barrio
     }
 
     /**
-     * Cargamos los modulos
+     * Cargamos los modulos.
      *
      * @return file
      */
     protected function loadModules()
     {
         // http://stackoverflow.com/questions/14680121/include-just-files-in-scandir-array
-        $modules = array_filter(scandir(MODULES), function ($item) {return $item[0] !== '.';});
+        $modules = array_filter(scandir(MODULES), function ($item) {return '.' !== $item[0]; });
         foreach ($modules as $module) {
-            $file = MODULES . '/' . $module . '/' . $module . '.module.php';
-            $configFile = MODULES . '/' . $module . '/' . $module . '.config.php';
+            $file = MODULES.'/'.$module.'/'.$module.'.module.php';
+            $configFile = MODULES.'/'.$module.'/'.$module.'.config.php';
 
             if (file_exists($configFile) && is_file($configFile)) {
                 $config = include_once $configFile;
                 if ($config['enabled']) {
                     include_once $file;
                 }
-
             }
         }
     }
 
     /**
-     * Cargamos los funciones de la plantilla
+     * Cargamos los funciones de la plantilla.
      *
      * @return file
      */
     protected function loadThemeFunctions()
     {
         // carga las funciones de la plantilla
-        $template_functions = THEMES . '/' . self::$config['theme'] . '/functions.php';
+        $template_functions = THEMES.'/'.self::$config['theme'].'/functions.php';
         if (file_exists($template_functions) && is_file($template_functions)) {
             include_once $template_functions;
         }
     }
 
     /**
-     * Cargar configuración
+     * Cargar configuración.
      *
      * @param string $route the route
      *
@@ -137,7 +142,7 @@ class Barrio
         if (file_exists($route) && is_file($route)) {
             static::$config = (include $route);
         } else {
-            die('Oops.. Donde esta el archivo de configuración ?!');
+            exit('Oops.. Donde esta el archivo de configuración ?!');
         }
     }
 
@@ -154,15 +159,16 @@ class Barrio
         eval($data[1]);
         $data = ob_get_contents();
         ob_end_clean();
+
         return $data;
     }
 
     /**
-     * Evalúa Php
+     * Evalúa Php.
      *
      * @param string $str the string to eval
      *
-     * @return callback
+     * @return callable
      */
     protected static function evalPHP($str)
     {
@@ -174,11 +180,10 @@ class Barrio
      *
      * @param string $path the path
      *
-     * @return callback
+     * @return callable
      */
     public function init($path)
     {
-
         // Cargar configuración
         $this->loadConfig($path);
 
@@ -187,14 +192,14 @@ class Barrio
         if (function_exists('date_default_timezone_set')) {
             date_default_timezone_set(static::$config['timezone']);
         } else {
-            putenv('TZ=' . static::$config['timezone']);
+            putenv('TZ='.static::$config['timezone']);
         }
 
         // Sanear la url
         self::runSanitize();
 
         // charset
-        header('Content-Type: text/html; charset=' . static::$config['charset']);
+        header('Content-Type: text/html; charset='.static::$config['charset']);
 
         function_exists('mb_language') and mb_language('uni');
         function_exists('mb_regex_encoding') and mb_regex_encoding(static::$config['charset']);
@@ -211,24 +216,47 @@ class Barrio
         // Cargar la página actual
         $page = $this->page(self::urlCurrent());
 
-        // generador de meta tags
-        Action::add('meta', function () {
-            echo '<meta name="generator" content="Creado con Barrio CMS" />';
-        }, 10);
-
         // Ruta del archivo
-        $file = CONTENT . '/' . self::urlCurrent();
+        $file = CONTENT.'/'.self::urlCurrent();
         if (is_dir($file)) {
-            $file = $file . '/index.md';
-            $date = date("d-m-Y", filemtime($file));
+            $file = $file.'/index.md';
+            $date = date('d-m-Y', filemtime($file));
         } else {
             $file .= '.md';
             if (is_file($file)) {
-                $date = date("d-m-Y", filemtime($file));
+                $date = date('d-m-Y', filemtime($file));
             } else {
                 $date = '';
             }
         }
+
+        Action::add('head', function () use ($page) {
+            // Si existe el attributo json en el archivo md
+            // se usa la variable jsonPageAttrs
+            if ($page['json'] && is_file(ROOT_DIR.$page['json'])) {
+                $json = File::jsonMinify(file_get_contents(ROOT_DIR.$page['json']));
+                $script = (string) "var jsonPageAttrs = '".trim($json)."';";
+                echo '<script type="text/javascript">'.$script.'</script>';
+            } else {
+                $json = json_encode(array("status" => false));
+                $script = (string) "var jsonPageAttrs = '".$json."';";
+                echo '<script type="text/javascript">'.$script.'</script>';
+            }
+            // css style
+            if($page['css']){
+                $href = (string) $page['css'];
+                echo '<link rel="stylesheet" href="'.$href.'"/>';
+            }
+        });
+
+        Action::add('footer', function () use ($page) {
+            // js file
+            if($page['javascript']){
+                $src = (string) $page['javascript'];
+                echo '<script rel="javascript" src="'.$src.'"></script>';
+            }
+        });
+
 
         // Campos vacíos por defecto
         empty($page['title']) and $page['title'] = static::$config['title'];
@@ -243,49 +271,49 @@ class Barrio
         empty($page['video']) and $page['video'] = '';
         empty($page['color']) and $page['color'] = 'white';
         empty($page['keywords']) and $page['keywords'] = static::$config['keywords'];
-        empty($page['source']) and $page['source'] = '';
         empty($page['css']) and $page['css'] = '';
         empty($page['javascript']) and $page['javascript'] = '';
         empty($page['attrs']) and $page['attrs'] = '';
+        empty($page['json']) and $page['json'] = '';
+        empty($page['password']) and $page['password'] = '';
 
         $page = $page;
         $config = self::$config;
         $layout = !empty($page['template']) ? $page['template'] : 'index';
 
         // Comprobamos si esta publicada la página
-        $page['published'] = $page['published'] === 'false' ? false : true;
+        $page['published'] = 'false' === $page['published'] ? false : true;
 
         if ($page['published']) {
-            $sourceUrl = THEMES . '/' . $config['theme'] . '/';
-            if (file_exists($sourceUrl . $layout . '.html')) {
-                include $sourceUrl . $layout . '.html';
+            $sourceUrl = THEMES.'/'.$config['theme'].'/';
+            if (file_exists($sourceUrl.$layout.'.html')) {
+                include $sourceUrl.$layout.'.html';
                 exit(1);
             } else {
-                include $sourceUrl . 'index.html';
+                include $sourceUrl.'index.html';
                 exit(1);
             }
         } else {
-            $this->errorPage($page);
+            include ROOT_DIR.'/404.html';
             exit(1);
         }
-
     }
 
     /**
-     * Pagina de error
+     * Pagina de error.
      *
      * @param array $page true false
      *
      * @return string
      */
-    public function errorPage($page = array())
+    public function errorPage($page = [])
     {
-        $error = THEMES . '/' . self::$config['theme'] . '/404.html';
+        $error = THEMES.'/'.self::$config['theme'].'/404.html';
 
         if (file_exists($error)) {
-            echo $T->draw($error);
+            include $error;
         } else {
-            die('Pagina no encontrada.');
+            exit('Pagina no encontrada.');
         }
     }
 }

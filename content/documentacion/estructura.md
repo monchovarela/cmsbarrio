@@ -1,7 +1,6 @@
 Title: Estructura
 Description: Como funciona Barrio CMS.
 Template: index
-
 ----
 
 Contenido de la carpeta de Barrio CMS.

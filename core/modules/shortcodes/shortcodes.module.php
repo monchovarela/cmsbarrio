@@ -3,12 +3,12 @@
  * Declara al principio del archivo, las llamadas a las funciones respetarán
  * estrictamente los indicios de tipo (no se lanzarán a otro tipo).
  */
-declare (strict_types = 1);
+declare(strict_types=1);
 
-/**
+/*
  * Acceso restringido
  */
-defined("ACCESS") or die("No tiene acceso a este archivo");
+defined('ACCESS') or exit('No tiene acceso a este archivo');
 
 use Action\Action as Action;
 use Barrio\Barrio as Barrio;
@@ -19,11 +19,12 @@ use Shortcode\Shortcode as Shortcode;
 if (!function_exists('minify_css')) {
     function minify_css($input)
     {
-        if (trim($input) === "") {
+        if ('' === trim($input)) {
             return $input;
         }
+
         return preg_replace(
-            array(
+            [
                 // Remove comment(s)
                 '#("(?:[^"\\\]++|\\\.)*+"|\'(?:[^\'\\\\]++|\\\.)*+\')|\/\*(?!\!)(?>.*?\*\/)|^\s*|\s*$#s',
                 // Remove unused white-space(s)
@@ -45,8 +46,8 @@ if (!function_exists('minify_css')) {
                 '#(?<=[\{;])(border|outline):none(?=[;\}\!])#',
                 // Remove empty selector(s)
                 '#(\/\*(?>.*?\*\/))|(^|[\{\}])(?:[^\s\{\}]+)\{\}#s',
-            ),
-            array(
+            ],
+            [
                 '$1',
                 '$1$2$3$4$5$6$7',
                 '$1',
@@ -58,7 +59,7 @@ if (!function_exists('minify_css')) {
                 '$1$2$3',
                 '$1:0',
                 '$1$2',
-            ),
+            ],
             $input
         );
     }
@@ -68,11 +69,12 @@ if (!function_exists('minify_js')) {
     // JavaScript Minifier
     function minify_js($input)
     {
-        if (trim($input) === "") {
+        if ('' === trim($input)) {
             return $input;
         }
+
         return preg_replace(
-            array(
+            [
                 // Remove comment(s)
                 '#\s*("(?:[^"\\\]++|\\\.)*+"|\'(?:[^\'\\\\]++|\\\.)*+\')\s*|\s*\/\*(?!\!|@cc_on)(?>[\s\S]*?\*\/)\s*|\s*(?<![\:\=])\/\/.*(?=[\n\r]|$)|^\s*|\s*$#',
                 // Remove white-space(s) outside the string and regex
@@ -83,14 +85,14 @@ if (!function_exists('minify_js')) {
                 '#([\{,])([\'])(\d+|[a-z_][a-z0-9_]*)\2(?=\:)#i',
                 // --ibid. From `foo['bar']` to `foo.bar`
                 '#([a-z0-9_\)\]])\[([\'"])([a-z_][a-z0-9_]*)\2\]#i',
-            ),
-            array(
+            ],
+            [
                 '$1',
                 '$1$2',
                 '}',
                 '$1$3',
                 '$1.$3',
-            ),
+            ],
             $input
         );
     }
@@ -105,6 +107,7 @@ if (!function_exists('minify_js')) {
  */
 Shortcode::add('Site_url', function ($attrs) {
     extract($attrs);
+
     return Barrio::urlBase();
 });
 
@@ -117,6 +120,7 @@ Shortcode::add('Site_url', function ($attrs) {
  */
 Shortcode::add('Site_current', function ($attrs) {
     extract($attrs);
+
     return Barrio::urlCurrent();
 });
 
@@ -135,12 +139,13 @@ Shortcode::add('Link', function ($attrs) {
 
     $href = (isset($href)) ? $href : Barrio::urlBase();
     $title = (isset($title)) ? $title : 'link';
-    $alt = (isset($alt)) ? 'alt="' . $alt . '"' : '';
-    $cls = (isset($cls)) ? 'class="' . $cls . '"' : '';
+    $alt = (isset($alt)) ? 'title="'.$alt.'"' : '';
+    $cls = (isset($cls)) ? 'class="'.$cls.'"' : '';
 
     if ($href) {
-        $html = '<a ' . $cls . ' href="' . $href . '" ' . $alt . '>' . $title . '</a>';
+        $html = '<a '.$cls.' href="'.$href.'" '.$alt.'>'.$title.'</a>';
         $html = preg_replace('/\s+/', ' ', $html);
+
         return $html;
     } else {
         return Barrio::error('Error [ href ] no encontrada');
@@ -160,7 +165,7 @@ Shortcode::add('Details', function ($attrs, $content) {
     $title = (isset($title)) ? $title : 'Info';
 
     $content = Parsedown::instance()->text($content);
-    $output = Filter::apply('content', '<details class="p-2 mb-2 border border-gray bg-light text-dark"><summary>' . $title . '</summary><div class="p-2">' . $content . '</div></details>');
+    $output = Filter::apply('content', '<details class="p-2 mb-2 border border-gray bg-light text-dark"><summary>'.$title.'</summary><div class="p-2">'.$content.'</div></details>');
     $output = preg_replace('/\s+/', ' ', $output);
 
     if ($content) {
@@ -178,23 +183,23 @@ Shortcode::add('Details', function ($attrs, $content) {
  * ================================
  */
 Shortcode::add('Iframe', function ($attrs) {
-
     // extrac attributes
     extract($attrs);
 
     // src url
     $src = (isset($src)) ? $src : '';
     $cls = (isset($cls)) ? $cls : 'iframe';
-    $my = (isset($my)) ? 'my-' . $my : '';
+    $my = (isset($my)) ? 'my-'.$my : '';
 
     // check src
     if ($src) {
-        $html = '<section class="' . $cls . ' ' . $my . '">';
-        $html .= '<iframe src="https://' . $src . '" frameborder="0" allowfullscreen></iframe>';
+        $html = '<section class="'.$cls.' '.$my.'">';
+        $html .= '<iframe src="https://'.$src.'" frameborder="0" allowfullscreen></iframe>';
         $html .= '</section>';
         $html = preg_replace('/\s+/', ' ', $html);
+
         return $html;
-        // show error if not exists src
+    // show error if not exists src
     } else {
         return Barrio::error('Error [ src ] no encontrado');
     }
@@ -212,14 +217,15 @@ Shortcode::add('Youtube', function ($attrs) {
     extract($attrs);
 
     $id = (isset($id)) ? $id : '';
-    $cls = (isset($cls)) ? $cls : 'iframe';
-    $my = (isset($my)) ? 'my-' . $my : '';
+    $cls = (isset($cls)) ? $cls : 'ratio ratio-16x9';
+    $my = (isset($my)) ? 'my-'.$my : '';
 
     if ($id) {
-        $html = '<section class="' . $cls . ' ' . $my . '">';
-        $html .= '<iframe src="//www.youtube.com/embed/' . $id . '" frameborder="0" allowfullscreen></iframe>';
+        $html = '<section class="'.$cls.' '.$my.'">';
+        $html .= '<iframe src="//www.youtube.com/embed/'.$id.'" frameborder="0" allowfullscreen></iframe>';
         $html .= '</section>';
         $html = preg_replace('/\s+/', ' ', $html);
+
         return $html;
     } else {
         return Barrio::error('Error [ id ] no encontrado');
@@ -238,14 +244,15 @@ Shortcode::add('Vimeo', function ($attrs) {
     extract($attrs);
 
     $id = (isset($id)) ? $id : '';
-    $cls = (isset($cls)) ? $cls : 'iframe';
-    $my = (isset($my)) ? 'my-' . $my : '';
+    $cls = (isset($cls)) ? $cls : 'ratio ratio-16x9';
+    $my = (isset($my)) ? 'my-'.$my : '';
 
     if ($id) {
-        $html = '<section class="' . $cls . ' ' . $my . '">';
-        $html .= '<iframe src="https://player.vimeo.com/video/' . $id . '" frameborder="0" allowfullscreen></iframe>';
+        $html = '<section class="'.$cls.' '.$my.'">';
+        $html .= '<iframe src="https://player.vimeo.com/video/'.$id.'" frameborder="0" allowfullscreen></iframe>';
         $html .= '</section>';
         $html = preg_replace('/\s+/', ' ', $html);
+
         return $html;
     } else {
         return Barrio::error('Error [ id ] no encontrado');
@@ -269,7 +276,7 @@ Shortcode::add('Video', function ($attrs) {
     $src = (isset($src)) ? $src : '';
     $ext = (isset($ext)) ? $ext : false;
     $cls = (isset($cls)) ? $cls : 'video';
-    $my = (isset($my)) ? 'my-' . $my : '';
+    $my = (isset($my)) ? 'my-'.$my : '';
 
     $autoplay = (isset($autoplay)) ? 'autoplay="true"' : '';
     $autobuffer = (isset($autobuffer)) ? 'autobuffer="true"' : '';
@@ -279,11 +286,12 @@ Shortcode::add('Video', function ($attrs) {
 
     if ($src) {
         $url = Barrio::urlBase();
-        $src = ($ext) ? $src : $url . '/' . $src;
-        $html = '<section class="' . $cls . ' ' . $my . '">';
-        $html .= '<video src="' . $src . '" ' . $controls . ' ' . $autoplay . ' ' . $autobuffer . '  ' . $muted . ' ' . $loop . '> </video>';
+        $src = ($ext) ? $src : $url.'/'.$src;
+        $html = '<section class="'.$cls.' '.$my.'">';
+        $html .= '<video src="'.$src.'" '.$controls.' '.$autoplay.' '.$autobuffer.'  '.$muted.' '.$loop.'> </video>';
         $html .= '</section>';
         $html = preg_replace('/\s+/', ' ', $html);
+
         return $html;
     } else {
         return Barrio::error('Error [ src ] no encontrado');
@@ -302,12 +310,12 @@ Shortcode::add('Video', function ($attrs) {
 Shortcode::add('Text', function ($attrs, $content) {
     extract($attrs);
 
-    $cls = (isset($cls)) ? 'class="' . $cls . '"' : 'class="txt"';
-    $color = (isset($color)) ? 'color:' . $color . ';' : '';
-    $bg = (isset($bg)) ? 'background-color:' . $bg . ';' : '';
+    $cls = (isset($cls)) ? 'class="'.$cls.'"' : 'class="txt p-2"';
+    $color = (isset($color)) ? 'color:'.$color.';' : '';
+    $bg = (isset($bg)) ? 'background-color:'.$bg.';' : '';
 
     $content = Parsedown::instance()->text($content);
-    $output = Filter::apply('content', '<div ' . $cls . ' style="' . $color . ' ' . $bg . '">' . $content . '</div>');
+    $output = Filter::apply('content', '<div '.$cls.' style="'.$color.' '.$bg.'">'.$content.'</div>');
     $output = preg_replace('/\s+/', ' ', $output);
 
     if ($content) {
@@ -333,8 +341,8 @@ Shortcode::add('Img', function ($attrs) {
 
     $src = (isset($src)) ? $src : '';
     $url = (isset($url)) ? $url : '';
-    $cls = (isset($cls)) ? 'class="' . $cls . '"' : '';
-    $ext = (isset($ext)) ? ($ext = ($ext == 'true') ? true : false) : false;
+    $cls = (isset($cls)) ? 'class="'.$cls.'"' : '';
+    $ext = (isset($ext)) ? ($ext = ('true' == $ext) ? true : false) : false;
     $title = (isset($title)) ? $title : '';
     $site = Barrio::urlBase();
     $src = rtrim($src, '/');
@@ -343,33 +351,34 @@ Shortcode::add('Img', function ($attrs) {
     $srcset = '';
     // exits $src
     if ($src) {
-        if ($ext == true || $ext == 'true') {
-            $src = '//' . $src;
+        if (true == $ext || 'true' == $ext) {
+            $src = '//'.$src;
             $srcset = false;
         } else {
             // index.php?api=image&url=public/notfound.jpg&w=600
             $normal = $src;
-            $src = Barrio::urlBase() . '/index.php?api=image&url=' . $src . '&w=';
-            $srcset = 'loading="lazy" sizes="(max-width: 500px) 100vw, (max-width: 900px) 50vw, 800px" src="' . $normal . '" srcset="' . $src . '500 500w,' . $src . '800 800w,' . $src . '1000 1000w,' . $src . '1400 1400w"';
+            $src = Barrio::urlBase().'/index.php?api=image&url='.$src.'&w=';
+            $srcset = 'loading="lazy" sizes="(max-width: 500px) 100vw, (max-width: 900px) 50vw, 800px" src="'.$normal.'" srcset="'.$src.'500 500w,'.$src.'800 800w,'.$src.'1000 1000w,'.$src.'1400 1400w"';
         }
 
-        $image = ($srcset) ? $srcset : 'src="' . $src . '"';
+        $image = ($srcset) ? $srcset : 'src="'.$src.'"';
 
         if ($title) {
             if ($url) {
-                $html = '<a href="' . $url . '" title="' . $title . '"> <figure> <img ' . $image . ' ' . $cls . '  alt="' . $title . '"/> <figcaption>' . $title . '</figcaption> </figure> </a>';
+                $html = '<a href="'.$url.'" title="'.$title.'"> <figure> <img '.$image.' '.$cls.'  alt="'.$title.'"/> <figcaption>'.$title.'</figcaption> </figure> </a>';
             } else {
-                $html = '<figure><img ' . $cls . ' ' . $image . ' alt="' . $title . '"/><figcaption>' . $title . '</figcaption></figure>';
+                $html = '<figure><img '.$cls.' '.$image.' alt="'.$title.'"/><figcaption>'.$title.'</figcaption></figure>';
             }
         } else {
             if ($url) {
-                $html = '<a  href="' . $url . '" title="' . $title . '"><img ' . $cls . ' ' . $image . ' /></a>';
+                $html = '<a  href="'.$url.'" title="'.$title.'"><img '.$cls.' '.$image.' /></a>';
             } else {
-                $html = '<img ' . $cls . ' ' . $image . ' alt="' . $title . '"/>';
+                $html = '<img '.$cls.' '.$image.' alt="'.$title.'"/>';
             }
         }
 
         $html = preg_replace('/\s+/', ' ', $html);
+
         return $html;
     } else {
         return Barrio::error('Error [ src ] no encontrado');
@@ -389,12 +398,13 @@ Shortcode::add('Row', function ($attrs, $content) {
     extract($attrs);
     $cls = (isset($cls)) ? $cls : '';
     $num = (isset($num)) ? 'row-cols-'.$num : '';
-    $output = Filter::apply('content', '<div class="row ' . $cls . ' '.$num.'">' . $content . '</div>');
+    $output = Filter::apply('content', '<div class="row '.$cls.' '.$num.'">'.$content.'</div>');
     $output = preg_replace('/\s+/', ' ', $output);
+
     return $output;
 });
 
-/**
+/*
  * ====================================================
  * num = col number
  * cls = class
@@ -409,8 +419,9 @@ Shortcode::add('Col', function ($attrs, $content) {
     $num = (isset($num)) ? $num : '6';
     $cls = (isset($cls)) ? $cls : '';
     $content = Parsedown::instance()->text($content);
-    $content = Filter::apply('content', '<div class="col-' . $num . ' col-md-' . $num . ' ' . $cls . '">' . $content . '</div>');
+    $content = Filter::apply('content', '<div class="col-'.$num.' col-md-'.$num.' '.$cls.'">'.$content.'</div>');
     $content = preg_replace('/\s+/', ' ', $content);
+
     return $content;
 });
 
@@ -427,14 +438,15 @@ Shortcode::add('Styles', function ($attrs, $content = '') {
     $minify = (isset($minify)) ? $minify : false;
     if ($content) {
         // convert string to bool
-        $minify = ($minify == 'true') ? true : false;
+        $minify = ('true' == $minify) ? true : false;
         // minify or not
-        $content = ($minify == true) ? minify_css($content) : $content;
+        $content = (true == $minify) ? minify_css($content) : $content;
+
         return Action::add('head', function () use ($content) {
             $html = "\n\n\t";
             $html .= '<!-- Shortcode css -->';
             $html .= "\n\t";
-            $html .= '<style rel="stylesheet">' . $content . '</style>';
+            $html .= '<style rel="stylesheet">'.$content.'</style>';
             $html .= "\n\n";
             echo $html;
         });
@@ -446,18 +458,24 @@ Shortcode::add('Styles', function ($attrs, $content = '') {
  * ================================
  * Style file
  *
- * [Style href='//example.css']
+ * [Style src='//example.css']
+ * [Style local=true src='content/example.css']
  * ================================
  */
 Shortcode::add('Style', function ($attrs) {
     extract($attrs);
-    $href = (isset($href)) ? $href : '';
-    if ($href) {
-        return Action::add('head', function () use ($href) {
-            echo '<link rel="stylesheet" href="https://' . $href . '"/>';
+    $src = (isset($src)) ? $src : '';
+    $local = (isset($local)) ? $local : false;
+    if ($src) {
+        return Action::add('head', function () use ($src,$local) {
+            if($local) {
+                echo '<link rel="stylesheet" type="text/css" href="'.Barrio::urlBase().'/'.$src.'"/>';
+            } else {
+                echo '<link rel="stylesheet" href="https://'.$src.'"/>';
+            }
         });
     } else {
-        return Barrio::error('Error [ href ] no encontrado');
+        return Barrio::error('Error [ src ] no encontrado');
     }
 });
 /*
@@ -473,14 +491,15 @@ Shortcode::add('Scripts', function ($attrs, $content = '') {
     $minify = (isset($minify)) ? $minify : false;
     if ($content) {
         // convert string to bool
-        $minify = ($minify == 'true') ? true : false;
+        $minify = ('true' == $minify) ? true : false;
         // minify or not
-        $content = ($minify == true) ? minify_js($content) : $content;
+        $content = (true == $minify) ? minify_js($content) : $content;
+
         return Action::add('footer', function () use ($content) {
             $html = "\n\n\t";
             $html .= '<!-- Shortcode scripts -->';
             $html .= "\n\t";
-            $html .= '<script rel="javascript">' . $content . '</script>';
+            $html .= '<script rel="javascript">'.$content.'</script>';
             $html .= "\n\n";
             echo $html;
         });
@@ -498,9 +517,14 @@ Shortcode::add('Scripts', function ($attrs, $content = '') {
 Shortcode::add('Script', function ($attrs) {
     extract($attrs);
     $src = (isset($src)) ? $src : '';
+    $local = (isset($local)) ? $local : false;
     if ($src) {
-        return Action::add('footer', function () use ($src) {
-            echo '<script rel="javascript" src="https:' . $src . '"></script>';
+        return Action::add('footer', function () use ($src,$local) {
+            if($local) {
+                echo '<script rel="javascript" src="'.Barrio::urlBase().'/'.$src.'"></script>';
+            } else {
+                echo '<script rel="javascript" src="https:'.$src.'"></script>';
+            }
         });
     } else {
         return Barrio::error('Error [ src ] no encontrado');
@@ -517,10 +541,11 @@ Shortcode::add('Script', function ($attrs) {
 Shortcode::add('Esc', function ($attr, $content) {
     $output = htmlspecialchars("$content", ENT_QUOTES);
     $output = str_replace('&#039;', "'", $output);
+
     return $output;
 });
 
-/**
+/*
  * ====================================================
  *  Code
  *   [Code type='php']
@@ -533,7 +558,8 @@ Shortcode::add('Code', function ($attrs, $content) {
     $type = (isset($type)) ? $type : 'php';
     if ($content) {
         $content = htmlentities(html_entity_decode($content));
-        $output = Filter::apply('content', '<pre class="line-numbers language-' . $type . '"><code class="language-' . $type . '">' . $content . '</code></pre>');
+        $output = Filter::apply('content', '<pre class="line-numbers language-'.$type.'"><code class="language-'.$type.'">'.$content.'</code></pre>');
+
         return $output;
     } else {
         return Barrio::error('Error [ contenido ] no encontrado');
@@ -556,7 +582,7 @@ Shortcode::add('Config', function ($attrs) {
     }
 });
 
-/**
+/*
  * ====================================================
  * Divider
  *
@@ -570,15 +596,15 @@ Shortcode::add('Divider', function ($attrs) {
     $type = (isset($type)) ? $type : 'hr';
     $num = (isset($num)) ? $num : '4';
     $cls = (isset($cls)) ? $cls : '';
-    $color = (isset($color)) ? 'style="border-color:' . $color . '"' : '';
-    if ($type !== 'br') {
-        return '<hr class="' . $cls . ' my-' . $num . '" ' . $color . '/>';
+    $color = (isset($color)) ? 'style="border-color:'.$color.'"' : '';
+    if ('br' !== $type) {
+        return '<hr class="'.$cls.' my-'.$num.'" '.$color.'/>';
     } else {
-        return '<br class="' . $cls . ' my-' . $num . '" ' . $color . '/>';
+        return '<br class="'.$cls.' my-'.$num.'" '.$color.'/>';
     }
 });
 
-/**
+/*
  * ====================================================
  * Space
  *
@@ -589,7 +615,7 @@ Shortcode::add('Divider', function ($attrs) {
 Shortcode::add('Space', function ($attrs) {
     extract($attrs);
     $num = (isset($num)) ? $num : '2';
-    return str_repeat('&nbsp;', $num);
+    return str_repeat('&nbsp;', (int) $num);
 });
 
 /*
@@ -607,28 +633,60 @@ Shortcode::add('Btn', function ($attrs) {
     extract($attrs);
 
     $text = (isset($text)) ? $text : '';
-    $cls = (isset($cls)) ? 'class="' . $cls . '"' : 'class="btn btn-primary my-2"';
-    $id = (isset($id)) ? 'id="' . $id . '"' : '';
+    $cls = (isset($cls)) ? 'class="'.$cls.'"' : 'class="btn btn-primary my-2"';
+    $id = (isset($id)) ? 'id="'.$id.'"' : '';
     $href = (isset($href)) ? $href : '#';
 
     if ($text) {
-        $html = '<a ' . $cls . ' ' . $id . ' href="' . $href . '" title="' . $text . '">' . $text . '</a>';
+        $html = '<a '.$cls.' '.$id.' href="'.$href.'" title="'.$text.'">'.$text.'</a>';
         $html = preg_replace('/\s+/', ' ', $html);
+
         return $html;
     } else {
         return Barrio::error('Error [ text ] no encontrado');
     }
 });
 
-/**
+/*
+ * ====================================================
+ * Html
+ * - Solo funciona con .txt
+ * [Html src='/public/texto.txt']
+ * ====================================================
+ */
+Shortcode::add('Html', function ($attrs) {
+    extract($attrs);
+    $src = (isset($src)) ? $src : '';
+    if($src) {
+        $content = (is_file(ROOT_DIR.$src)) ? ROOT_DIR.$src : false;
+        if($content){
+            ob_start();
+            @header('Content-Type: text/html; charset=utf-8');
+            include($content);
+            $var=ob_get_contents();
+            ob_end_clean();
+            return $var;
+        } else {
+            Barrio::error('Error [ src ] donde esta el archivo incluido');
+        }
+    }else{
+        return Barrio::error('Error [ src ] no encontrado');
+    }
+});
+
+/*
  * ====================================================
  * Php
  *
  * [Php]echo 'holas';[/Php]
  * ====================================================
  */
+
+/* Desactivado por precaución
 Shortcode::add('Php', function ($attr, $content) {
     ob_start();
     eval("$content");
+
     return ob_get_clean();
 });
+*/
