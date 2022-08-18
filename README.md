@@ -1,4 +1,6 @@
-# Barrio CMS
+# Este repositorio ya no contara con mas actualizaciones.
+
+## Barrio CMS
 
 El CMS que se adapta a cualquier proyecto
 
